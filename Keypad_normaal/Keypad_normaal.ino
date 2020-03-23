@@ -30,9 +30,6 @@ void loop() {
 char key = keypad.getKey();
 
 if (key){
-Serial.print ("Keypad: ");
 Serial.print(key);
-Serial.println(" is pressed");
-
 }
 }
