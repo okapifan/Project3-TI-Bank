@@ -1,11 +1,12 @@
-import com.fazecast.jSerialComm.SerialPort;
 import java.io.IOException;
+import com.fazecast.jSerialComm.*;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
         SerialPort comPort = SerialPort.getCommPorts()[0];
-        comPort.openPort();
+		comPort.openPort();
+
         try {
             while (true) // Loop through te code
             {
