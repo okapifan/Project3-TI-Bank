@@ -46,7 +46,7 @@ void loop()
 	char key = keypad.getKey();
 
 	if (key){
-		void SendString(Key);
+		SendString(String(key));
 	}
 
   //look for new cards
