@@ -4,15 +4,15 @@
 #include <Keypad.h>
 
 #define SS_PIN 10
-#define RST_PIN 9
+#define RST_PIN A0
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 // Defining the keypad
-const byte ROWS= 4;
+const byte ROWS = 4;
 
-const byte COLS= 4;
+const byte COLS = 4;
 
-char keys[ROWS][COLS]= {
+char keys[ROWS][COLS] = {
 {'1', '2', '3', 'A'},
 {'4', '5', '6', 'B'},
 {'7', '8', '9', 'C'},
@@ -21,10 +21,10 @@ char keys[ROWS][COLS]= {
 
 byte rowPins[ROWS] = {2,3,4,5}; //Rows 0 to 3
 
-byte colPins[COLS]= {6,7,8,9}; //Columns 0 to 3
+byte colPins[COLS] = {6,7,8,9}; //Columns 0 to 3
 
 //initializes an instance of the Keypad class
-Keypad keypad= Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // Wait without delay
 unsigned long previousMillis = 0;
@@ -59,7 +59,7 @@ void loop()
 
       for (byte i = 0; i < mfrc522.uid.size; i++)
       {
-        content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+        content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : ""));
         content.concat(String(mfrc522.uid.uidByte[i], HEX));
       }
       SendString(content);
