@@ -24,7 +24,7 @@ public class MainScreen{
 		
 		//Buttons for all screens
 	    balanceBtn = new JButton("1. Check Balance");
-	    backToHomeBtn = new JButton("1. Home");
+	    backToHomeBtn = new JButton("0. Home");
 	    
 	    //Create CardLayout & the container
 	    cl = new CardLayout(5, 5);
