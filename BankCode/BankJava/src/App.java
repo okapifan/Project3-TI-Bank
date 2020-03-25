@@ -15,7 +15,7 @@ public class App {
 				comPort.openPort();
 				ms = new MainScreen(comPort); //create Mainscreen
 				
-				comPort.closePort();
+				//comPort.closePort();
 			}
 		});      
     }

@@ -57,7 +57,7 @@ public class MainScreen{
 	    frame.pack();
 	    frame.setVisible(true);
 	    
-	    int delay = 1000; //milliseconds
+	    int delay = 50; //milliseconds
 	    ActionListener taskPerformer = new KeypadActionListoner(this, comPort);
 	    new Timer(delay, taskPerformer).start();
 	}
