@@ -26,32 +26,68 @@ public class KeypadActionListoner implements ActionListener {
 				// Use data
 				System.out.println("Read data: " + data + " (" + dataSize + " bytes)");
 
-				// Call function to parse the data
-				if (ms.currentScreen == 0) { // homescreen
+				parseData(data, dataSize);
+			}
+
+			
+			// Send String example
+			//String data = "Test";
+			//comPort.writeBytes(data.getBytes(), data.length());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void parseData(String data, int dataSize) {
+
+		switch (ms.currentScreen) {
+			case 0:
+				if (dataSize == 1) { // Keypad input
 					if (data.equals("1")) {
 						ms.switchToBalanceScreen();
 						ms.currentScreen = 1;
 					}
-				} else { // balancescreen
+				} else { // RFID card UID
+		
+				}
+				break;
+
+			case 1:
+				if (dataSize == 1) { // Keypad input
 					if (data.equals("1")) {
 						ms.switchToHomeScreen();
 						ms.currentScreen = 0;
 					}
+				} else { // RFID card UID
+		
 				}
-			}
-
-			// Simulate event
-			if (System.in.available() > 0) {
-				while (System.in.available() > 0) {
-					System.in.read();
-				}
-
-				// Send String
-				String data = "Test";
-				comPort.writeBytes(data.getBytes(), data.length());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+				break;
+		
+			default:
+				System.out.println("CurrentScreen does not exist");
+				break;
 		}
+		
+		/*
+		// Call function to parse the data
+		if (ms.currentScreen == 0) { // homescreen
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("1")) {
+					ms.switchToBalanceScreen();
+					ms.currentScreen = 1;
+				}
+			} else { // RFID card UID
+	
+			}
+		} else if (ms.currentScreen == 1) { // balancescreen
+			if (data.equals("1")) {
+				ms.switchToHomeScreen();
+				ms.currentScreen = 0;
+			}
+		} else {
+			System.out.println("CurrentScreen does not exist");
+		}
+		*/
 	}
 }
