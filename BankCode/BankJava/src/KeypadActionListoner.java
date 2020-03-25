@@ -14,7 +14,7 @@ public class KeypadActionListoner implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		try {
-			System.out.print("LoopTest");
+			//System.out.print("LoopTest");
 
 			// Receive string
 			if (comPort.bytesAvailable() > 0) {
