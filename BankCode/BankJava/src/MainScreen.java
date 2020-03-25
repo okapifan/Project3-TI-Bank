@@ -1,5 +1,10 @@
 import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
+
+import com.fazecast.jSerialComm.SerialPort;
 
 import java.awt.*;
 
@@ -12,7 +17,7 @@ public class MainScreen{
 	JButton backToHomeBtn;
 	public int currentScreen = 0;
 	
-	public MainScreen() {
+	public MainScreen(SerialPort comPort) {
 		//Create Frame
 		JFrame frame = new JFrame();	
 		frame.setTitle("Bank");
@@ -51,6 +56,10 @@ public class MainScreen{
 	    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
+	    
+	    int delay = 1000; //milliseconds
+	    ActionListener taskPerformer = new KeypadActionListoner(this, comPort);
+	    new Timer(delay, taskPerformer).start();
 	}
 	
 	public void switchToBalanceScreen() {
