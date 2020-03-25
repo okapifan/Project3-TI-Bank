@@ -8,6 +8,9 @@ public class MainScreen{
 	static JPanel homePanel;
 	static JPanel balancePanel;
 	static CardLayout cl;
+	JButton balanceBtn;
+	JButton backToHomeBtn;
+	public int currentScreen = 0;
 	
 	public MainScreen() {
 		//Create Frame
@@ -15,9 +18,9 @@ public class MainScreen{
 		frame.setTitle("Bank");
 		
 		//Buttons for all screens
-	    JButton balanceBtn = new JButton("Check Balance");
-	    JButton backToHomeBtn = new JButton("Home");
-
+	    balanceBtn = new JButton("1. Check Balance");
+	    backToHomeBtn = new JButton("1. Home");
+	    
 	    //Create CardLayout & the container
 	    cl = new CardLayout(5, 5);
 	    panelContainer = new JPanel(cl);
@@ -26,7 +29,7 @@ public class MainScreen{
 	    //creates mainscreen
 	    homePanel = new JPanel();
 	    homePanel.setBackground(Color.red);
-	    homePanel.add(balanceBtn);
+	    homePanel.add(balanceBtn);   
 
 	    panelContainer.add(homePanel, "Home");
 
@@ -38,7 +41,7 @@ public class MainScreen{
 
 	    balanceBtn.addActionListener(e -> cl.show(panelContainer, "Balance"));
 	    backToHomeBtn.addActionListener(e -> cl.show(panelContainer, "Home"));
-
+	    
 	    frame.add(panelContainer);
 	    cl.show(panelContainer, "Home");
 
@@ -48,5 +51,13 @@ public class MainScreen{
 	    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
+	}
+	
+	public void switchToBalanceScreen() {
+		balanceBtn.doClick();
+	}
+	
+	public void switchToHomeScreen() {
+		backToHomeBtn.doClick();
 	}
 }
