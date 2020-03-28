@@ -7,8 +7,8 @@ public class App {
 
 	public static MainScreen ms;
 	
-    public static void main(String[] args) throws IOException {
-        
+	public static void main(String[] args) throws IOException {
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				SerialPort comPort = SerialPort.getCommPorts()[0];
@@ -17,6 +17,6 @@ public class App {
 				
 				//comPort.closePort();
 			}
-		});      
-    }
+		});
+	}
 }

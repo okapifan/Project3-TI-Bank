@@ -1,12 +1,13 @@
+import java.awt.*;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
 import com.fazecast.jSerialComm.SerialPort;
-
-import java.awt.*;
 
 public class MainScreen {
 	static JPanel panelContainer;
@@ -55,7 +56,16 @@ public class MainScreen {
 		frame.pack();
 		frame.setVisible(true);
 		frame.add(panelContainer);
-		switchToHomeScreen(); // cl.show(panelContainer, "Home");
+		switchToHomeScreen(); //cl.show(panelContainer, "Home");
+
+		frame.addWindowListener(new WindowAdapter() { // Exit button override
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Exit");
+				comPort.closePort(); // Unnecessary?
+				System.exit(0);
+			}
+		});
 
 
 		int delay = 50; // Milliseconds
