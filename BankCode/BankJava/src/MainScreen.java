@@ -18,44 +18,48 @@ public class MainScreen{
 	public int currentScreen = 0;
 	
 	public MainScreen(SerialPort comPort) {
-		//Create Frame
-		JFrame frame = new JFrame();	
-		frame.setTitle("Bank");
 		
 		//Buttons for all screens
-	    balanceBtn = new JButton("1. Check Balance");
-	    backToHomeBtn = new JButton("0. Home");
-	    
+		balanceBtn = new JButton("1. Check Balance");
+		balanceBtn.addActionListener(e -> switchToBalanceScreen());
+
+		backToHomeBtn = new JButton("0. Home");
+		backToHomeBtn.addActionListener(e -> switchToHomeScreen());
+		
+		
 	    //Create CardLayout & the container
 	    cl = new CardLayout(5, 5);
 	    panelContainer = new JPanel(cl);
-	    panelContainer.setBackground(Color.pink);
+		panelContainer.setBackground(Color.pink);
+		
 
-	    //creates mainscreen
+	    // Creates Screens
 	    homePanel = new JPanel();
 	    homePanel.setBackground(Color.red);
 	    homePanel.add(balanceBtn);   
-
 	    panelContainer.add(homePanel, "Home");
 
 	    balancePanel = new JPanel();
 	    balancePanel.setBackground(Color.blue);
 	    balancePanel.add(backToHomeBtn);
-
 	    panelContainer.add(balancePanel, "Balance");
 
-	    balanceBtn.addActionListener(e -> cl.show(panelContainer, "Balance"));
-	    backToHomeBtn.addActionListener(e -> cl.show(panelContainer, "Home"));
 	    
-	    frame.add(panelContainer);
-	    cl.show(panelContainer, "Home");
-
+	    
+	    
+		//Create Frame
+		JFrame frame = new JFrame();	
+		frame.setTitle("Bank");
 		frame.setSize(1920, 1080);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    frame.setLocationRelativeTo(null);
 	    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
+	    frame.add(panelContainer);
+		//cl.show(panelContainer, "Home");
+		switchToHomeScreen();
+		
 	    
 	    int delay = 50; //milliseconds
 	    ActionListener taskPerformer = new KeypadActionListoner(this, comPort);
@@ -63,10 +67,12 @@ public class MainScreen{
 	}
 	
 	public void switchToBalanceScreen() {
-		balanceBtn.doClick();
+		cl.show(panelContainer, "Balance");
+		currentScreen = 1;
 	}
 	
 	public void switchToHomeScreen() {
-		backToHomeBtn.doClick();
+		cl.show(panelContainer, "Home");
+		currentScreen = 0;
 	}
 }

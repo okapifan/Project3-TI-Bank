@@ -46,7 +46,6 @@ public class KeypadActionListoner implements ActionListener {
 				if (dataSize == 1) { // Keypad input
 					if (data.equals("1")) {
 						ms.switchToBalanceScreen();
-						ms.currentScreen = 1;
 					}
 				} else { // RFID card UID
 		
@@ -57,7 +56,6 @@ public class KeypadActionListoner implements ActionListener {
 				if (dataSize == 1) { // Keypad input
 					if (data.equals("1")) {
 						ms.switchToHomeScreen();
-						ms.currentScreen = 0;
 					}
 				} else { // RFID card UID
 		
