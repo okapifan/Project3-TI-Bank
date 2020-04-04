@@ -1,6 +1,7 @@
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -10,9 +11,9 @@ public class KeypadActionListoner implements ActionListener {
 	private SerialPort comPort;
 	private ContentHandler contentHandler;
 
-	public KeypadActionListoner(SerialPort comPort, CardLayout cardLayout, JPanel panelContainer) {
+	public KeypadActionListoner(SerialPort comPort, CardLayout cardLayout, JPanel panelContainer, ArrayList<JPanel> pl) {
 		this.comPort = comPort;
-		this.contentHandler = new ContentHandler(cardLayout, panelContainer);
+		this.contentHandler = new ContentHandler(cardLayout, panelContainer, pl);
 	}
 
 	public void actionPerformed(ActionEvent evt) {

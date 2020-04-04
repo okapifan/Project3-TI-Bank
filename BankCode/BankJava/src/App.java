@@ -12,6 +12,7 @@ import mypackage.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -27,6 +28,8 @@ public class App {
 		
 		cl = new CardLayout(5, 5);
 		panelContainer = new JPanel(cl);
+
+		ArrayList<JPanel> panelList = new ArrayList<>();
 
 		JPanel00 notInUsePanel = new JPanel00();
 		JPanel01 startPanel = new JPanel01();
@@ -56,6 +59,7 @@ public class App {
 		panelContainer.add(takeCardPanel, "TakeCard");
 		panelContainer.add(patiencePanel, "Patience");
 		panelContainer.add(greetPanel, "Greet");
+		panelList.add(balancePanel);
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timo-Bank");
@@ -66,10 +70,11 @@ public class App {
 		frame.setVisible(true);
 		frame.add(panelContainer);
 		
-		cl.show(panelContainer, "Menu");
+
+		cl.show(panelContainer, "Balance");
 		
 		int delay = 50; // Milliseconds
-		ActionListener taskPerformer = new KeypadActionListoner(comPort, cl, panelContainer);
+		ActionListener taskPerformer = new KeypadActionListoner(comPort, cl, panelContainer, panelList);
 		new Timer(delay, taskPerformer).start();
 	}
 }

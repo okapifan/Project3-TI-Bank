@@ -154,6 +154,9 @@ public class JPanel05 extends javax.swing.JPanel {
         // (A) Terug naar begin
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void changeBalanceLabel(int balance){
+        jLabel3.setText("$ " + Integer.toString(balance));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

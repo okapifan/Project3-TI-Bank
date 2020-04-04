@@ -1,20 +1,43 @@
 import java.awt.CardLayout;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import mypackage.JPanel05;
+
 public class ContentHandler {
 	
-	private int currentScreen = 4;
+	private int currentScreen = 5;
 	private CardLayout cl;
 	private JPanel panelContainer;
+	private ArrayList<JPanel> panelList;
+
+	//user information
+	private int balance = 0;
+	private String accountnNr = "";
+	private String country = "";
 	
-	public ContentHandler(CardLayout cl, JPanel panelContainer) {
+	public ContentHandler(CardLayout cl, JPanel panelContainer, ArrayList<JPanel> pl) {
 		this.cl = cl;
 		this.panelContainer = panelContainer;
+		this.panelList = pl;
+
+		//Todo Remove this
+		this.switchToBalancePanel();
 	}
 	
 	void parseData(String data, int dataSize) {
 		switch (this.currentScreen) {
+		case 1:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("A")) {
+					this.switchToMenuPanel();
+				}
+			} else { // RFID card UID
+	
+			}
+			break;
+		
 		case 4:
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("1")) {
@@ -25,7 +48,7 @@ public class ContentHandler {
 			}
 			break;
 
-		case 1:
+		case 5:
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("A")) {
 					this.switchToMenuPanel();
@@ -34,7 +57,24 @@ public class ContentHandler {
 	
 			}
 			break;
-	
+		
+
+		case 6:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("1")) {
+					if(this.balance >= 20) {
+						this.switchToChooseHowPanel();
+					} else {
+						this.switchToNotEnoughPanel();
+					}
+				} 
+				//Todo: Add for every value
+
+			} else { // RFID card UID
+
+			}
+			break;
+		
 		default:
 			System.out.println("CurrentScreen does not exist");
 			break;
@@ -67,6 +107,13 @@ public class ContentHandler {
 	}
 	
 	public void switchToBalancePanel() {
+		JPanel balancePanel = panelList.get(0);
+		if(balancePanel instanceof JPanel05) {
+			JPanel05 balancePanel2 = (JPanel05) balancePanel;
+			balancePanel2.changeBalanceLabel(this.balance);
+		} else {
+			this.switchToMenuPanel();
+		}
 		this.cl.show(panelContainer, "Balance");
 		this.currentScreen = 5;
 	}
@@ -109,5 +156,11 @@ public class ContentHandler {
 	public void switchToGreetPanel() {
 		this.cl.show(panelContainer, "Greet");
 		this.currentScreen = 13;
+	}
+
+	public void resetInformation() {
+		this.balance = 0;
+		this.country = "";
+		this.accountnNr = "";
 	}
 }
