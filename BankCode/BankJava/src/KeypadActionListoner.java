@@ -1,15 +1,19 @@
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
 
 import com.fazecast.jSerialComm.SerialPort;
 
 public class KeypadActionListoner implements ActionListener {
-	private MainScreen ms;
 	private SerialPort comPort;
+	private ContentHandler contentHandler;
 
-	public KeypadActionListoner(MainScreen newMs, SerialPort newComPort) {
-		this.ms = newMs;
-		this.comPort = newComPort;
+	public KeypadActionListoner(SerialPort comPort, CardLayout cardLayout, JPanel panelContainer, ArrayList<JPanel> pl) {
+		this.comPort = comPort;
+		this.contentHandler = new ContentHandler(cardLayout, panelContainer, pl);
 	}
 
 	public void actionPerformed(ActionEvent evt) {
@@ -26,7 +30,7 @@ public class KeypadActionListoner implements ActionListener {
 				// Use data
 				System.out.println("Read data: " + data + " (" + dataSize + " bytes)");
 
-				parseData(data, dataSize);
+				contentHandler.parseData(data, dataSize);
 			}
 
 			
@@ -37,57 +41,5 @@ public class KeypadActionListoner implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void parseData(String data, int dataSize) {
-
-		switch (ms.currentScreen) {
-			case 0:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("1")) {
-						ms.switchToBalanceScreen();
-						ms.currentScreen = 1;
-					}
-				} else { // RFID card UID
-		
-				}
-				break;
-
-			case 1:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("1")) {
-						ms.switchToHomeScreen();
-						ms.currentScreen = 0;
-					}
-				} else { // RFID card UID
-		
-				}
-				break;
-		
-			default:
-				System.out.println("CurrentScreen does not exist");
-				break;
-		}
-		
-		/*
-		// Call function to parse the data
-		if (ms.currentScreen == 0) { // homescreen
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("1")) {
-					ms.switchToBalanceScreen();
-					ms.currentScreen = 1;
-				}
-			} else { // RFID card UID
-	
-			}
-		} else if (ms.currentScreen == 1) { // balancescreen
-			if (data.equals("1")) {
-				ms.switchToHomeScreen();
-				ms.currentScreen = 0;
-			}
-		} else {
-			System.out.println("CurrentScreen does not exist");
-		}
-		*/
 	}
 }
