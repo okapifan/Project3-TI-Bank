@@ -78,7 +78,7 @@ public class DatabaseHandler {
 			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM pinpassen WHERE persoonsnr = " + account); // SQL injection posible
 			rs1.next();
 			String pinCode = rs1.getString(1);
-			if (pin == pinCode) {
+			if (pin.equals(pinCode)) {
 
 				// Get balance
 				Statement stmt2 = con.createStatement();
@@ -110,7 +110,7 @@ public class DatabaseHandler {
 			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM pinpassen WHERE persoonsnr = " + account); // SQL injection posible
 			rs1.next();
 			String pinCode = rs1.getString(1);
-			if (pin == pinCode) {
+			if (pin.equals(pinCode)) {
 
 				// Get balance
 				Statement stmt2 = con.createStatement();

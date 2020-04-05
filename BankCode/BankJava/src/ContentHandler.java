@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import mypackage.JPanel05;
 
 public class ContentHandler {
+	private DatabaseHandler database;
 	
 	private int currentScreen = 5;
 	private CardLayout cl;
@@ -13,14 +14,23 @@ public class ContentHandler {
 	private ArrayList<JPanel> panelList;
 
 	//user information
-	private int balance = 0;
-	private String accountnNr = "";
-	private String country = "";
+	private float balance = 0;
+	// private String bankName = "";
+	// private String accountnNr = "";
+	// private String country = "";
+	// private String pinCode = "";
+
+	private String bankName = "Timobank";
+	private String accountnNr = "1";
+	private String country = "US";
+	private String pinCode = "1234";
 	
 	public ContentHandler(CardLayout cl, JPanel panelContainer, ArrayList<JPanel> pl) {
 		this.cl = cl;
 		this.panelContainer = panelContainer;
 		this.panelList = pl;
+
+		this.database = new DatabaseHandler("US", "Timobank");
 
 		//Todo Remove this
 		this.switchToBalancePanel();
@@ -109,6 +119,8 @@ public class ContentHandler {
 	public void switchToBalancePanel() {
 		JPanel balancePanel = panelList.get(0);
 		if(balancePanel instanceof JPanel05) {
+			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
+			
 			JPanel05 balancePanel2 = (JPanel05) balancePanel;
 			balancePanel2.changeBalanceLabel(this.balance);
 		} else {
@@ -161,6 +173,8 @@ public class ContentHandler {
 	public void resetInformation() {
 		this.balance = 0;
 		this.country = "";
+		this.bankName = "";
 		this.accountnNr = "";
+		this.pinCode = "";
 	}
 }
