@@ -5,7 +5,7 @@
  */
 package mypackage;
 
-import java.net.ContentHandler;
+import mainpackage.ContentHandler;
 
 /**
  *
@@ -18,7 +18,7 @@ public class JPanel05 extends javax.swing.JPanel {
      * Creates new form JPanel05
      */
     public JPanel05(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+        this.contentHandler = contentHandler;
         initComponents();
     }
 
@@ -156,7 +156,7 @@ public class JPanel05 extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 		// (A) Terug naar begin
-		//this.contentHandler;
+		this.contentHandler.switchToMenuPanel();;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void changeBalanceLabel(float balance){

@@ -5,17 +5,19 @@
  */
 package mypackage;
 
+import mainpackage.ContentHandler;
+
 /**
  *
  * @author danie
  */
 public class JPanel04 extends javax.swing.JPanel {
-	private ContentHandler2 contentHandler;
+	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel04
      */
-    public JPanel04(ContentHandler2 contentHandler) {
+    public JPanel04(ContentHandler contentHandler) {
 		this.contentHandler = contentHandler;
 		this.contentHandler.switchToNotInUsePanel();
         initComponents();
@@ -168,8 +170,8 @@ public class JPanel04 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-		// (1) Saldo-informatie
-		//this.contentHandler.sw
+        // (1) Saldo-informatie
+        this.contentHandler.switchToBalancePanel();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -10,6 +10,8 @@
 
 import mypackage.*;
 
+import mainpackage.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,9 +34,8 @@ public class App {
 
 		ArrayList<JPanel> panelList = new ArrayList<>();
 
-		ContentHandler contentHandler = new ContentHandler(cl, panelContainer, panelList);
+		ContentHandler contentHandler = new ContentHandler(cl, panelContainer);
 
-		
 		JPanel00 notInUsePanel = new JPanel00();
 		JPanel01 startPanel = new JPanel01();
 		JPanel02 typePinPanel = new JPanel02();
@@ -64,6 +65,9 @@ public class App {
 		panelContainer.add(patiencePanel, "Patience");
 		panelContainer.add(greetPanel, "Greet");
 		panelList.add(balancePanel);
+		contentHandler.setPanelList(panelList);
+		//Todo Remove this
+		contentHandler.switchToBalancePanel();
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timo-Bank");
