@@ -34,6 +34,13 @@ public class ContentHandler {
 
 		//Todo Remove this
 		this.switchToBalancePanel();
+
+
+		// JPanel balancePanel = panelList.get(0);
+		// JPanel05 balancePanel2 = (JPanel05) balancePanel;
+		// balancePanel2.get()
+		// //witdrawMoneyBtn.addActionListener(e -> switchToWitdrawScreen());
+		// balancePanel2.changeBalanceLabel(this.balance);
 	}
 	
 	void parseData(String data, int dataSize) {

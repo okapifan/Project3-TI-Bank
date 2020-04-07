@@ -5,16 +5,20 @@
  */
 package mypackage;
 
+import java.net.ContentHandler;
+
 /**
  *
  * @author danie
  */
 public class JPanel05 extends javax.swing.JPanel {
+	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel05
      */
-    public JPanel05() {
+    public JPanel05(ContentHandler contentHandler) {
+		this.contentHandler = contentHandler;
         initComponents();
     }
 
@@ -151,7 +155,8 @@ public class JPanel05 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // (A) Terug naar begin
+		// (A) Terug naar begin
+		//this.contentHandler;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void changeBalanceLabel(float balance){
