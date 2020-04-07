@@ -10,6 +10,8 @@
 
 import mypackage.*;
 
+import mainpackage.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import com.fazecast.jSerialComm.SerialPort;
 public class App {
 	static CardLayout cl;
 	static JPanel panelContainer;
+	//public static ContentHandler contentHandler;
 
 	public static void main(String[] args) {
 		SerialPort comPort = SerialPort.getCommPorts()[0];
@@ -31,12 +34,14 @@ public class App {
 
 		ArrayList<JPanel> panelList = new ArrayList<>();
 
+		ContentHandler contentHandler = new ContentHandler(cl, panelContainer);
+
 		JPanel00 notInUsePanel = new JPanel00();
 		JPanel01 startPanel = new JPanel01();
 		JPanel02 typePinPanel = new JPanel02();
 		JPanel03 cardBlockedPanel = new JPanel03();
-		JPanel04 menuPanel = new JPanel04();
-		JPanel05 balancePanel = new JPanel05();
+		JPanel04 menuPanel = new JPanel04(contentHandler);
+		JPanel05 balancePanel = new JPanel05(contentHandler);
 		JPanel06 chooseAmountPanel = new JPanel06();
 		JPanel07 typeAmountPanel = new JPanel07();
 		JPanel08 notEnoughPanel = new JPanel08();
@@ -60,6 +65,9 @@ public class App {
 		panelContainer.add(patiencePanel, "Patience");
 		panelContainer.add(greetPanel, "Greet");
 		panelList.add(balancePanel);
+		contentHandler.setPanelList(panelList);
+		//Todo Remove this
+		contentHandler.switchToBalancePanel();
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timo-Bank");
@@ -72,9 +80,10 @@ public class App {
 		
 
 		cl.show(panelContainer, "Balance");
+
 		
 		int delay = 50; // Milliseconds
-		ActionListener taskPerformer = new KeypadActionListoner(comPort, cl, panelContainer, panelList);
+		ActionListener taskPerformer = new KeypadActionListoner(comPort, contentHandler);//new KeypadActionListoner(comPort, cl, panelContainer, panelList);
 		new Timer(delay, taskPerformer).start();
 	}
 }

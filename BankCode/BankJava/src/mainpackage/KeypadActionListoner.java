@@ -1,3 +1,5 @@
+package mainpackage;
+
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,9 +13,9 @@ public class KeypadActionListoner implements ActionListener {
 	private SerialPort comPort;
 	private ContentHandler contentHandler;
 
-	public KeypadActionListoner(SerialPort comPort, CardLayout cardLayout, JPanel panelContainer, ArrayList<JPanel> pl) {
+	public KeypadActionListoner(SerialPort comPort, ContentHandler contentHandler) {
 		this.comPort = comPort;
-		this.contentHandler = new ContentHandler(cardLayout, panelContainer, pl);
+		this.contentHandler = contentHandler;
 	}
 
 	public void actionPerformed(ActionEvent evt) {

@@ -1,3 +1,5 @@
+package mainpackage;
+
 import java.awt.CardLayout;
 import java.util.ArrayList;
 
@@ -25,15 +27,22 @@ public class ContentHandler {
 	private String country = "US";
 	private String pinCode = "1234";
 	
-	public ContentHandler(CardLayout cl, JPanel panelContainer, ArrayList<JPanel> pl) {
+	public ContentHandler(CardLayout cl, JPanel panelContainer) {
 		this.cl = cl;
 		this.panelContainer = panelContainer;
-		this.panelList = pl;
 
 		this.database = new DatabaseHandler("US", "Timobank");
 
-		//Todo Remove this
-		this.switchToBalancePanel();
+
+		// JPanel balancePanel = panelList.get(0);
+		// JPanel05 balancePanel2 = (JPanel05) balancePanel;
+		// balancePanel2.get()
+		// //witdrawMoneyBtn.addActionListener(e -> switchToWitdrawScreen());
+		// balancePanel2.changeBalanceLabel(this.balance);
+	}
+
+	public void setPanelList(ArrayList<JPanel> pl) {
+		this.panelList = pl;
 	}
 	
 	void parseData(String data, int dataSize) {
