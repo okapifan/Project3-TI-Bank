@@ -9,6 +9,7 @@
  */
 
 import mypackage.*;
+import mainpackage.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ import com.fazecast.jSerialComm.SerialPort;
 public class App {
 	static CardLayout cl;
 	static JPanel panelContainer;
+	//public static ContentHandler contentHandler;
 
 	public static void main(String[] args) {
 		SerialPort comPort = SerialPort.getCommPorts()[0];
@@ -31,38 +33,54 @@ public class App {
 
 		ArrayList<JPanel> panelList = new ArrayList<>();
 
-		JPanel00 notInUsePanel = new JPanel00();
-		JPanel01 startPanel = new JPanel01();
-		JPanel02 typePinPanel = new JPanel02();
-		JPanel03 cardBlockedPanel = new JPanel03();
-		JPanel04 menuPanel = new JPanel04();
-		JPanel05 balancePanel = new JPanel05();
-		JPanel06 chooseAmountPanel = new JPanel06();
-		JPanel07 typeAmountPanel = new JPanel07();
-		JPanel08 notEnoughPanel = new JPanel08();
-		JPanel09 chooseHowPanel = new JPanel09();
-		JPanel10 receiptPanel = new JPanel10();
-		JPanel11 takeCardPanel = new JPanel11();
-		JPanel12 patiencePanel = new JPanel12();
-		JPanel13 greetPanel = new JPanel13();
-		panelContainer.add(notInUsePanel, "NotInUse");
-		panelContainer.add(startPanel, "Start");
-		panelContainer.add(typePinPanel, "TypePin");
-		panelContainer.add(cardBlockedPanel, "CardBlocked");
-		panelContainer.add(menuPanel, "Menu");
-		panelContainer.add(balancePanel, "Balance");
-		panelContainer.add(chooseAmountPanel, "ChooseAmount");
-		panelContainer.add(typeAmountPanel, "TypeAmount");
-		panelContainer.add(notEnoughPanel, "NotEnough");
-		panelContainer.add(chooseHowPanel, "ChooseHow");
-		panelContainer.add(receiptPanel, "Receipt");
-		panelContainer.add(takeCardPanel, "TakeCard");
-		panelContainer.add(patiencePanel, "Patience");
-		panelContainer.add(greetPanel, "Greet");
+		ContentHandler contentHandler = new ContentHandler(cl, panelContainer);
+
+		JPanel00 notInUsePanel = new JPanel00(contentHandler);
+		JPanel01 startPanel = new JPanel01(contentHandler);
+		JPanel02 typePinPanel = new JPanel02(contentHandler);
+		JPanel03 cardBlockedPanel = new JPanel03(contentHandler);
+		JPanel04 menuPanel = new JPanel04(contentHandler);
+		JPanel05 balancePanel = new JPanel05(contentHandler);
+		JPanel06 chooseAmountPanel = new JPanel06(contentHandler);
+		JPanel07 typeAmountPanel = new JPanel07(contentHandler);
+		JPanel08 notEnoughPanel = new JPanel08(contentHandler);
+		JPanel09 chooseHowPanel = new JPanel09(contentHandler);
+		JPanel10 receiptPanel = new JPanel10(contentHandler);
+		JPanel11 takeCardPanel = new JPanel11(contentHandler);
+		JPanel12 patiencePanel = new JPanel12(contentHandler);
+		JPanel13 greetPanel = new JPanel13(contentHandler);
+		panelContainer.add(notInUsePanel, "00NotInUse");
+		panelContainer.add(startPanel, "01Start");
+		panelContainer.add(typePinPanel, "02TypePin");
+		panelContainer.add(cardBlockedPanel, "03CardBlocked");
+		panelContainer.add(menuPanel, "04Menu");
+		panelContainer.add(balancePanel, "05Balance");
+		panelContainer.add(chooseAmountPanel, "06ChooseAmount");
+		panelContainer.add(typeAmountPanel, "07TypeAmount");
+		panelContainer.add(notEnoughPanel, "08NotEnough");
+		panelContainer.add(chooseHowPanel, "09ChooseHow");
+		panelContainer.add(receiptPanel, "10Receipt");
+		panelContainer.add(takeCardPanel, "11TakeCard");
+		panelContainer.add(patiencePanel, "12Patience");
+		panelContainer.add(greetPanel, "13Greet");
+		panelList.add(notInUsePanel);
+		panelList.add(startPanel);
+		panelList.add(typePinPanel);
+		panelList.add(cardBlockedPanel);
+		panelList.add(menuPanel);
 		panelList.add(balancePanel);
+		panelList.add(chooseAmountPanel);
+		panelList.add(typeAmountPanel);
+		panelList.add(notEnoughPanel);
+		panelList.add(chooseHowPanel);
+		panelList.add(receiptPanel);
+		panelList.add(takeCardPanel);
+		panelList.add(patiencePanel);
+		panelList.add(greetPanel);
+		contentHandler.setPanelList(panelList);
 
 		JFrame frame = new JFrame();
-		frame.setTitle("Timo-Bank");
+		frame.setTitle("Timobank");
 		// frame.setSize(1920, 1080);
 		frame.setLocationRelativeTo(null);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -71,10 +89,12 @@ public class App {
 		frame.add(panelContainer);
 		
 
-		cl.show(panelContainer, "Balance");
+		contentHandler.switchTo01StartPanel();
+		//contentHandler.switchTo04MenuPanel();
+
 		
 		int delay = 50; // Milliseconds
-		ActionListener taskPerformer = new KeypadActionListoner(comPort, cl, panelContainer, panelList);
+		ActionListener taskPerformer = new KeypadActionListoner(comPort, contentHandler);
 		new Timer(delay, taskPerformer).start();
 	}
 }
