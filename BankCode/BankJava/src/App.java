@@ -64,13 +64,24 @@ public class App {
 		panelContainer.add(takeCardPanel, "TakeCard");
 		panelContainer.add(patiencePanel, "Patience");
 		panelContainer.add(greetPanel, "Greet");
+		panelList.add(notInUsePanel);
+		panelList.add(startPanel);
+		panelList.add(typePinPanel);
+		panelList.add(cardBlockedPanel);
+		panelList.add(menuPanel);
 		panelList.add(balancePanel);
+		panelList.add(chooseAmountPanel);
+		panelList.add(typeAmountPanel);
+		panelList.add(notEnoughPanel);
+		panelList.add(chooseHowPanel);
+		panelList.add(receiptPanel);
+		panelList.add(takeCardPanel);
+		panelList.add(patiencePanel);
+		panelList.add(greetPanel);
 		contentHandler.setPanelList(panelList);
-		//Todo Remove this
-		contentHandler.switchToBalancePanel();
 
 		JFrame frame = new JFrame();
-		frame.setTitle("Timo-Bank");
+		frame.setTitle("Timobank");
 		// frame.setSize(1920, 1080);
 		frame.setLocationRelativeTo(null);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -79,11 +90,11 @@ public class App {
 		frame.add(panelContainer);
 		
 
-		cl.show(panelContainer, "Balance");
+		contentHandler.switchToStartPanel();
 
 		
 		int delay = 50; // Milliseconds
-		ActionListener taskPerformer = new KeypadActionListoner(comPort, contentHandler);//new KeypadActionListoner(comPort, cl, panelContainer, panelList);
+		ActionListener taskPerformer = new KeypadActionListoner(comPort, contentHandler);
 		new Timer(delay, taskPerformer).start();
 	}
 }

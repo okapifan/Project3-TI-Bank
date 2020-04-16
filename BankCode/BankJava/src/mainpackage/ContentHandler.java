@@ -48,12 +48,30 @@ public class ContentHandler {
 	void parseData(String data, int dataSize) {
 		switch (this.currentScreen) {
 		case 1:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("A")) {
-					this.switchToMenuPanel();
+			if (true)  { // Is RFID card
+
+				// Parse data:
+				// Land, Banknaam, Account nummer
+
+				this.switchToTypePinPanel();
+			}
+			break;
+		
+		case 2:
+			if (dataSize == 2) { // Keypad input
+				if (data.equals("k1")) {
+					pinCode += "1";
 				}
-			} else { // RFID card UID
-	
+				else if (data.equals("k2")) {
+					pinCode += "2";
+				}
+				else if (data.equals("k#")) {
+					//pinCode ; // laatse character eraf
+				}
+
+				if (pinCode.length() == 4){
+					this.switchToBalancePanel();
+				}
 			}
 			break;
 		
@@ -126,7 +144,7 @@ public class ContentHandler {
 	}
 	
 	public void switchToBalancePanel() {
-		JPanel balancePanel = panelList.get(0);
+		JPanel balancePanel = panelList.get(5);
 		if(balancePanel instanceof JPanel05) {
 			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
 			
