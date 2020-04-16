@@ -53,7 +53,7 @@ public class ContentHandler {
 				// Parse data:
 				// Land, Banknaam, Account nummer
 
-				this.switchToTypePinPanel();
+				this.switchTo02TypePinPanel();
 			}
 			break;
 		
@@ -70,7 +70,7 @@ public class ContentHandler {
 				}
 
 				if (pinCode.length() == 4){
-					this.switchToBalancePanel();
+					this.switchTo05BalancePanel();
 				}
 			}
 			break;
@@ -78,7 +78,7 @@ public class ContentHandler {
 		case 4:
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("1")) {
-					this.switchToBalancePanel();
+					this.switchTo05BalancePanel();
 				}
 			} else { // RFID card UID
 	
@@ -88,7 +88,7 @@ public class ContentHandler {
 		case 5:
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("A")) {
-					this.switchToMenuPanel();
+					this.switchTo04MenuPanel();
 				}
 			} else { // RFID card UID
 	
@@ -100,9 +100,9 @@ public class ContentHandler {
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("1")) {
 					if(this.balance >= 20) {
-						this.switchToChooseHowPanel();
+						this.switchTo09ChooseHowPanel();
 					} else {
-						this.switchToNotEnoughPanel();
+						this.switchTo08NotEnoughPanel();
 					}
 				} 
 				//Todo: Add for every value
@@ -118,32 +118,32 @@ public class ContentHandler {
 		}
 	}
 	
-	public void switchToNotInUsePanel() {
-		this.cl.show(panelContainer, "NotInUse");
+	public void switchTo00NotInUsePanel() {
+		this.cl.show(panelContainer, "00NotInUse");
 		this.currentScreen = 0;
 	}
 	
-	public void switchToStartPanel() {
-		this.cl.show(panelContainer, "Start");
+	public void switchTo01StartPanel() {
+		this.cl.show(panelContainer, "01Start");
 		this.currentScreen = 1;
 	}
 	
-	public void switchToTypePinPanel() {
-		this.cl.show(panelContainer, "TypePin");
+	public void switchTo02TypePinPanel() {
+		this.cl.show(panelContainer, "02TypePin");
 		this.currentScreen = 2;
 	}
 	
-	public void switchToCardBlockedPanel() {
-		this.cl.show(panelContainer, "CardBlocked");
+	public void switchTo03CardBlockedPanel() {
+		this.cl.show(panelContainer, "03CardBlocked");
 		this.currentScreen = 3;
 	}
 	
-	public void switchToMenuPanel() {
-		this.cl.show(panelContainer, "Menu");
+	public void switchTo04MenuPanel() {
+		this.cl.show(panelContainer, "04Menu");
 		this.currentScreen = 4;
 	}
 	
-	public void switchToBalancePanel() {
+	public void switchTo05BalancePanel() {
 		JPanel balancePanel = panelList.get(5);
 		if(balancePanel instanceof JPanel05) {
 			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
@@ -151,49 +151,49 @@ public class ContentHandler {
 			JPanel05 balancePanel2 = (JPanel05) balancePanel;
 			balancePanel2.changeBalanceLabel(this.balance);
 		} else {
-			this.switchToMenuPanel();
+			this.switchTo04MenuPanel();
 		}
-		this.cl.show(panelContainer, "Balance");
+		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
 	
-	public void switchToChooseAmountPanel() {
-		this.cl.show(panelContainer, "ChooseAmount");
+	public void switchTo06ChooseAmountPanel() {
+		this.cl.show(panelContainer, "06ChooseAmount");
 		this.currentScreen = 6;
 	}
 	
-	public void switchToTypeAmountPanel() {
-		this.cl.show(panelContainer, "TypeAmount");
+	public void switchTo07TypeAmountPanel() {
+		this.cl.show(panelContainer, "07TypeAmount");
 		this.currentScreen = 7;
 	}
 	
-	public void switchToNotEnoughPanel() {
-		this.cl.show(panelContainer, "NotEnough");
+	public void switchTo08NotEnoughPanel() {
+		this.cl.show(panelContainer, "08NotEnough");
 		this.currentScreen = 8;
 	}
 	
-	public void switchToChooseHowPanel() {
-		this.cl.show(panelContainer, "ChooseHow");
+	public void switchTo09ChooseHowPanel() {
+		this.cl.show(panelContainer, "09ChooseHow");
 		this.currentScreen = 9;
 	}
 	
-	public void switchToReceiptPanel() {
-		this.cl.show(panelContainer, "Receipt");
+	public void switchTo10ReceiptPanel() {
+		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
 	
-	public void switchToTakeCardPanel() {
-		this.cl.show(panelContainer, "TakeCard");
+	public void switchTo11TakeCardPanel() {
+		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
 	}
 	
-	public void switchToPatiencePanel() {
-		this.cl.show(panelContainer, "Patience");
+	public void switchTo12PatiencePanel() {
+		this.cl.show(panelContainer, "12Patience");
 		this.currentScreen = 12;
 	}
 	
-	public void switchToGreetPanel() {
-		this.cl.show(panelContainer, "Greet");
+	public void switchTo13GreetPanel() {
+		this.cl.show(panelContainer, "13Greet");
 		this.currentScreen = 13;
 	}
 

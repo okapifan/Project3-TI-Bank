@@ -25,7 +25,7 @@ public class TestApp {
 		ContentHandler contentHandler = new ContentHandler(cl, panelContainer);
 
 
-		JPanel testPanel = new JPanel07();
+		JPanel testPanel = new JPanel07(contentHandler);
 
 
 		panelContainer.add(testPanel, "Panel");
