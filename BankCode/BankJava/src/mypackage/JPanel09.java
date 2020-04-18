@@ -446,6 +446,25 @@ public class JPanel09 extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void updateLabelOfButtons(int[][] options, int amount){
+        jLabel2.setText("$"+amount+" te ontvangen");
+        if(amount >= 50) {
+            jButton6.setText("  "+options[0][0]+" x $50 +"+options[0][1]+" x $20 +"+options[0][2]+" x $10 +"+options[0][3]+" x $5");
+            jButton7.setText("  "+options[1][0]+" x $50 +"+options[1][2]+" x $10 +"+options[1][3]+" x $5");
+            jPanel4.setVisible(true);
+            jPanel6.setVisible(true);
+        } else {
+            jPanel4.setVisible(false);
+            jPanel6.setVisible(false);
+        }
+        if(amount >= 20){
+            jButton8.setText("  "+options[2][1]+" x $20 +"+options[2][2]+" x $10 +"+options[2][3]+" x $5");
+            jPanel8.setVisible(true);
+        } else {
+            jPanel8.setVisible(false);
+        }
+        jButton9.setText("  "+options[3][2]+" x $10 +"+options[3][3]+" x $5");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

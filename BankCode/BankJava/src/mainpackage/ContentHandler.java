@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import mypackage.JPanel05;
-import sun.jvm.hotspot.utilities.IntArray;
+import mypackage.JPanel09;
 
 public class ContentHandler {
 	private DatabaseHandler database;
@@ -198,7 +198,7 @@ public class ContentHandler {
 	public void switchTo05BalancePanel() {
 		JPanel balancePanel = panelList.get(5);
 		if(balancePanel instanceof JPanel05) {
-			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
+			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo move to after login
 			
 			JPanel05 balancePanel2 = (JPanel05) balancePanel;
 			balancePanel2.changeBalanceLabel(this.balance);
@@ -225,50 +225,27 @@ public class ContentHandler {
 	}
 	
 	public void switchTo09ChooseHowPanel(int amount) {
-		if(amount < this.balance) {
+		System.out.println(amount);
+		System.out.println((int) this.balance);
+		if(amount > ((int) this.balance)) {
 			switchTo08NotEnoughPanel();
 			return;
 		}
 		if (amount % 5 == 0){
 			//Amount is deelbaar door 5
-			
-			// //deel door 50 daarna 20 daarna 10 daarna 5
-			// int tempAmount = amount;
-			// this.pinValueChoices[0][0] = (int) Math.floor(tempAmount / 50);
-			// tempAmount -= this.pinValueChoices[0][0];
-			// this.pinValueChoices[0][1] = (int) Math.floor(tempAmount / 20);
-			// tempAmount -= this.pinValueChoices[0][1];
-			// this.pinValueChoices[0][2] = (int) Math.floor(tempAmount / 10);
-			// tempAmount -= this.pinValueChoices[0][2];
-			// this.pinValueChoices[0][3] = (int) Math.floor(tempAmount / 5);
-			// tempAmount -= this.pinValueChoices[0][3];
-			// //deel door 50 daarna 10 daarna 5
-			// tempAmount = amount;
-			// this.pinValueChoices[1][0] = (int) Math.floor(tempAmount / 50);
-			// tempAmount -= this.pinValueChoices[1][0];
-			// this.pinValueChoices[1][1] = 0;
-			// this.pinValueChoices[1][2] = (int) Math.floor(tempAmount / 10);
-			// tempAmount -= this.pinValueChoices[1][2];
-			// this.pinValueChoices[1][3] = (int) Math.floor(tempAmount / 5);
-			// tempAmount -= this.pinValueChoices[1][3];
-			// //deel door 20 daarna 10 daarna 5
-			// tempAmount = amount;
-			// this.pinValueChoices[2][0] = 0;
-			// this.pinValueChoices[2][1] = (int) Math.floor(tempAmount / 20);
-			// tempAmount -= this.pinValueChoices[2][1];
-			// this.pinValueChoices[2][2] = (int) Math.floor(tempAmount / 10);
-			// tempAmount -= this.pinValueChoices[2][2];
-			// this.pinValueChoices[2][3] = (int) Math.floor(tempAmount / 5);
-			// tempAmount -= this.pinValueChoices[2][3];
-			// //deel door 10 daarna 5
-			// tempAmount = amount;
-			// this.pinValueChoices[3][0] = 0;
-			// this.pinValueChoices[3][1] = 0;
-			// this.pinValueChoices[3][2] = (int) Math.floor(tempAmount / 10);
-			// tempAmount -= this.pinValueChoices[3][2];
-			// this.pinValueChoices[3][3] = (int) Math.floor(tempAmount / 5);
-			// tempAmount -= this.pinValueChoices[3][3];
-
+			//deel door 50 daarna 20 daarna 10 daarna 5
+			fillPinOptions(0, amount, true, true, true, true);
+			//deel door 50 daarna 10 daarna 5
+			fillPinOptions(1, amount, true, false, true, true);
+			//deel door 20 daarna 10 daarna 5
+			fillPinOptions(2, amount, false, true, true, true);
+			//deel door 10 daarna 5
+			fillPinOptions(3, amount, false, false, true, true);
+			JPanel panel = panelList.get(9);
+			if(panel instanceof JPanel09) {
+				JPanel09 panel2 = (JPanel09) panel;
+				panel2.updateLabelOfButtons(this.pinValueChoices, amount);
+			}
 			this.cl.show(panelContainer, "09ChooseHow");
 			this.currentScreen = 9;
 		} else {
@@ -276,7 +253,7 @@ public class ContentHandler {
 		}
 	}
 	
-	public void switchTo10ReceiptPanel() {
+	public void switchTo10ReceiptPanel(int choiceId) {
 		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
@@ -308,21 +285,20 @@ public class ContentHandler {
 	public void fillPinOptions(int index, int amount, Boolean use50, Boolean use20, Boolean use10, Boolean use5){
 		int tempAmount = amount;
 		if(use50){
-			this.pinValueChoices[index][0] = (int) Math.floor(tempAmount / 50);
-			tempAmount -= this.pinValueChoices[index][0];
+			this.pinValueChoices[index][0] = (int) (tempAmount / 50);
+			tempAmount -= this.pinValueChoices[index][0] * 50;
 		}
 		if(use20){
-			this.pinValueChoices[index][1] = (int) Math.floor(tempAmount / 20);
-			tempAmount -= this.pinValueChoices[index][1];
+			this.pinValueChoices[index][1] = (int) (tempAmount / 20);
+			tempAmount -= this.pinValueChoices[index][1] * 20;
 		}
 		if(use10){
-			this.pinValueChoices[index][2] = (int) Math.floor(tempAmount / 10);
-			tempAmount -= this.pinValueChoices[index][2];
+			this.pinValueChoices[index][2] = (int) (tempAmount / 10);
+			tempAmount -= this.pinValueChoices[index][2] * 10;
 		}
 		if(use5){
-			this.pinValueChoices[index][3] = (int) Math.floor(tempAmount / 5);
-			tempAmount -= this.pinValueChoices[index][3];
+			this.pinValueChoices[index][3] = (int) (tempAmount / 5);
+			//tempAmount -= this.pinValueChoices[index][3] * 5;
 		}
-		
 	}
 }
