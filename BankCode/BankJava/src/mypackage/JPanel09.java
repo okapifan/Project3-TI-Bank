@@ -345,7 +345,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jLabel7.setBackground(new java.awt.Color(102, 204, 255));
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("3");
+        jLabel7.setText("4");
         jLabel7.setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
