@@ -141,7 +141,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
-        jLabel2.setText("€? te ontvangen");
+        jLabel2.setText("$? te ontvangen");
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
         jLabel3.setText("Hoe wenst u de");
@@ -174,7 +174,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton6.setText("  ? x €50 + ? x €20");
+        jButton6.setText("  ? x $50 + ? x $20");
         jButton6.setBorder(null);
         jButton6.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton6.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -226,7 +226,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton7.setText("  ? x €50 + ? x €10");
+        jButton7.setText("  ? x $50 + ? x $10");
         jButton7.setBorder(null);
         jButton7.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton7.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -278,7 +278,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton8.setText("  ? x €20 + ? x €10");
+        jButton8.setText("  ? x $20 + ? x $10");
         jButton8.setBorder(null);
         jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton8.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -330,7 +330,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton9.setText("  ? x €20");
+        jButton9.setText("  ? x $20");
         jButton9.setBorder(null);
         jButton9.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton9.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -345,7 +345,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jLabel7.setBackground(new java.awt.Color(102, 204, 255));
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("3");
+        jLabel7.setText("4");
         jLabel7.setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
