@@ -29,6 +29,8 @@ public class ContentHandler {
 	private String pinCode = "1234";
 	private String pinValue = ""; //Get used for page 07: Type amount
 	private int[][] pinValueChoices = new int[4][4];
+	private int pinValueChoice = 4;
+	private Boolean wantsReceipt = false;
 	
 	public ContentHandler(CardLayout cl, JPanel panelContainer) {
 		this.cl = cl;
@@ -133,7 +135,9 @@ public class ContentHandler {
 					pinValue = "";
 					this.switchTo09ChooseHowPanel(amount);
 				} else if (data.equals("*")) {
-					pinValue = pinValue.substring(0, (pinValue.length() - 1));
+					if(pinValue.length() != 0){
+						pinValue = pinValue.substring(0, (pinValue.length() - 1));
+					}
 				} else if (data.equals("A")) {
 					this.switchTo04MenuPanel();
 				}
@@ -160,9 +164,26 @@ public class ContentHandler {
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("A")) {
 					this.switchTo04MenuPanel();
+				} else if(data.equals("1")) {
+					this.switchTo11TakeCardPanel(true);
+				} else if(data.equals("2")) {
+					this.switchTo11TakeCardPanel(false);
 				}
 			}
 			break;
+		
+		case 11:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
+					this.switchTo12PatiencePanel();
+				}
+			}
+			break;
+		
+		case 12:
+			// if(arduinoDone){
+			// 	this.switchTo13GreetPanel();
+			// }
 
 		default:
 			System.out.println("CurrentScreen does not exist");
@@ -191,6 +212,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo04MenuPanel() {
+		this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo validate & if blocked, send to panel 3
 		this.cl.show(panelContainer, "04Menu");
 		this.currentScreen = 4;
 	}
@@ -198,8 +220,6 @@ public class ContentHandler {
 	public void switchTo05BalancePanel() {
 		JPanel balancePanel = panelList.get(5);
 		if(balancePanel instanceof JPanel05) {
-			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo move to after login
-			
 			JPanel05 balancePanel2 = (JPanel05) balancePanel;
 			balancePanel2.changeBalanceLabel(this.balance);
 		} else {
@@ -254,11 +274,13 @@ public class ContentHandler {
 	}
 	
 	public void switchTo10ReceiptPanel(int choiceId) {
+		this.pinValueChoice = choiceId;
 		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
 	
-	public void switchTo11TakeCardPanel() {
+	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
+		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
 	}
@@ -266,6 +288,7 @@ public class ContentHandler {
 	public void switchTo12PatiencePanel() {
 		this.cl.show(panelContainer, "12Patience");
 		this.currentScreen = 12;
+		this.processMoney(); //Todo get this method working
 	}
 	
 	public void switchTo13GreetPanel() {	
@@ -280,6 +303,9 @@ public class ContentHandler {
 		this.bankName = "";
 		this.accountnNr = "";
 		this.pinCode = "";
+		this.pinValueChoices = new int[4][4];
+		this.pinValueChoice = 4;
+		this.wantsReceipt = false;
 	}
 
 	public void fillPinOptions(int index, int amount, Boolean use50, Boolean use20, Boolean use10, Boolean use5){
@@ -300,5 +326,12 @@ public class ContentHandler {
 			this.pinValueChoices[index][3] = (int) (tempAmount / 5);
 			//tempAmount -= this.pinValueChoices[index][3] * 5;
 		}
+	}
+
+	public void processMoney(){
+		//use wantsReceipt to print bon
+		//use pinchoice to print the money from choice x
+
+		
 	}
 }
