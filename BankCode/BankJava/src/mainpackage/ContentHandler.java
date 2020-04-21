@@ -79,27 +79,28 @@ public class ContentHandler {
 
 			case 2:
 				if (data.substring(0,1).equals("K")) { // Keypad input
-					if (data.equals("K1")) {
+					String key = data.substring(1,2);
+					if (key.equals("1")) {
 						pinCode += "1";
-					} else if (data.equals("K2")) {
+					} else if (key.equals("2")) {
 						pinCode += "2";
-					} else if (data.equals("K3")) {
+					} else if (key.equals("3")) {
 						pinCode += "3";
-					} else if (data.equals("K4")) {
+					} else if (key.equals("4")) {
 						pinCode += "4";
-					} else if (data.equals("K5")) {
+					} else if (key.equals("5")) {
 						pinCode += "5";
-					} else if (data.equals("K6")) {
+					} else if (key.equals("6")) {
 						pinCode += "6";
-					} else if (data.equals("K7")) {
+					} else if (key.equals("7")) {
 						pinCode += "7";
-					} else if (data.equals("K8")) {
+					} else if (key.equals("8")) {
 						pinCode += "8";
-					} else if (data.equals("K9")) {
+					} else if (key.equals("9")) {
 						pinCode += "9";
-					} else if (data.equals("K0")) {
+					} else if (key.equals("0")) {
 						pinCode += "0";
-					} else if (data.equals("K#")) {
+					} else if (key.equals("#")) {
 						pinCode = "";
 						//pinCode clearen;
 						// laatse character eraf
@@ -114,14 +115,15 @@ public class ContentHandler {
 				break;
 		
 			case 4:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("1")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("1")) {
 						this.switchTo05BalancePanel();
-					} else if (data.equals("2")) {
+					} else if (key.equals("2")) {
 						this.switchTo06ChooseAmountPanel();
-					} else if (data.equals("3")) {
+					} else if (key.equals("3")) {
 						this.switchTo09ChooseHowPanel(70);
-					} else if (data.equals("A")) {
+					} else if (key.equals("A")) {
 						this.switchTo13GreetPanel();
 						//Todo Fix later the order (11 and reset)
 					}
@@ -129,73 +131,79 @@ public class ContentHandler {
 				break;
 
 			case 5:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("A")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					}
 				}
 				break;
 
 			case 6:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("1")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("1")) {
 						this.switchTo09ChooseHowPanel(20);
-					} else if(data.equals("2")) {
+					} else if(key.equals("2")) {
 						this.switchTo09ChooseHowPanel(50);
-					} else if(data.equals("3")) {
+					} else if(key.equals("3")) {
 						this.switchTo09ChooseHowPanel(70);
-					} else if(data.equals("4")) {
+					} else if(key.equals("4")) {
 						this.switchTo09ChooseHowPanel(100);
-					} else if(data.equals("5")) {
+					} else if(key.equals("5")) {
 						this.switchTo09ChooseHowPanel(150);
-					} else if(data.equals("6")) {
+					} else if(key.equals("6")) {
 						this.switchTo09ChooseHowPanel(200);
-					} else if(data.equals("7")) {
+					} else if(key.equals("7")) {
 						this.switchTo07TypeAmountPanel();;
-					} else if(data.equals("A")) {
+					} else if(key.equals("A")) {
 						this.switchTo04MenuPanel();
 					}
 				} 
 				break;
 			
 			case 7:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("1") || data.equals("2") || data.equals("3") || data.equals("4") || data.equals("5") || 
-						data.equals("6") || data.equals("7") || data.equals("8") || data.equals("9") || data.equals("0")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("1") || key.equals("2") || key.equals("3") || key.equals("4") || key.equals("5") || 
+						key.equals("6") || key.equals("7") || key.equals("8") || key.equals("9") || key.equals("0")) {
 						pinValue += data;
-					} else if (data.equals("#")) {
+					} else if (key.equals("#")) {
 						int amount = Integer.parseInt(pinValue);
 						pinValue = "";
 						this.switchTo09ChooseHowPanel(amount);
-					} else if (data.equals("*")) {
+					} else if (key.equals("*")) {
 						if(pinValue.length() != 0){
 							pinValue = pinValue.substring(0, (pinValue.length() - 1));
 						}
-					} else if (data.equals("A")) {
+					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					}
 				}
 				break;
 			
 			case 8:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("A")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					}
 				}
 				break;
 
 			case 9:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("A")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					}
 				}
 				break;
 
 			case 10:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("A")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if(data.equals("1")) {
 						this.switchTo11TakeCardPanel(true);
@@ -206,8 +214,9 @@ public class ContentHandler {
 				break;
 			
 			case 11:
-				if (dataSize == 1) { // Keypad input
-					if (data.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					String key = data.substring(1,2);
+					if (key.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
 						this.switchTo12PatiencePanel();
 					}
 				}
