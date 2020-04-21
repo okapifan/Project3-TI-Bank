@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="packages">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/packages/jSerialComm-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/packages/mysql-connector-java-5.1.48.jar!/" />
+      <root url="jar://$PROJECT_DIR$/packages/json-simple-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
