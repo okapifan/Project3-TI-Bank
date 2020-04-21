@@ -26,7 +26,6 @@ public class DatabaseHandler {
 		try {
 			File file = new File("src/database.json");
 			this.databaseConfig = (JSONObject) parser.parse(new FileReader(file));
-			System.out.println( this.databaseConfig.get("pass"));
 			this.databaseUrl = "jdbc:mysql://"+databaseConfig.get("ip")+":"+databaseConfig.get("port")+"/"+databaseConfig.get("database");
 			this.databaseUser = (String) databaseConfig.get("user");
 			this.databasePassword = (String) databaseConfig.get("pass");
