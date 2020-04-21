@@ -8,35 +8,41 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema Timobank
 -- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Timobank` DEFAULT CHARACTER SET utf8 ;
+USE `Timobank` ;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Table `Timobank`.`accounts`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
-
--- -----------------------------------------------------
--- Table `mydb`.`accounts`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`accounts` (
+CREATE TABLE IF NOT EXISTS `Timobank`.`accounts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `passId` VARCHAR(45) NOT NULL,
   `balance` FLOAT NOT NULL DEFAULT 0,
-  `pincode` INT(4) NOT NULL,
+  `pincode` VARCHAR(4) NOT NULL,
   `failedAttempts` INT NOT NULL DEFAULT 0,
   `isBlocked` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
+-- ----------------------------
+--  Records of `personen`
+-- ----------------------------
+INSERT INTO `personen` VALUES 
+('', 'Daniël van der Drift', '66593751', 80, '1234', 0, 0),
+('', 'Zoë Zegers', '09678473', 100, '1234', 0, 0),
+('', 'Timo van der Meer', '82637484', 120, '1234', 0, 0),
+('', 'Robin Koot', '13123456', 140, '1234', 0, 0),
+('', 'Jantje', '91145653', 50, '1234', 0, 0)
+
 
 -- -----------------------------------------------------
--- Table `mydb`.`logs`
+-- Table `Timobank`.`logs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`logs` (
+CREATE TABLE IF NOT EXISTS `Timobank`.`logs` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `accounts_id` INT NOT NULL,
   `pinned_at_country` VARCHAR(45) NOT NULL DEFAULT 'US',
@@ -48,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`logs` (
   INDEX `fk_logs_accounts_idx` (`accounts_id` ASC),
   CONSTRAINT `fk_logs_accounts`
     FOREIGN KEY (`accounts_id`)
-    REFERENCES `mydb`.`accounts` (`id`)
+    REFERENCES `Timobank`.`accounts` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
