@@ -141,7 +141,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
-        jLabel2.setText("€? te ontvangen");
+        jLabel2.setText("$? te ontvangen");
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
         jLabel3.setText("Hoe wenst u de");
@@ -174,7 +174,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton6.setText("  ? x €50 + ? x €20");
+        jButton6.setText("  ? x $50 + ? x $20");
         jButton6.setBorder(null);
         jButton6.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton6.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -226,7 +226,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton7.setText("  ? x €50 + ? x €10");
+        jButton7.setText("  ? x $50 + ? x $10");
         jButton7.setBorder(null);
         jButton7.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton7.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -278,7 +278,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton8.setText("  ? x €20 + ? x €10");
+        jButton8.setText("  ? x $20 + ? x $10");
         jButton8.setBorder(null);
         jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton8.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -330,7 +330,7 @@ public class JPanel09 extends javax.swing.JPanel {
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
-        jButton9.setText("  ? x €20");
+        jButton9.setText("  ? x $20");
         jButton9.setBorder(null);
         jButton9.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         jButton9.setPreferredSize(new java.awt.Dimension(287, 100));
@@ -345,7 +345,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jLabel7.setBackground(new java.awt.Color(102, 204, 255));
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("3");
+        jLabel7.setText("4");
         jLabel7.setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -426,25 +426,49 @@ public class JPanel09 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        contentHandler.switchTo10ReceiptPanel(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        contentHandler.switchTo10ReceiptPanel(1);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        contentHandler.switchTo10ReceiptPanel(2);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        contentHandler.switchTo10ReceiptPanel(3);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        contentHandler.switchTo04MenuPanel();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void updateLabelOfButtons(int[][] options, int amount){
+        jLabel2.setText("$"+amount+" te ontvangen");
+        if(amount >= 50) {
+            jButton6.setText("  "+options[0][0]+" x $50 +"+options[0][1]+" x $20 +"+options[0][2]+" x $10 +"+options[0][3]+" x $5");
+            jButton7.setText("  "+options[1][0]+" x $50 +"+options[1][2]+" x $10 +"+options[1][3]+" x $5");
+            jPanel4.setVisible(true);
+            jPanel6.setVisible(true);
+        } else {
+            jPanel4.setVisible(false);
+            jPanel6.setVisible(false);
+        }
+        if(amount >= 20){
+            jButton8.setText("  "+options[2][1]+" x $20 +"+options[2][2]+" x $10 +"+options[2][3]+" x $5");
+            jPanel8.setVisible(true);
+        } else {
+            jPanel8.setVisible(false);
+        }
+        jButton9.setText("  "+options[3][2]+" x $10 +"+options[3][3]+" x $5");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

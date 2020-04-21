@@ -357,6 +357,7 @@ public class JPanel04 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        contentHandler.switchTo01StartPanel();
 		// (A) Afsluiten
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -367,10 +368,12 @@ public class JPanel04 extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // (2) Geld opnemen
+        contentHandler.switchTo06ChooseAmountPanel();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // (3) Snel $70
+        contentHandler.switchTo09ChooseHowPanel(70);
     }//GEN-LAST:event_jButton4ActionPerformed
 
 

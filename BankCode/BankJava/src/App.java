@@ -13,6 +13,8 @@ import mainpackage.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -82,15 +84,26 @@ public class App {
 		JFrame frame = new JFrame();
 		frame.setTitle("Timobank");
 		// frame.setSize(1920, 1080);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.pack();
 		frame.setVisible(true);
 		frame.add(panelContainer);
+
+
+		frame.addWindowListener(new WindowAdapter() { // Exit button override
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Exit");
+				comPort.closePort(); // Unnecessary?
+				System.exit(0);
+			}
+		});
 		
 
-		contentHandler.switchTo01StartPanel();
-		//contentHandler.switchTo04MenuPanel();
+		//contentHandler.switchTo01StartPanel();
+		contentHandler.switchTo04MenuPanel();
 
 		
 		int delay = 50; // Milliseconds
