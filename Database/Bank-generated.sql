@@ -10,8 +10,8 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema Timobank
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Timobank` DEFAULT CHARACTER SET utf8 ;
-USE `Timobank` ;
+CREATE SCHEMA IF NOT EXISTS `Timobank` DEFAULT CHARACTER SET utf8;
+USE `Timobank`;
 
 -- -----------------------------------------------------
 -- Table `Timobank`.`accounts`
@@ -19,7 +19,7 @@ USE `Timobank` ;
 CREATE TABLE IF NOT EXISTS `Timobank`.`accounts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `passId` VARCHAR(45) NOT NULL,
+  `accountId` VARCHAR(45) NOT NULL,
   `balance` FLOAT NOT NULL DEFAULT 0,
   `pincode` VARCHAR(4) NOT NULL,
   `failedAttempts` INT NOT NULL DEFAULT 0,
@@ -31,12 +31,12 @@ ENGINE = InnoDB;
 -- ----------------------------
 --  Records of `accounts`
 -- ----------------------------
-INSERT INTO accounts (name, passId, balance, pincode) VALUES 
-("Daniël van der Drift", 1234567890, 80, "1234"),
-("Zoë Zegers", 8467284987, 100, "1234"),
-("Timo van der Meer", 0472786524, 120, "1234"),
-("Robin Koot", 7236450982, 140, "1234"),
-("Jantje", 2398475098, 50, "1234");
+INSERT INTO accounts (name, accountId, balance, pincode) VALUES 
+("Daniël van der Drift", 1234, 80, "1234"),
+("Zoë Zegers", 8467, 100, "1234"),
+("Timo van der Meer", 0472, 120, "1234"),
+("Robin Koot", 7236, 140, "1234"),
+("Jantje", 2398, 50, "1234");
 
 
 -- -----------------------------------------------------
@@ -44,16 +44,16 @@ INSERT INTO accounts (name, passId, balance, pincode) VALUES
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Timobank`.`logs` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `accounts_id` INT NOT NULL,
-  `pinned_at_country` VARCHAR(45) NOT NULL DEFAULT 'US',
-  `pinned_at_bank` VARCHAR(45) NOT NULL DEFAULT 'Timo-Bank',
-  `balance_change` FLOAT NOT NULL,
-  `is_positive` TINYINT(1) NOT NULL DEFAULT 0,
+  `accountId` INT NOT NULL,
+  `pinnedAtCountry` VARCHAR(45) NOT NULL DEFAULT 'US',
+  `pinnedAtBank` VARCHAR(45) NOT NULL DEFAULT 'Timobank',
+  `balanceChange` FLOAT NOT NULL,
+  `isPositive` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_logs_accounts_idx` (`accounts_id` ASC),
-  CONSTRAINT `fk_logs_accounts`
-    FOREIGN KEY (`accounts_id`)
+  INDEX `accountId` (`accountId` ASC),
+  CONSTRAINT `accountId`
+    FOREIGN KEY (`accountId`)
     REFERENCES `Timobank`.`accounts` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
