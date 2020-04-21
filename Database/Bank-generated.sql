@@ -29,14 +29,14 @@ CREATE TABLE IF NOT EXISTS `Timobank`.`accounts` (
 ENGINE = InnoDB;
 
 -- ----------------------------
---  Records of `personen`
+--  Records of `accounts`
 -- ----------------------------
-INSERT INTO `personen` VALUES 
-('', 'Daniël van der Drift', '66593751', 80, '1234', 0, 0),
-('', 'Zoë Zegers', '09678473', 100, '1234', 0, 0),
-('', 'Timo van der Meer', '82637484', 120, '1234', 0, 0),
-('', 'Robin Koot', '13123456', 140, '1234', 0, 0),
-('', 'Jantje', '91145653', 50, '1234', 0, 0)
+INSERT INTO accounts (name, passId, balance, pincode) VALUES 
+("Daniël van der Drift", 1234567890, 80, "1234"),
+("Zoë Zegers", 8467284987, 100, "1234"),
+("Timo van der Meer", 0472786524, 120, "1234"),
+("Robin Koot", 7236450982, 140, "1234"),
+("Jantje", 2398475098, 50, "1234");
 
 
 -- -----------------------------------------------------
