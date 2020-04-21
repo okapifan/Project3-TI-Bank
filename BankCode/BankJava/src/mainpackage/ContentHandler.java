@@ -75,7 +75,6 @@ public class ContentHandler {
 
 					this.switchTo02TypePinPanel();
 				}
-
 				break;
 
 			case 2:
@@ -112,117 +111,116 @@ public class ContentHandler {
 						this.switchTo13GreetPanel();
 					}
 				}
-			}
-			break;
+				break;
 		
-		case 4:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("1")) {
-					this.switchTo05BalancePanel();
-				} else if (data.equals("2")) {
-					this.switchTo06ChooseAmountPanel();
-				} else if (data.equals("3")) {
-					this.switchTo09ChooseHowPanel(70);
-				} else if (data.equals("A")) {
-					this.switchTo13GreetPanel();
-					//Todo Fix later the order (11 and reset)
-				}
-			}
-			break;
-
-		case 5:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("A")) {
-					this.switchTo04MenuPanel();
-				}
-			}
-			break;
-
-		case 6:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("1")) {
-					this.switchTo09ChooseHowPanel(20);
-				} else if(data.equals("2")) {
-					this.switchTo09ChooseHowPanel(50);
-				} else if(data.equals("3")) {
-					this.switchTo09ChooseHowPanel(70);
-				} else if(data.equals("4")) {
-					this.switchTo09ChooseHowPanel(100);
-				} else if(data.equals("5")) {
-					this.switchTo09ChooseHowPanel(150);
-				} else if(data.equals("6")) {
-					this.switchTo09ChooseHowPanel(200);
-				} else if(data.equals("7")) {
-					this.switchTo07TypeAmountPanel();;
-				} else if(data.equals("A")) {
-					this.switchTo04MenuPanel();
-				}
-			} 
-			break;
-		
-		case 7:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("1") || data.equals("2") || data.equals("3") || data.equals("4") || data.equals("5") || 
-					data.equals("6") || data.equals("7") || data.equals("8") || data.equals("9") || data.equals("0")) {
-					pinValue += data;
-				} else if (data.equals("#")) {
-					int amount = Integer.parseInt(pinValue);
-					pinValue = "";
-					this.switchTo09ChooseHowPanel(amount);
-				} else if (data.equals("*")) {
-					if(pinValue.length() != 0){
-						pinValue = pinValue.substring(0, (pinValue.length() - 1));
+			case 4:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("1")) {
+						this.switchTo05BalancePanel();
+					} else if (data.equals("2")) {
+						this.switchTo06ChooseAmountPanel();
+					} else if (data.equals("3")) {
+						this.switchTo09ChooseHowPanel(70);
+					} else if (data.equals("A")) {
+						this.switchTo13GreetPanel();
+						//Todo Fix later the order (11 and reset)
 					}
-				} else if (data.equals("A")) {
-					this.switchTo04MenuPanel();
 				}
-			}
-			break;
-		
-		case 8:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("A")) {
-					this.switchTo04MenuPanel();
-				}
-			}
-			break;
+				break;
 
-		case 9:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("A")) {
-					this.switchTo04MenuPanel();
+			case 5:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("A")) {
+						this.switchTo04MenuPanel();
+					}
 				}
-			}
-			break;
+				break;
 
-		case 10:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("A")) {
-					this.switchTo04MenuPanel();
-				} else if(data.equals("1")) {
-					this.switchTo11TakeCardPanel(true);
-				} else if(data.equals("2")) {
-					this.switchTo11TakeCardPanel(false);
+			case 6:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("1")) {
+						this.switchTo09ChooseHowPanel(20);
+					} else if(data.equals("2")) {
+						this.switchTo09ChooseHowPanel(50);
+					} else if(data.equals("3")) {
+						this.switchTo09ChooseHowPanel(70);
+					} else if(data.equals("4")) {
+						this.switchTo09ChooseHowPanel(100);
+					} else if(data.equals("5")) {
+						this.switchTo09ChooseHowPanel(150);
+					} else if(data.equals("6")) {
+						this.switchTo09ChooseHowPanel(200);
+					} else if(data.equals("7")) {
+						this.switchTo07TypeAmountPanel();;
+					} else if(data.equals("A")) {
+						this.switchTo04MenuPanel();
+					}
+				} 
+				break;
+			
+			case 7:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("1") || data.equals("2") || data.equals("3") || data.equals("4") || data.equals("5") || 
+						data.equals("6") || data.equals("7") || data.equals("8") || data.equals("9") || data.equals("0")) {
+						pinValue += data;
+					} else if (data.equals("#")) {
+						int amount = Integer.parseInt(pinValue);
+						pinValue = "";
+						this.switchTo09ChooseHowPanel(amount);
+					} else if (data.equals("*")) {
+						if(pinValue.length() != 0){
+							pinValue = pinValue.substring(0, (pinValue.length() - 1));
+						}
+					} else if (data.equals("A")) {
+						this.switchTo04MenuPanel();
+					}
 				}
-			}
-			break;
-		
-		case 11:
-			if (dataSize == 1) { // Keypad input
-				if (data.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
-					this.switchTo12PatiencePanel();
+				break;
+			
+			case 8:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("A")) {
+						this.switchTo04MenuPanel();
+					}
 				}
-			}
-			break;
-		
-		case 12:
-			// if(arduinoDone){
-			// 	this.switchTo13GreetPanel();
-			// }
+				break;
 
-		default:
-			System.out.println("CurrentScreen does not exist");
-			break;
+			case 9:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("A")) {
+						this.switchTo04MenuPanel();
+					}
+				}
+				break;
+
+			case 10:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("A")) {
+						this.switchTo04MenuPanel();
+					} else if(data.equals("1")) {
+						this.switchTo11TakeCardPanel(true);
+					} else if(data.equals("2")) {
+						this.switchTo11TakeCardPanel(false);
+					}
+				}
+				break;
+			
+			case 11:
+				if (dataSize == 1) { // Keypad input
+					if (data.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
+						this.switchTo12PatiencePanel();
+					}
+				}
+				break;
+			
+			case 12:
+				// if(arduinoDone){
+				// 	this.switchTo13GreetPanel();
+				// }
+
+			default:
+				System.out.println("CurrentScreen does not exist");
+				break;
 		}
 	}
 	
