@@ -46,7 +46,7 @@ void loop()
 	char key = keypad.getKey();
 
 	if (key){
-		SendString(String(key));
+		SendString("K" + String(key));
 	}
 
   //look for new cards
@@ -62,13 +62,11 @@ void loop()
         content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : ""));
         content.concat(String(mfrc522.uid.uidByte[i], HEX));
       }
-      SendString(content);
+      //SendString(content);
+	  SendString("RUS1234Timobank");
     }
   }
 
-
-  // Send a string
-  //SendString("Send");
 
   // Receive a string
   char *userInput = ReceiveString();
