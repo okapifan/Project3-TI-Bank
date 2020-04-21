@@ -24,7 +24,7 @@ public class ContentHandler {
 	// private String pinCode = "";
 
 	private String bankName = "Timobank";
-	private String accountnNr = "1";
+	private String accountnNr = "1234";
 	private String country = "US";
 	private String pinCode = "1234";
 	private String pinValue = ""; //Get used for page 07: Type amount

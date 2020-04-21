@@ -1,5 +1,9 @@
 package mainpackage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 import org.json.simple.JSONObject;
@@ -12,11 +16,24 @@ public class DatabaseHandler {
 	String localBankName;
 	// Connection con; // Database connection
 
+	private JSONObject databaseConfig;
 	private String databaseUrl = "jdbc:mysql://localhost:3306/bank";
-	private String databaseUser = "root"; // Change user to an user with less permissions
+	private String databaseUser = ""; // Change user to an user with less permissions
 	private String databasePassword = "";
 
 	public DatabaseHandler(String countryName, String bankName) {
+		JSONParser parser = new JSONParser();
+		try {
+			File file = new File("src/database.json");
+			this.databaseConfig = (JSONObject) parser.parse(new FileReader(file));
+			System.out.println( this.databaseConfig.get("pass"));
+			this.databaseUrl = "jdbc:mysql://"+databaseConfig.get("ip")+":"+databaseConfig.get("port")+"/"+databaseConfig.get("database");
+			this.databaseUser = (String) databaseConfig.get("user");
+			this.databasePassword = (String) databaseConfig.get("pass");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		this.localCountryName = countryName;
 		this.localBankName = bankName;
 
@@ -35,7 +52,7 @@ public class DatabaseHandler {
 			
 			// Check pin
 			Statement stmt1 = con.createStatement();
-			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM pinpassen WHERE persoonsnr = " + account); // SQL injection posible
+			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM accounts WHERE accountId = " + account); // SQL injection posible
 			rs1.next();
 			String pinCode = rs1.getString(1);
 
@@ -77,14 +94,14 @@ public class DatabaseHandler {
 
 			// Check pin
 			Statement stmt1 = con.createStatement();
-			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM pinpassen WHERE persoonsnr = " + account); // SQL injection posible
+			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM accounts WHERE accountId = " + account); // SQL injection posible
 			rs1.next();
 			String pinCode = rs1.getString(1);
 			if (pin.equals(pinCode)) {
 
 				// Get balance
 				Statement stmt2 = con.createStatement();
-				ResultSet rs2 = stmt2.executeQuery("SELECT bedrag FROM accounts WHERE persoonsnr = " + account);
+				ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
 				rs2.next();
 				float balance = rs2.getFloat(1);
 
@@ -109,21 +126,21 @@ public class DatabaseHandler {
 
 			// Check pin
 			Statement stmt1 = con.createStatement();
-			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM pinpassen WHERE persoonsnr = " + account); // SQL injection posible
+			ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM accounts WHERE accountId = " + account); // SQL injection posible
 			rs1.next();
 			String pinCode = rs1.getString(1);
 			if (pin.equals(pinCode)) {
 
 				// Get balance
 				Statement stmt2 = con.createStatement();
-				ResultSet rs2 = stmt2.executeQuery("SELECT bedrag FROM accounts WHERE persoonsnr = " + account);
+				ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
 				rs2.next();
 				float balance = rs2.getFloat(1);
 				if (amount >= balance) {
 
 					float newBalance = balance - amount;
 					Statement stmt3 = con.createStatement();
-					stmt3.executeQuery("UPDATE accounts SET bedrag = " + newBalance + " WHERE persoonsnr = " + account);
+					stmt3.executeQuery("UPDATE accounts SET balance = " + newBalance + " WHERE accountId = " + account);
 
 					System.out.println("Withfraw successfull");
 					con.close();
