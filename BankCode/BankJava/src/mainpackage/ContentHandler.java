@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import mypackage.JPanel05;
+import mypackage.JPanel09;
 
 public class ContentHandler {
 	private DatabaseHandler database;
@@ -23,9 +24,13 @@ public class ContentHandler {
 	// private String pinCode = "";
 
 	private String bankName = "Timobank";
-	private String accountnNr = "1";
+	private String accountnNr = "1234";
 	private String country = "US";
 	private String pinCode = "1234";
+	private String pinValue = ""; //Get used for page 07: Type amount
+	private int[][] pinValueChoices = new int[4][4];
+	private int pinValueChoice = 4;
+	private Boolean wantsReceipt = false;
 	
 	public ContentHandler(CardLayout cl, JPanel panelContainer) {
 		this.cl = cl;
@@ -79,9 +84,14 @@ public class ContentHandler {
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("1")) {
 					this.switchTo05BalancePanel();
+				} else if (data.equals("2")) {
+					this.switchTo06ChooseAmountPanel();
+				} else if (data.equals("3")) {
+					this.switchTo09ChooseHowPanel(70);
+				} else if (data.equals("A")) {
+					this.switchTo13GreetPanel();
+					//Todo Fix later the order (11 and reset)
 				}
-			} else { // RFID card UID
-	
 			}
 			break;
 
@@ -90,28 +100,91 @@ public class ContentHandler {
 				if (data.equals("A")) {
 					this.switchTo04MenuPanel();
 				}
-			} else { // RFID card UID
-	
 			}
 			break;
-		
 
 		case 6:
 			if (dataSize == 1) { // Keypad input
 				if (data.equals("1")) {
-					if(this.balance >= 20) {
-						this.switchTo09ChooseHowPanel();
-					} else {
-						this.switchTo08NotEnoughPanel();
+					this.switchTo09ChooseHowPanel(20);
+				} else if(data.equals("2")) {
+					this.switchTo09ChooseHowPanel(50);
+				} else if(data.equals("3")) {
+					this.switchTo09ChooseHowPanel(70);
+				} else if(data.equals("4")) {
+					this.switchTo09ChooseHowPanel(100);
+				} else if(data.equals("5")) {
+					this.switchTo09ChooseHowPanel(150);
+				} else if(data.equals("6")) {
+					this.switchTo09ChooseHowPanel(200);
+				} else if(data.equals("7")) {
+					this.switchTo07TypeAmountPanel();;
+				} else if(data.equals("A")) {
+					this.switchTo04MenuPanel();
+				}
+			} 
+			break;
+		
+		case 7:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("1") || data.equals("2") || data.equals("3") || data.equals("4") || data.equals("5") || 
+					data.equals("6") || data.equals("7") || data.equals("8") || data.equals("9") || data.equals("0")) {
+					pinValue += data;
+				} else if (data.equals("#")) {
+					int amount = Integer.parseInt(pinValue);
+					pinValue = "";
+					this.switchTo09ChooseHowPanel(amount);
+				} else if (data.equals("*")) {
+					if(pinValue.length() != 0){
+						pinValue = pinValue.substring(0, (pinValue.length() - 1));
 					}
-				} 
-				//Todo: Add for every value
-
-			} else { // RFID card UID
-
+				} else if (data.equals("A")) {
+					this.switchTo04MenuPanel();
+				}
 			}
 			break;
 		
+		case 8:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("A")) {
+					this.switchTo04MenuPanel();
+				}
+			}
+			break;
+
+		case 9:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("A")) {
+					this.switchTo04MenuPanel();
+				}
+			}
+			break;
+
+		case 10:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("A")) {
+					this.switchTo04MenuPanel();
+				} else if(data.equals("1")) {
+					this.switchTo11TakeCardPanel(true);
+				} else if(data.equals("2")) {
+					this.switchTo11TakeCardPanel(false);
+				}
+			}
+			break;
+		
+		case 11:
+			if (dataSize == 1) { // Keypad input
+				if (data.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
+					this.switchTo12PatiencePanel();
+				}
+			}
+			break;
+		
+		case 12:
+			// if(arduinoDone){
+			// 	this.switchTo13GreetPanel();
+			// }
+
 		default:
 			System.out.println("CurrentScreen does not exist");
 			break;
@@ -139,6 +212,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo04MenuPanel() {
+		this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo validate & if blocked, send to panel 3
 		this.cl.show(panelContainer, "04Menu");
 		this.currentScreen = 4;
 	}
@@ -146,8 +220,6 @@ public class ContentHandler {
 	public void switchTo05BalancePanel() {
 		JPanel balancePanel = panelList.get(5);
 		if(balancePanel instanceof JPanel05) {
-			this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
-			
 			JPanel05 balancePanel2 = (JPanel05) balancePanel;
 			balancePanel2.changeBalanceLabel(this.balance);
 		} else {
@@ -172,17 +244,43 @@ public class ContentHandler {
 		this.currentScreen = 8;
 	}
 	
-	public void switchTo09ChooseHowPanel() {
-		this.cl.show(panelContainer, "09ChooseHow");
-		this.currentScreen = 9;
+	public void switchTo09ChooseHowPanel(int amount) {
+		System.out.println(amount);
+		System.out.println((int) this.balance);
+		if(amount > ((int) this.balance)) {
+			switchTo08NotEnoughPanel();
+			return;
+		}
+		if (amount % 5 == 0){
+			//Amount is deelbaar door 5
+			//deel door 50 daarna 20 daarna 10 daarna 5
+			fillPinOptions(0, amount, true, true, true, true);
+			//deel door 50 daarna 10 daarna 5
+			fillPinOptions(1, amount, true, false, true, true);
+			//deel door 20 daarna 10 daarna 5
+			fillPinOptions(2, amount, false, true, true, true);
+			//deel door 10 daarna 5
+			fillPinOptions(3, amount, false, false, true, true);
+			JPanel panel = panelList.get(9);
+			if(panel instanceof JPanel09) {
+				JPanel09 panel2 = (JPanel09) panel;
+				panel2.updateLabelOfButtons(this.pinValueChoices, amount);
+			}
+			this.cl.show(panelContainer, "09ChooseHow");
+			this.currentScreen = 9;
+		} else {
+			//
+		}
 	}
 	
-	public void switchTo10ReceiptPanel() {
+	public void switchTo10ReceiptPanel(int choiceId) {
+		this.pinValueChoice = choiceId;
 		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
 	
-	public void switchTo11TakeCardPanel() {
+	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
+		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
 	}
@@ -190,9 +288,11 @@ public class ContentHandler {
 	public void switchTo12PatiencePanel() {
 		this.cl.show(panelContainer, "12Patience");
 		this.currentScreen = 12;
+		this.processMoney(); //Todo get this method working
 	}
 	
-	public void switchTo13GreetPanel() {
+	public void switchTo13GreetPanel() {	
+		this.resetInformation();
 		this.cl.show(panelContainer, "13Greet");
 		this.currentScreen = 13;
 	}
@@ -203,5 +303,35 @@ public class ContentHandler {
 		this.bankName = "";
 		this.accountnNr = "";
 		this.pinCode = "";
+		this.pinValueChoices = new int[4][4];
+		this.pinValueChoice = 4;
+		this.wantsReceipt = false;
+	}
+
+	public void fillPinOptions(int index, int amount, Boolean use50, Boolean use20, Boolean use10, Boolean use5){
+		int tempAmount = amount;
+		if(use50){
+			this.pinValueChoices[index][0] = (int) (tempAmount / 50);
+			tempAmount -= this.pinValueChoices[index][0] * 50;
+		}
+		if(use20){
+			this.pinValueChoices[index][1] = (int) (tempAmount / 20);
+			tempAmount -= this.pinValueChoices[index][1] * 20;
+		}
+		if(use10){
+			this.pinValueChoices[index][2] = (int) (tempAmount / 10);
+			tempAmount -= this.pinValueChoices[index][2] * 10;
+		}
+		if(use5){
+			this.pinValueChoices[index][3] = (int) (tempAmount / 5);
+			//tempAmount -= this.pinValueChoices[index][3] * 5;
+		}
+	}
+
+	public void processMoney(){
+		//use wantsReceipt to print bon
+		//use pinchoice to print the money from choice x
+
+		
 	}
 }

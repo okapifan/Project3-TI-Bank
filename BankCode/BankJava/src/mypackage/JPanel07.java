@@ -279,10 +279,13 @@ public class JPanel07 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        contentHandler.switchTo04MenuPanel();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        String amount = jTextField1.getText();
+        contentHandler.switchTo09ChooseHowPanel((Integer.parseInt(amount)));
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
