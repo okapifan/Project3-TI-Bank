@@ -48,57 +48,54 @@ public class ContentHandler {
 	void parseData(String data, int dataSize) {
 		switch (this.currentScreen) {
 			case 1:
-				if (true) { // Is RFID card
+				if (data.substring(0,1).equals("R")) { // Is RFID card
 
-					String str= new String("RUS1234TIMOBANK");
 					//Substring starting from index 0 and ending at 1
-					System.out.println(str.substring(0,1));
+					System.out.println(data.substring(0,1));
 					// Je leest nu welk type bericht het is
 					//Substring starting from index 1 and ending at 3
-					System.out.println(str.substring(1, 3));
+					System.out.println(data.substring(1, 3));
 					// Je leest nu het 2 letterige Land info
 					//Substring starting from index 3 and ending at 7
-					System.out.println(str.substring(3, 7));
-					// Je leest nu de 4 cijferige account nummer
+					System.out.println(data.substring(3, 7));
+					// Je leest nu het 4 cijferige account nummer
 					//Substring starting from index 7
-					System.out.println(str.substring(7));
+					System.out.println(data.substring(7));
 					// Je leest nu de bank naam uit
-						}
-					}
+
+
 
 					// Parse data:
 					// R+Land, Banknaam, Account nummer
 
 					this.switchTo02TypePinPanel();
-				} else { // RFID card UID
-					this.switchTo13GreetPanel();
 				}
 
 				break;
 
 			case 2:
-				if (dataSize == 2) { // Keypad input
-					if (data.equals("k1")) {
+				if (data.substring(0,1).equals("K")) { // Keypad input
+					if (data.equals("K1")) {
 						pinCode += "1";
-					} else if (data.equals("k2")) {
+					} else if (data.equals("K2")) {
 						pinCode += "2";
-					} else if (data.equals("k3")) {
+					} else if (data.equals("K3")) {
 						pinCode += "3";
-					} else if (data.equals("k4")) {
+					} else if (data.equals("K4")) {
 						pinCode += "4";
-					} else if (data.equals("k5")) {
+					} else if (data.equals("K5")) {
 						pinCode += "5";
-					} else if (data.equals("k6")) {
+					} else if (data.equals("K6")) {
 						pinCode += "6";
-					} else if (data.equals("k7")) {
+					} else if (data.equals("K7")) {
 						pinCode += "7";
-					} else if (data.equals("k8")) {
+					} else if (data.equals("K8")) {
 						pinCode += "8";
-					} else if (data.equals("k9")) {
+					} else if (data.equals("K9")) {
 						pinCode += "9";
-					} else if (data.equals("k0")) {
+					} else if (data.equals("K0")) {
 						pinCode += "0";
-					} else if (data.equals("k#")) {
+					} else if (data.equals("K#")) {
 						pinCode = "";
 						//pinCode clearen;
 						// laatse character eraf
