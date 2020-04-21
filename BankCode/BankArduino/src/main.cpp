@@ -7,24 +7,14 @@
 #define RST_PIN A0
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
+
+
 // Defining the keypad
-const byte ROWS = 4;
+int thresholds[16] = {2, 77, 144, 202, 244, 290, 331, 368, 394, 424, 452, 477, 496, 518, 538, 566};
+char keypad[16] = {'1', '2', '3', 'A', '4', '5', '6', 'B', '7', '8', '9', 'C', '*', '0', '#', 'D'};
 
-const byte COLS = 4;
-
-char keys[ROWS][COLS] = {
-{'1', '2', '3', 'A'},
-{'4', '5', '6', 'B'},
-{'7', '8', '9', 'C'},
-{'*', '0', '#', 'D'}
-};
-
-byte rowPins[ROWS] = {2,3,4,5}; //Rows 0 to 3
-
-byte colPins[COLS] = {6,7,8,9}; //Columns 0 to 3
 
 //initializes an instance of the Keypad class
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // Wait without delay
 unsigned long previousMillis = 0;
@@ -43,11 +33,28 @@ void setup()
 
 void loop()
 {
-	char key = keypad.getKey();
+ int value = analogRead(A1);
+// Serial.println(value);
+// delay(100);
 
-	if (key){
-		SendString(String(key));
-	}
+for (int i = 0; i < 16; i++)
+  {
+    
+    //Is A1 Close enough to one of the keypad values?
+    if (abs(value - thresholds[i]) < 5)
+    {
+      //Yes, translate the index of that value to the actual name of the key
+      Serial.println(keypad[i]);
+
+      //Wait until they releas the button
+      while (analogRead(A1) < 1000) 
+      {
+        delay(100);
+      }
+    }
+  }
+ 
+ 
 
   //look for new cards
   if (mfrc522.PICC_IsNewCardPresent())
