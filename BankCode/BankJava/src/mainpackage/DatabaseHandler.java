@@ -65,7 +65,7 @@ public class DatabaseHandler {
 	}
 
 	public float getBalance(String countryName, String bankName, String pin, String account) {
-		if (localCountryName == countryName && localBankName == bankName) {
+		if (localCountryName.equals(countryName) && localBankName.equals(bankName)) {
 			System.out.println("GetBalance from local Database");
 			float balance = localGetBalance(pin, account);
 			return balance;
@@ -77,7 +77,7 @@ public class DatabaseHandler {
 	}
 
 	public void withdraw(String countryName, String bankName, String pin, String account, Float amount) {
-		if (localCountryName == countryName && localBankName == bankName) {
+		if (localCountryName.equals(countryName) && localBankName.equals(bankName)) {
 			System.out.println("Withdraw from local Database");
 			localWithdraw(pin, account, amount);
 		} else {

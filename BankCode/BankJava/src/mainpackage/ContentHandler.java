@@ -18,15 +18,16 @@ public class ContentHandler {
 
 	//user information
 	private float balance = 0;
-	// private String bankName = "";
-	// private String accountnNr = "";
-	// private String country = "";
-	// private String pinCode = "";
+	private String bankName = "";
+	private String accountnNr = "";
+	private String country = "";
+	private String pinCode = "";
 
-	private String bankName = "Timobank";
-	private String accountnNr = "1234";
-	private String country = "US";
-	private String pinCode = "1234";
+	// private String bankName = "Timobank";
+	// private String accountnNr = "1234";
+	// private String country = "US";
+	// private String pinCode = "1234";
+	
 	private String pinValue = ""; //Get used for page 07: Type amount
 	private int[][] pinValueChoices = new int[4][4];
 	private int pinValueChoice = 4;
@@ -55,23 +56,22 @@ public class ContentHandler {
 			case 1:
 				if (data.substring(0,1).equals("R")) { // Is RFID card
 
-					//Substring starting from index 0 and ending at 1
-					System.out.println(data.substring(0,1));
-					// Je leest nu welk type bericht het is
-					//Substring starting from index 1 and ending at 3
-					System.out.println(data.substring(1, 3));
-					// Je leest nu het 2 letterige Land info
-					//Substring starting from index 3 and ending at 7
-					System.out.println(data.substring(3, 7));
-					// Je leest nu het 4 cijferige account nummer
-					//Substring starting from index 7
-					System.out.println(data.substring(7));
-					// Je leest nu de bank naam uit
-
-
-
 					// Parse data:
-					// R+Land, Banknaam, Account nummer
+					// R, Land, Account nummer, Banknaam
+					// VB: RUS1234Timobank
+
+					// Je leest nu het 2 letterige Land info
+					country = data.substring(1, 3);
+					System.out.println(country);
+
+					// Je leest nu het 4 cijferige account nummer
+					accountnNr = data.substring(3, 7);
+					System.out.println(accountnNr);
+
+					// Je leest nu de bank naam uit
+					bankName = data.substring(7);
+					System.out.println(bankName);
+
 
 					this.switchTo02TypePinPanel();
 				}
@@ -107,9 +107,7 @@ public class ContentHandler {
 					}
 
 					if (pinCode.length() == 4) {
-						this.switchTo05BalancePanel();
-					} else { // RFID card UID
-						this.switchTo13GreetPanel();
+						this.switchTo04MenuPanel();
 					}
 				}
 				break;
@@ -167,7 +165,7 @@ public class ContentHandler {
 					String key = data.substring(1,2);
 					if (key.equals("1") || key.equals("2") || key.equals("3") || key.equals("4") || key.equals("5") || 
 						key.equals("6") || key.equals("7") || key.equals("8") || key.equals("9") || key.equals("0")) {
-						pinValue += data;
+						pinValue += key;
 					} else if (key.equals("#")) {
 						int amount = Integer.parseInt(pinValue);
 						pinValue = "";
@@ -194,7 +192,15 @@ public class ContentHandler {
 			case 9:
 				if (data.substring(0,1).equals("K")) { // Keypad input
 					String key = data.substring(1,2);
-					if (key.equals("A")) {
+					if (key.equals("1")) {
+						this.switchTo10ReceiptPanel(1);
+					} else if(key.equals("2")) {
+						this.switchTo10ReceiptPanel(2);
+					} else if(key.equals("3")) {
+						this.switchTo10ReceiptPanel(3);
+					} else if(key.equals("4")) {
+						this.switchTo10ReceiptPanel(4);
+					} else if(key.equals("a")) {
 						this.switchTo04MenuPanel();
 					}
 				}
@@ -287,8 +293,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo09ChooseHowPanel(int amount) {
-		System.out.println(amount);
-		System.out.println((int) this.balance);
+		System.out.println(amount + " > " + (int) this.balance);
 		if(amount > ((int) this.balance)) {
 			switchTo08NotEnoughPanel();
 			return;
