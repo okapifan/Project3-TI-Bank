@@ -5,20 +5,18 @@
  */
 package mypackage;
 
-import mainpackage.ContentHandler;
+import mainpackage.App;
 
 /**
  *
  * @author danie
  */
 public class JPanel09 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel09
      */
-    public JPanel09(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel09() {
         initComponents();
     }
 
@@ -487,32 +485,32 @@ public class JPanel09 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(0);
+        App.contentHandler.switchTo10ReceiptPanel(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(1);
+        App.contentHandler.switchTo10ReceiptPanel(1);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(2);
+        App.contentHandler.switchTo10ReceiptPanel(2);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(3);
+        App.contentHandler.switchTo10ReceiptPanel(3);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        contentHandler.switchTo04MenuPanel();
+        App.contentHandler.switchTo04MenuPanel();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 

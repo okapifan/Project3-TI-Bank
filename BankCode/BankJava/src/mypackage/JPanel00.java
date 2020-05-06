@@ -12,13 +12,11 @@ import mainpackage.ContentHandler;
  * @author danie
  */
 public class JPanel00 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel00
      */
-    public JPanel00(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel00() {
         initComponents();
     }
 

@@ -24,20 +24,20 @@ public class App {
 	static CardLayout cl;
 	static JPanel panelContainer;
 	public static ContentHandler contentHandler;
-	public static JPanel00 panel00NotInUse = new JPanel00(contentHandler);
-	public static JPanel01 panel01Start = new JPanel01(contentHandler);
-	public static JPanel02 panel02TypePin = new JPanel02(contentHandler);
-	public static JPanel03 panel03CardBlocked = new JPanel03(contentHandler);
-	public static JPanel04 panel04Menu = new JPanel04(contentHandler);
-	public static JPanel05 panel05Balance = new JPanel05(contentHandler);
-	public static JPanel06 panel06ChooseAmount = new JPanel06(contentHandler);
-	public static JPanel07 panel07TypeAmount = new JPanel07(contentHandler);
-	public static JPanel08 panel08NotEnough = new JPanel08(contentHandler);
-	public static JPanel09 panel09ChooseHow = new JPanel09(contentHandler);
-	public static JPanel10 panel10Receipt = new JPanel10(contentHandler);
-	public static JPanel11 panel11TakeCard = new JPanel11(contentHandler);
-	public static JPanel12 panel12Patience = new JPanel12(contentHandler);
-	public static JPanel13 panel13Greet = new JPanel13(contentHandler);
+	public static JPanel00 panel00NotInUse = new JPanel00();
+	public static JPanel01 panel01Start = new JPanel01();
+	public static JPanel02 panel02TypePin = new JPanel02();
+	public static JPanel03 panel03CardBlocked = new JPanel03();
+	public static JPanel04 panel04Menu = new JPanel04();
+	public static JPanel05 panel05Balance = new JPanel05();
+	public static JPanel06 panel06ChooseAmount = new JPanel06();
+	public static JPanel07 panel07TypeAmount = new JPanel07();
+	public static JPanel08 panel08NotEnough = new JPanel08();
+	public static JPanel09 panel09ChooseHow = new JPanel09();
+	public static JPanel10 panel10Receipt = new JPanel10();
+	public static JPanel11 panel11TakeCard = new JPanel11();
+	public static JPanel12 panel12Patience = new JPanel12();
+	public static JPanel13 panel13Greet = new JPanel13();
 
 	public static void main(String[] args) {
 		SerialPort comPort = SerialPort.getCommPorts()[0];
@@ -82,8 +82,8 @@ public class App {
 			}
 		});
 		
-		contentHandler.switchTo01StartPanel();
-		//contentHandler.switchTo04MenuPanel();
+		//contentHandler.switchTo01StartPanel();
+		contentHandler.switchTo04MenuPanel();
 		
 		int delay = 50; // Milliseconds
 		ActionListener taskPerformer = new KeypadActionListoner(comPort);

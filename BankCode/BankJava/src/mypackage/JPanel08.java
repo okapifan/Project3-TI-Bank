@@ -5,20 +5,18 @@
  */
 package mypackage;
 
-import mainpackage.ContentHandler;
+import mainpackage.App;
 
 /**
  *
  * @author danie
  */
 public class JPanel08 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel08
      */
-    public JPanel08(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel08() {
         initComponents();
     }
 
@@ -218,12 +216,12 @@ public class JPanel08 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        contentHandler.switchTo04MenuPanel();
+        App.contentHandler.switchTo04MenuPanel();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 

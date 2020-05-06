@@ -5,20 +5,16 @@
  */
 package mypackage;
 
-import mainpackage.ContentHandler;
-
 /**
  *
  * @author danie
  */
 public class JPanel02 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel02
      */
-    public JPanel02(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel02() {
         initComponents();
     }
 
