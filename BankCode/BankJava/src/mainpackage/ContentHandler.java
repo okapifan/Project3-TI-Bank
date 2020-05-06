@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import mypackage.JPanel05;
-import mypackage.JPanel09;
+import mypackage.*;
 
 public class ContentHandler {
 	private DatabaseHandler database;
@@ -341,6 +340,11 @@ public class ContentHandler {
 			this.currentScreen = 9;
 		} else {
 			//
+			JPanel panel = panelList.get(7);
+			if(panel instanceof JPanel07) {
+				JPanel07 panel7 = (JPanel07) panel;
+				panel7.changeErrorLabel("Waarde incorrect");
+			}
 		}
 	}
 	
