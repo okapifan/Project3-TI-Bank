@@ -51,6 +51,13 @@ public class ContentHandler {
 		this.panelList = pl;
 	}
 	
+// R: RFID data (RUSATimobank1234)
+// K: Keaypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
+// C: Card in or out (in,out) in car be replaced with R
+// D: Dispence money Done ()
+
+
+
 	void parseData(String data, int dataSize) {
 		switch (this.currentScreen) {
 			case 1:
@@ -102,12 +109,12 @@ public class ContentHandler {
 						pinCode += "0";
 					} else if (key.equals("#")) {
 						pinCode = "";
-						//pinCode clearen;
-						// laatse character eraf
+						// pinCode clearen;
+						// Laatse character eraf
 					}
 
 					if (pinCode.length() == 4) {
-						this.switchTo04MenuPanel();
+						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
 					}
 				}
 				break;
@@ -121,9 +128,9 @@ public class ContentHandler {
 						this.switchTo06ChooseAmountPanel();
 					} else if (key.equals("3")) {
 						this.switchTo09ChooseHowPanel(70);
-					} else if (key.equals("A")) {
-						this.switchTo13GreetPanel();
-						//Todo Fix later the order (11 and reset)
+					} else if (key.equals("B")) {
+						this.switchTo11TakeCardPanel(false);
+						//Todo Fix later the order (skip 12)
 					}
 				}
 				break;
@@ -133,6 +140,8 @@ public class ContentHandler {
 					String key = data.substring(1,2);
 					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
+					} else if (key.equals("B")) {
+						this.switchTo11TakeCardPanel(false);
 					}
 				}
 				break;
@@ -156,6 +165,8 @@ public class ContentHandler {
 						this.switchTo07TypeAmountPanel();;
 					} else if(key.equals("A")) {
 						this.switchTo04MenuPanel();
+					} else if (key.equals("B")) {
+						this.switchTo11TakeCardPanel(false);
 					}
 				} 
 				break;
@@ -176,6 +187,8 @@ public class ContentHandler {
 						}
 					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
+					} else if (key.equals("B")) {
+						this.switchTo11TakeCardPanel(false);
 					}
 				}
 				break;
@@ -185,6 +198,8 @@ public class ContentHandler {
 					String key = data.substring(1,2);
 					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
+					} else if (key.equals("B")) {
+						this.switchTo11TakeCardPanel(false);
 					}
 				}
 				break;
@@ -200,8 +215,10 @@ public class ContentHandler {
 						this.switchTo10ReceiptPanel(3);
 					} else if(key.equals("4")) {
 						this.switchTo10ReceiptPanel(4);
-					} else if(key.equals("a")) {
+					} else if(key.equals("A")) {
 						this.switchTo04MenuPanel();
+					} else if (key.equals("B")) {
+						this.switchTo11TakeCardPanel(false);
 					}
 				}
 				break;
@@ -209,11 +226,13 @@ public class ContentHandler {
 			case 10:
 				if (data.substring(0,1).equals("K")) { // Keypad input
 					String key = data.substring(1,2);
-					if (key.equals("A")) {
-						this.switchTo04MenuPanel();
-					} else if(data.equals("1")) {
+					if(data.equals("1")) {
 						this.switchTo11TakeCardPanel(true);
 					} else if(data.equals("2")) {
+						this.switchTo11TakeCardPanel(false);
+					} else if (key.equals("A")) {
+						this.switchTo04MenuPanel();
+					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
 				}
@@ -222,16 +241,21 @@ public class ContentHandler {
 			case 11:
 				if (data.substring(0,1).equals("K")) { // Keypad input
 					String key = data.substring(1,2);
-					if (key.equals("D")) {  //Has to be changed to a check if the RFID pass is removed
+					if (key.equals("D")) { // Temporary: Has to be changed to a check if the RFID pass is removed
+						this.switchTo12PatiencePanel();
+					}
+				} else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
 						this.switchTo12PatiencePanel();
 					}
 				}
 				break;
 			
 			case 12:
-				// if(arduinoDone){
-				// 	this.switchTo13GreetPanel();
-				// }
+				if (data.substring(0,1).equals("D")) { // Dispence money Done
+					this.switchTo13GreetPanel();
+				}
 
 			default:
 				System.out.println("CurrentScreen does not exist");
