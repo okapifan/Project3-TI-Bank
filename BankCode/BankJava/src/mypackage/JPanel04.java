@@ -5,20 +5,18 @@
  */
 package mypackage;
 
-import mainpackage.ContentHandler;
+import mainpackage.App;
 
 /**
  *
  * @author danie
  */
 public class JPanel04 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel04
      */
-    public JPanel04(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel04() {
         initComponents();
     }
 
@@ -357,23 +355,23 @@ public class JPanel04 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        contentHandler.switchTo01StartPanel();
+        App.contentHandler.switchTo01StartPanel();
 		// (A) Afsluiten
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // (1) Saldo-informatie
-		contentHandler.switchTo05BalancePanel();
+		App.contentHandler.switchTo05BalancePanel();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // (2) Geld opnemen
-        contentHandler.switchTo06ChooseAmountPanel();
+        App.contentHandler.switchTo06ChooseAmountPanel();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // (3) Snel $70
-        contentHandler.switchTo09ChooseHowPanel(70);
+        App.contentHandler.switchTo09ChooseHowPanel(70);
     }//GEN-LAST:event_jButton4ActionPerformed
 
 

@@ -13,7 +13,6 @@ public class ContentHandler {
 	private int currentScreen = 5;
 	private CardLayout cl;
 	private JPanel panelContainer;
-	private ArrayList<JPanel> panelList;
 
 	//user information
 	private float balance = 0;
@@ -38,16 +37,11 @@ public class ContentHandler {
 
 		this.database = new DatabaseHandler("US", "Timobank");
 
-
 		// JPanel balancePanel = panelList.get(0);
 		// JPanel05 balancePanel2 = (JPanel05) balancePanel;
 		// balancePanel2.get()
 		// //witdrawMoneyBtn.addActionListener(e -> switchToWitdrawScreen());
 		// balancePanel2.changeBalanceLabel(this.balance);
-	}
-
-	public void setPanelList(ArrayList<JPanel> pl) {
-		this.panelList = pl;
 	}
 	
 // R: RFID data (RUSATimobank1234)
@@ -289,13 +283,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo05BalancePanel() {
-		JPanel balancePanel = panelList.get(5);
-		if(balancePanel instanceof JPanel05) {
-			JPanel05 balancePanel2 = (JPanel05) balancePanel;
-			balancePanel2.changeBalanceLabel(this.balance);
-		} else {
-			this.switchTo04MenuPanel();
-		}
+		App.panel05Balance.changeBalanceLabel(this.balance);
 		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
@@ -331,20 +319,11 @@ public class ContentHandler {
 			fillPinOptions(2, amount, false, true, true, true);
 			//deel door 10 daarna 5
 			fillPinOptions(3, amount, false, false, true, true);
-			JPanel panel = panelList.get(9);
-			if(panel instanceof JPanel09) {
-				JPanel09 panel2 = (JPanel09) panel;
-				panel2.updateLabelOfButtons(this.pinValueChoices, amount);
-			}
+			App.panel09ChooseHow.updateLabelOfButtons(this.pinValueChoices, amount);
 			this.cl.show(panelContainer, "09ChooseHow");
 			this.currentScreen = 9;
 		} else {
-			//
-			JPanel panel = panelList.get(7);
-			if(panel instanceof JPanel07) {
-				JPanel07 panel7 = (JPanel07) panel;
-				panel7.changeErrorLabel("Waarde incorrect");
-			}
+			App.panel07TypeAmount.changeErrorLabel("Waarde incorrect"); //Todo geef feedback wat incorrect is
 		}
 	}
 	
