@@ -197,7 +197,7 @@ public class JPanel07 extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jTextField1.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
-        jTextField1.setText("1234");
+        jTextField1.setText("");
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -358,6 +358,10 @@ public class JPanel07 extends javax.swing.JPanel {
         App.contentHandler.switchTo11TakeCardPanel(false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    public void updateTextfield(String newText){
+        jTextField1.setText(newText);
+    }
 
     public void changeErrorLabel(String errorMessage){
         jLabel7.setText(errorMessage);

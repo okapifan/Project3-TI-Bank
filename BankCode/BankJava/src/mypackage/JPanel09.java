@@ -516,9 +516,21 @@ public class JPanel09 extends javax.swing.JPanel {
 
     public void updateLabelOfButtons(int[][] options, int amount){
         jLabel2.setText("$"+amount+" te ontvangen");
-        if(amount >= 50) {
-            jButton6.setText("  "+options[0][0]+" x $50 +"+options[0][1]+" x $20 +"+options[0][2]+" x $10 +"+options[0][3]+" x $5");
-            jButton7.setText("  "+options[1][0]+" x $50 +"+options[1][2]+" x $10 +"+options[1][3]+" x $5");
+
+        if(amount >= 50) {  
+            String newText = "  "+((options[0][0] != 0) ? (options[0][0] +" x $50 +") : "")
+                                 +((options[0][1] != 0) ? (options[0][1] +" x $20 +") : "")
+                                 +((options[0][2] != 0) ? (options[0][2] +" x $10 +") : "")
+                                 +((options[0][3] != 0) ? (options[0][3] +" x $5"   ) : "");
+            newText = (newText.endsWith("+") ? newText.substring(0, newText.length() - 1) : newText);                  
+            jButton6.setText(newText);
+
+            String newText2 = "  "+((options[1][0] != 0) ? (options[1][0] +" x $50 +") : "")
+                                  +((options[1][2] != 0) ? (options[1][2] +" x $10 +") : "")
+                                  +((options[1][3] != 0) ? (options[1][3] +" x $5"   ) : "");
+            newText2 = (newText2.endsWith("+") ? newText2.substring(0, newText2.length() - 1) : newText2);
+            jButton7.setText(newText2);
+
             jPanel4.setVisible(true);
             jPanel6.setVisible(true);
         } else {
@@ -526,12 +538,20 @@ public class JPanel09 extends javax.swing.JPanel {
             jPanel6.setVisible(false);
         }
         if(amount >= 20){
-            jButton8.setText("  "+options[2][1]+" x $20 +"+options[2][2]+" x $10 +"+options[2][3]+" x $5");
+            String newText3 = "  "+((options[2][1] != 0) ? (options[2][1] +" x $20 +") : "")
+                                  +((options[2][2] != 0) ? (options[2][2] +" x $10 +") : "")
+                                  +((options[2][3] != 0) ? (options[2][3] +" x $5"   ) : "");
+            newText3 = (newText3.endsWith("+") ? newText3.substring(0, newText3.length() - 1) : newText3);
+            jButton8.setText(newText3);
+            
             jPanel8.setVisible(true);
         } else {
             jPanel8.setVisible(false);
         }
-        jButton9.setText("  "+options[3][2]+" x $10 +"+options[3][3]+" x $5");
+        String newText4 = "  "+((options[3][2] != 0) ? (options[3][2] +" x $10 +") : "")
+                              +((options[3][3] != 0) ? (options[3][3] +" x $5"   ) : "");
+        newText4 = (newText4.endsWith("+") ? newText4.substring(0, newText4.length() - 1) : newText4);
+        jButton9.setText(newText4);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

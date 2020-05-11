@@ -16,15 +16,15 @@ public class ContentHandler {
 
 	//user information
 	private float balance = 0;
-	private String bankName = "";
-	private String accountnNr = "";
-	private String country = "";
-	private String pinCode = "";
+	// private String bankName = "";
+	// private String accountnNr = "";
+	// private String country = "";
+	// private String pinCode = "";
 
-	// private String bankName = "Timobank";
-	// private String accountnNr = "1234";
-	// private String country = "US";
-	// private String pinCode = "1234";
+	private String bankName = "Timobank";
+	private String accountnNr = "1234";
+	private String country = "US";
+	private String pinCode = "1234";
 	
 	private String pinValue = ""; //Get used for page 07: Type amount
 	private int[][] pinValueChoices = new int[4][4];
@@ -183,6 +183,7 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
+					App.panel07TypeAmount.updateTextfield(pinValue);
 				}
 				break;
 			
@@ -294,6 +295,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo07TypeAmountPanel() {
+		this.resetPanel7();
 		this.cl.show(panelContainer, "07TypeAmount");
 		this.currentScreen = 7;
 	}
@@ -307,6 +309,10 @@ public class ContentHandler {
 		System.out.println(amount + " > " + (int) this.balance);
 		if(amount > ((int) this.balance)) {
 			switchTo08NotEnoughPanel();
+			return;
+		}
+		if(amount <= 0){
+			App.panel07TypeAmount.changeErrorLabel("Error: Je kunt geen bedrag van 0 of lager invoeren!");
 			return;
 		}
 		if (amount % 5 == 0){
@@ -359,7 +365,18 @@ public class ContentHandler {
 		this.pinCode = "";
 		this.pinValueChoices = new int[4][4];
 		this.pinValueChoice = 4;
+		this.pinValue = "";
 		this.wantsReceipt = false;
+	}
+
+	public void resetPanel7(){
+		App.panel07TypeAmount.changeErrorLabel("");
+		App.panel07TypeAmount.updateTextfield("");
+		this.pinValue = "";
+	}
+
+	public void resetPanel2(){
+		App.panel02TypePin.changeErrorLabel("");
 	}
 
 	public void fillPinOptions(int index, int amount, Boolean use50, Boolean use20, Boolean use10, Boolean use5){
