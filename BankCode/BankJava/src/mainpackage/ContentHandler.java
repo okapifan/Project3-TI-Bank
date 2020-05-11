@@ -262,6 +262,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo01StartPanel() {
+		//App.panel01Start.changeAvailableBillPanels(available5, available10, available20, available50);
 		this.cl.show(panelContainer, "01Start");
 		this.currentScreen = 1;
 	}
@@ -294,6 +295,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo07TypeAmountPanel() {
+		//App.panel07TypeAmount.changeAvailableBillPanels(available5, available10, available20, available50);
 		this.cl.show(panelContainer, "07TypeAmount");
 		this.currentScreen = 7;
 	}

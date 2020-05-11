@@ -29,7 +29,8 @@ public class TestApp {
 		
 
 
-		JPanel testPanel = new JPanel07();
+		JPanel07 testPanel = new JPanel07();
+		testPanel.changeAvailableBillPanels(true, false, true, false);
 
 
 		panelContainer.add(testPanel, "Panel");
