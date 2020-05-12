@@ -82,8 +82,8 @@ public class App {
 			}
 		});
 		
-		//contentHandler.switchTo01StartPanel();
-		contentHandler.switchTo04MenuPanel();
+		contentHandler.switchTo01StartPanel();
+		//contentHandler.switchTo04MenuPanel();
 		
 		int delay = 50; // Milliseconds
 		ActionListener taskPerformer = new KeypadActionListoner(comPort);
