@@ -1,7 +1,8 @@
 package mainpackage;
 
 import java.awt.CardLayout;
-import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -13,6 +14,11 @@ public class ContentHandler {
 	private int currentScreen = 5;
 	private CardLayout cl;
 	private JPanel panelContainer;
+
+	private TimerTask task;
+	private Timer timer = new Timer();
+	private int timeoutTime = 45000; //In miliseconds
+	private int timeoutGreet = 3000; //In miliseconds
 
 	//user information
 	private float balance = 0;
@@ -270,33 +276,39 @@ public class ContentHandler {
 	}
 	
 	public void switchTo02TypePinPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "02TypePin");
 		this.currentScreen = 2;
 	}
 	
 	public void switchTo03CardBlockedPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "03CardBlocked");
 		this.currentScreen = 3;
 	}
 	
 	public void switchTo04MenuPanel() {
+		this.startTimer(timeoutTime);
 		this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo validate & if blocked, send to panel 3
 		this.cl.show(panelContainer, "04Menu");
 		this.currentScreen = 4;
 	}
 	
 	public void switchTo05BalancePanel() {
+		this.startTimer(timeoutTime);
 		App.panel05Balance.changeBalanceLabel(this.balance);
 		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
 	
 	public void switchTo06ChooseAmountPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "06ChooseAmount");
 		this.currentScreen = 6;
 	}
 	
 	public void switchTo07TypeAmountPanel() {
+		this.startTimer(timeoutTime);
 		this.resetPanel7();
 		//App.panel07TypeAmount.changeAvailableBillPanels(available5, available10, available20, available50);
 		this.cl.show(panelContainer, "07TypeAmount");
@@ -304,11 +316,13 @@ public class ContentHandler {
 	}
 	
 	public void switchTo08NotEnoughPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "08NotEnough");
 		this.currentScreen = 8;
 	}
 	
 	public void switchTo09ChooseHowPanel(int amount) {
+		this.startTimer(timeoutTime);
 		System.out.println(amount + " > " + (int) this.balance);
 		if(amount > ((int) this.balance)) {
 			switchTo08NotEnoughPanel();
@@ -337,12 +351,14 @@ public class ContentHandler {
 	}
 	
 	public void switchTo10ReceiptPanel(int choiceId) {
+		this.startTimer(timeoutTime);
 		this.pinValueChoice = choiceId;
 		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
 	
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
+		startTimer(2000); //Todo Remove this later
 		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
@@ -354,7 +370,8 @@ public class ContentHandler {
 		this.processMoney(); //Todo get this method working
 	}
 	
-	public void switchTo13GreetPanel() {	
+	public void switchTo13GreetPanel() {
+		this.startTimer(timeoutGreet);	
 		this.resetInformation();
 		this.cl.show(panelContainer, "13Greet");
 		this.currentScreen = 13;
@@ -399,6 +416,24 @@ public class ContentHandler {
 		if(use5){
 			this.pinValueChoices[index][3] = (int) (tempAmount / 5);
 			//tempAmount -= this.pinValueChoices[index][3] * 5;
+		}
+	}
+
+	public void startTimer(int miliseconds){
+		stopTimer();
+		task = new TimerTask() {
+			public void run(){
+				switchTo01StartPanel();
+				resetInformation();
+				this.cancel();
+			}
+		};
+		timer.schedule(task, miliseconds);
+	}
+
+	public void stopTimer(){
+		if(task != null){
+			task.cancel();
 		}
 	}
 

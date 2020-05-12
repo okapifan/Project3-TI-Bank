@@ -531,7 +531,9 @@ public class JPanel09 extends javax.swing.JPanel {
             newText2 = (newText2.endsWith("+") ? newText2.substring(0, newText2.length() - 1) : newText2);
             jButton7.setText(newText2);
 
-            jPanel4.setVisible(true);
+            if(newText.equals(newText2)){
+                jPanel4.setVisible(false);
+            }
             jPanel6.setVisible(true);
         } else {
             jPanel4.setVisible(false);
