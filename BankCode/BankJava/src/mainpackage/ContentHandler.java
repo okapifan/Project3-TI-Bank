@@ -27,7 +27,7 @@ public class ContentHandler {
 	// private String country = "";
 	// private String pinCode = "";
 
-	private String bankName = "Timobank";
+	private String bankName = "TIMO";
 	private String accountnNr = "1234";
 	private String country = "US";
 	private String pinCode = "1234";
@@ -41,7 +41,7 @@ public class ContentHandler {
 		this.cl = cl;
 		this.panelContainer = panelContainer;
 
-		this.database = new DatabaseHandler("US", "Timobank");
+		this.database = new DatabaseHandler("US", "TIMO");
 
 		// JPanel balancePanel = panelList.get(0);
 		// JPanel05 balancePanel2 = (JPanel05) balancePanel;
@@ -50,9 +50,9 @@ public class ContentHandler {
 		// balancePanel2.changeBalanceLabel(this.balance);
 	}
 	
-// R: RFID data (RUSATimobank1234)
+// R: RFID card (RUS-TIMO-01234567)
 // K: Keaypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
-// C: Card in or out (in,out) in car be replaced with R
+// C: Card in or out (in,out) in can be replaced with R
 // D: Dispence money Done ()
 
 
@@ -60,23 +60,23 @@ public class ContentHandler {
 	void parseData(String data, int dataSize) {
 		switch (this.currentScreen) {
 			case 1:
-				if (data.substring(0,1).equals("R")) { // Is RFID card
+				if (data.substring(0,1).equals("R")) { // RFID card
 
 					// Parse data:
-					// R, Land, Account nummer, Banknaam
-					// VB: RUS1234Timobank
+					// R, Land, Bankcode, Account nummer
+					// VB: RUS-TIMO-01234567
 
 					// Je leest nu het 2 letterige Land info
 					country = data.substring(1, 3);
 					System.out.println(country);
 
-					// Je leest nu het 4 cijferige account nummer
-					accountnNr = data.substring(3, 7);
-					System.out.println(accountnNr);
-
 					// Je leest nu de bank naam uit
-					bankName = data.substring(7);
+					bankName = data.substring(4, 8);
 					System.out.println(bankName);
+
+					// Je leest nu het 4 cijferige account nummer
+					accountnNr = data.substring(9);
+					System.out.println(accountnNr);
 
 
 					this.switchTo02TypePinPanel();
