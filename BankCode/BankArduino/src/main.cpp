@@ -57,6 +57,8 @@ void setup()
 
 void loop()
 {
+	//Serial.print("_");
+
 	char key = keypad.getKey();
 
 	if (key)
@@ -70,6 +72,8 @@ void loop()
 	bool readCard = mfrc522.PICC_ReadCardSerial();
 	if (newCard && readCard)
 	{
+		//Serial.print("-1-");
+
 		byte buffer[18];
 		MFRC522::StatusCode status;
 		byte len = 18;
@@ -97,6 +101,8 @@ void loop()
 		}
 		SendString("R" + cardData); //SendString("RUS-TIMO-00001234");
 		
+		//Serial.print("-2-");
+
 		mfrc522.PICC_HaltA();
 		mfrc522.PCD_StopCrypto1();
 	}

@@ -16,15 +16,16 @@ public class ContentHandler {
 
 	//user information
 	private float balance = 0;
-	// private String bankName = "";
-	// private String accountnNr = "";
-	// private String country = "";
-	// private String pinCode = "";
+	
+	private String bankName = "";
+	private String accountnNr = "";
+	private String country = "";
+	private String pinCode = "";
 
-	private String bankName = "TIMO";
-	private String accountnNr = "1234";
-	private String country = "US";
-	private String pinCode = "1234";
+	// private String bankName = "TIMO";
+	// private String accountnNr = "1234";
+	// private String country = "US";
+	// private String pinCode = "1234";
 	
 	private String pinValue = ""; //Get used for page 07: Type amount
 	private int[][] pinValueChoices = new int[4][4];

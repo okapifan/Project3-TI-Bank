@@ -40,7 +40,7 @@ public class App {
 	public static JPanel13 panel13Greet = new JPanel13();
 
 	public static void main(String[] args) {
-		SerialPort comPort = SerialPort.getCommPorts()[0];
+		SerialPort comPort = SerialPort.getCommPorts()[1];
 		comPort.openPort();
 		
 		cl = new CardLayout(5, 5);
@@ -82,8 +82,8 @@ public class App {
 			}
 		});
 		
-		//contentHandler.switchTo01StartPanel();
-		contentHandler.switchTo04MenuPanel();
+		contentHandler.switchTo01StartPanel();
+		//contentHandler.switchTo04MenuPanel();
 		
 		int delay = 50; // Milliseconds
 		ActionListener taskPerformer = new KeypadActionListoner(comPort);
