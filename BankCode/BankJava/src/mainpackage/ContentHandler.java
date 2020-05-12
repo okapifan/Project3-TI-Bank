@@ -357,6 +357,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
+		startTimer(2000); //Todo Remove this later
 		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
