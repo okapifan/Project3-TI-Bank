@@ -346,7 +346,7 @@ public class ContentHandler {
 			this.cl.show(panelContainer, "09ChooseHow");
 			this.currentScreen = 9;
 		} else {
-			App.panel07TypeAmount.changeErrorLabel("Waarde incorrect"); //Todo geef feedback wat incorrect is
+			App.panel07TypeAmount.changeErrorLabel("Bedrag moet kunnen bestaan uit de aanwezige biljetten"); //Todo geef feedback wat incorrect is
 		}
 	}
 	
