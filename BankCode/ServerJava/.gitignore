@@ -1,0 +1,5 @@
+bin/
+build/
+dist/
+nbproject/private/
+src/database.json
