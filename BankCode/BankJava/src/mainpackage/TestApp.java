@@ -1,12 +1,15 @@
+package mainpackage;
+
 import mypackage.*;
 
-import mainpackage.*;
-
 import java.awt.*;
-
 import javax.swing.*;
 
 public class TestApp {
+	static CardLayout cl = new CardLayout(5, 5);
+	static JPanel panelContainer = new JPanel(cl);
+	public static ContentHandler contentHandler = new ContentHandler(cl, panelContainer);
+
 	public static void main(String[] args) {
 		//TestDatabaseHandler();
 		TestPage();
@@ -20,12 +23,14 @@ public class TestApp {
 	}
 
 	private static void TestPage() {
-		CardLayout cl = new CardLayout(5, 5);
-		JPanel panelContainer = new JPanel(cl);
-		ContentHandler contentHandler = new ContentHandler(cl, panelContainer);
+		cl = new CardLayout(5, 5);
+		panelContainer = new JPanel(cl);
+		contentHandler = new ContentHandler(cl, panelContainer);
+		
 
 
-		JPanel testPanel = new JPanel07(contentHandler);
+		JPanel07 testPanel = new JPanel07();
+		testPanel.changeAvailableBillPanels(true, false, true, false);
 
 
 		panelContainer.add(testPanel, "Panel");

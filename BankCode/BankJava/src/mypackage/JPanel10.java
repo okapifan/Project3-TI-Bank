@@ -5,20 +5,18 @@
  */
 package mypackage;
 
-import mainpackage.ContentHandler;
+import mainpackage.App;
 
 /**
  *
  * @author danie
  */
 public class JPanel10 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel10
      */
-    public JPanel10(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel10() {
         initComponents();
     }
 
@@ -353,22 +351,22 @@ public class JPanel10 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        contentHandler.switchTo04MenuPanel();
+        App.contentHandler.switchTo04MenuPanel();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        contentHandler.switchTo11TakeCardPanel(true);
+        App.contentHandler.switchTo11TakeCardPanel(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton9ActionPerformed
 

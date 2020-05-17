@@ -1,21 +1,14 @@
 package mainpackage;
 
-import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-
 import com.fazecast.jSerialComm.SerialPort;
 
 public class KeypadActionListoner implements ActionListener {
 	private SerialPort comPort;
-	private ContentHandler contentHandler;
 
-	public KeypadActionListoner(SerialPort comPort, ContentHandler contentHandler) {
+	public KeypadActionListoner(SerialPort comPort) {
 		this.comPort = comPort;
-		this.contentHandler = contentHandler;
 	}
 
 	public void actionPerformed(ActionEvent evt) {
@@ -32,7 +25,7 @@ public class KeypadActionListoner implements ActionListener {
 				// Use data
 				System.out.println("Read data: " + data + " (" + dataSize + " bytes)");
 
-				contentHandler.parseData(data, dataSize);
+				App.contentHandler.parseData(data, dataSize);
 			}
 
 			

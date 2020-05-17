@@ -1,12 +1,12 @@
 package mainpackage;
 
 import java.awt.CardLayout;
-import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
-import mypackage.JPanel05;
-import mypackage.JPanel09;
+import mypackage.*;
 
 public class ContentHandler {
 	private DatabaseHandler database;
@@ -14,16 +14,21 @@ public class ContentHandler {
 	private int currentScreen = 5;
 	private CardLayout cl;
 	private JPanel panelContainer;
-	private ArrayList<JPanel> panelList;
+
+	private TimerTask task;
+	private Timer timer = new Timer();
+	private int timeoutTime = 45000; //In miliseconds
+	private int timeoutGreet = 3000; //In miliseconds
 
 	//user information
 	private float balance = 0;
+	
 	private String bankName = "";
 	private String accountnNr = "";
 	private String country = "";
 	private String pinCode = "";
 
-	// private String bankName = "Timobank";
+	// private String bankName = "TIMO";
 	// private String accountnNr = "1234";
 	// private String country = "US";
 	// private String pinCode = "1234";
@@ -37,8 +42,7 @@ public class ContentHandler {
 		this.cl = cl;
 		this.panelContainer = panelContainer;
 
-		this.database = new DatabaseHandler("US", "Timobank");
-
+		this.database = new DatabaseHandler("US", "TIMO");
 
 		// JPanel balancePanel = panelList.get(0);
 		// JPanel05 balancePanel2 = (JPanel05) balancePanel;
@@ -46,14 +50,10 @@ public class ContentHandler {
 		// //witdrawMoneyBtn.addActionListener(e -> switchToWitdrawScreen());
 		// balancePanel2.changeBalanceLabel(this.balance);
 	}
-
-	public void setPanelList(ArrayList<JPanel> pl) {
-		this.panelList = pl;
-	}
 	
-// R: RFID data (RUSATimobank1234)
+// R: RFID card (RUS-TIMO-01234567)
 // K: Keaypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
-// C: Card in or out (in,out) in car be replaced with R
+// C: Card in or out (in,out) in can be replaced with R
 // D: Dispence money Done ()
 
 
@@ -61,23 +61,23 @@ public class ContentHandler {
 	void parseData(String data, int dataSize) {
 		switch (this.currentScreen) {
 			case 1:
-				if (data.substring(0,1).equals("R")) { // Is RFID card
+				if (data.substring(0,1).equals("R")) { // RFID card
 
 					// Parse data:
-					// R, Land, Account nummer, Banknaam
-					// VB: RUS1234Timobank
+					// R, Land, Bankcode, Account nummer
+					// VB: RUS-TIMO-01234567
 
 					// Je leest nu het 2 letterige Land info
 					country = data.substring(1, 3);
 					System.out.println(country);
 
-					// Je leest nu het 4 cijferige account nummer
-					accountnNr = data.substring(3, 7);
-					System.out.println(accountnNr);
-
 					// Je leest nu de bank naam uit
-					bankName = data.substring(7);
+					bankName = data.substring(4, 8);
 					System.out.println(bankName);
+
+					// Je leest nu het 4 cijferige account nummer
+					accountnNr = data.substring(9);
+					System.out.println(accountnNr);
 
 
 					this.switchTo02TypePinPanel();
@@ -190,6 +190,7 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
+					App.panel07TypeAmount.updateTextfield(pinValue);
 				}
 				break;
 			
@@ -269,57 +270,66 @@ public class ContentHandler {
 	}
 	
 	public void switchTo01StartPanel() {
+		//App.panel01Start.changeAvailableBillPanels(available5, available10, available20, available50);
 		this.cl.show(panelContainer, "01Start");
 		this.currentScreen = 1;
 	}
 	
 	public void switchTo02TypePinPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "02TypePin");
 		this.currentScreen = 2;
 	}
 	
 	public void switchTo03CardBlockedPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "03CardBlocked");
 		this.currentScreen = 3;
 	}
 	
 	public void switchTo04MenuPanel() {
+		this.startTimer(timeoutTime);
 		this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo validate & if blocked, send to panel 3
 		this.cl.show(panelContainer, "04Menu");
 		this.currentScreen = 4;
 	}
 	
 	public void switchTo05BalancePanel() {
-		JPanel balancePanel = panelList.get(5);
-		if(balancePanel instanceof JPanel05) {
-			JPanel05 balancePanel2 = (JPanel05) balancePanel;
-			balancePanel2.changeBalanceLabel(this.balance);
-		} else {
-			this.switchTo04MenuPanel();
-		}
+		this.startTimer(timeoutTime);
+		App.panel05Balance.changeBalanceLabel(this.balance);
 		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
 	
 	public void switchTo06ChooseAmountPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "06ChooseAmount");
 		this.currentScreen = 6;
 	}
 	
 	public void switchTo07TypeAmountPanel() {
+		this.startTimer(timeoutTime);
+		this.resetPanel7();
+		//App.panel07TypeAmount.changeAvailableBillPanels(available5, available10, available20, available50);
 		this.cl.show(panelContainer, "07TypeAmount");
 		this.currentScreen = 7;
 	}
 	
 	public void switchTo08NotEnoughPanel() {
+		this.startTimer(timeoutTime);
 		this.cl.show(panelContainer, "08NotEnough");
 		this.currentScreen = 8;
 	}
 	
 	public void switchTo09ChooseHowPanel(int amount) {
+		this.startTimer(timeoutTime);
 		System.out.println(amount + " > " + (int) this.balance);
 		if(amount > ((int) this.balance)) {
 			switchTo08NotEnoughPanel();
+			return;
+		}
+		if(amount <= 0){
+			App.panel07TypeAmount.changeErrorLabel("Error: Je kunt geen bedrag van 0 of lager invoeren!");
 			return;
 		}
 		if (amount % 5 == 0){
@@ -332,25 +342,23 @@ public class ContentHandler {
 			fillPinOptions(2, amount, false, true, true, true);
 			//deel door 10 daarna 5
 			fillPinOptions(3, amount, false, false, true, true);
-			JPanel panel = panelList.get(9);
-			if(panel instanceof JPanel09) {
-				JPanel09 panel2 = (JPanel09) panel;
-				panel2.updateLabelOfButtons(this.pinValueChoices, amount);
-			}
+			App.panel09ChooseHow.updateLabelOfButtons(this.pinValueChoices, amount);
 			this.cl.show(panelContainer, "09ChooseHow");
 			this.currentScreen = 9;
 		} else {
-			//
+			App.panel07TypeAmount.changeErrorLabel("Bedrag moet kunnen bestaan uit de aanwezige biljetten"); //Todo geef feedback wat incorrect is
 		}
 	}
 	
 	public void switchTo10ReceiptPanel(int choiceId) {
+		this.startTimer(timeoutTime);
 		this.pinValueChoice = choiceId;
 		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
 	
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
+		startTimer(2000); //Todo Remove this later
 		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
@@ -362,7 +370,8 @@ public class ContentHandler {
 		this.processMoney(); //Todo get this method working
 	}
 	
-	public void switchTo13GreetPanel() {	
+	public void switchTo13GreetPanel() {
+		this.startTimer(timeoutGreet);	
 		this.resetInformation();
 		this.cl.show(panelContainer, "13Greet");
 		this.currentScreen = 13;
@@ -376,7 +385,18 @@ public class ContentHandler {
 		this.pinCode = "";
 		this.pinValueChoices = new int[4][4];
 		this.pinValueChoice = 4;
+		this.pinValue = "";
 		this.wantsReceipt = false;
+	}
+
+	public void resetPanel7(){
+		App.panel07TypeAmount.changeErrorLabel("");
+		App.panel07TypeAmount.updateTextfield("");
+		this.pinValue = "";
+	}
+
+	public void resetPanel2(){
+		App.panel02TypePin.changeErrorLabel("");
 	}
 
 	public void fillPinOptions(int index, int amount, Boolean use50, Boolean use20, Boolean use10, Boolean use5){
@@ -396,6 +416,24 @@ public class ContentHandler {
 		if(use5){
 			this.pinValueChoices[index][3] = (int) (tempAmount / 5);
 			//tempAmount -= this.pinValueChoices[index][3] * 5;
+		}
+	}
+
+	public void startTimer(int miliseconds){
+		stopTimer();
+		task = new TimerTask() {
+			public void run(){
+				switchTo01StartPanel();
+				resetInformation();
+				this.cancel();
+			}
+		};
+		timer.schedule(task, miliseconds);
+	}
+
+	public void stopTimer(){
+		if(task != null){
+			task.cancel();
 		}
 	}
 

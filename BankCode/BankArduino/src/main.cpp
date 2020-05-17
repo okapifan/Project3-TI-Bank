@@ -3,9 +3,16 @@
 #include <MFRC522.h>
 #include <Keypad.h>
 
+// RFID
 #define SS_PIN 10
 #define RST_PIN A0
 MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+// Data location
+const byte block = 1;
+
+MFRC522::MIFARE_Key keyRFID;
+
 
 // Defining the keypad
 const byte ROWS = 4;
@@ -38,10 +45,20 @@ void setup()
 	Serial.begin(9600);
 	SPI.begin();
 	mfrc522.PCD_Init();
+
+	// RFID read key
+	keyRFID.keyByte[0] = 0xFF;
+	keyRFID.keyByte[1] = 0xFF;
+	keyRFID.keyByte[2] = 0xFF;
+	keyRFID.keyByte[3] = 0xFF;
+	keyRFID.keyByte[4] = 0xFF;
+	keyRFID.keyByte[5] = 0xFF;
 }
 
 void loop()
 {
+	//Serial.print("_");
+
 	char key = keypad.getKey();
 
 	if (key)
@@ -49,23 +66,47 @@ void loop()
 		SendString("K" + String(key));
 	}
 
-	//look for new cards
-	if (mfrc522.PICC_IsNewCardPresent())
-	{
-		if (mfrc522.PICC_ReadCardSerial())
-		{
-			//Show UID on serial monitor
-			String content = "";
 
-			for (byte i = 0; i < mfrc522.uid.size; i++)
-			{
-				content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : ""));
-				content.concat(String(mfrc522.uid.uidByte[i], HEX));
-			}
-			//SendString(content);
-			SendString("RUS1234Timobank");
+	// Look for new RFID cards
+	bool newCard = mfrc522.PICC_IsNewCardPresent();
+	bool readCard = mfrc522.PICC_ReadCardSerial();
+	if (newCard && readCard)
+	{
+		//Serial.print("-1-");
+
+		byte buffer[18];
+		MFRC522::StatusCode status;
+		byte len = 18;
+		
+		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &keyRFID, &(mfrc522.uid));
+		if (status != MFRC522::STATUS_OK)
+		{
+			//Serial.print(F("Authentication failed: "));
+			//Serial.println(mfrc522.GetStatusCodeName(status));
+			return;
 		}
+
+		status = mfrc522.MIFARE_Read(block, buffer, &len);
+		if (status != MFRC522::STATUS_OK)
+		{
+			//Serial.print(F("Reading failed: "));
+			//Serial.println(mfrc522.GetStatusCodeName(status));
+			return;
+		}
+
+		String cardData = "";
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			cardData += (char)buffer[i];
+		}
+		SendString("R" + cardData); //SendString("RUS-TIMO-00001234");
+		
+		//Serial.print("-2-");
+
+		mfrc522.PICC_HaltA();
+		mfrc522.PCD_StopCrypto1();
 	}
+
 
 	// Receive a string
 	char *userInput = ReceiveString();
@@ -73,7 +114,7 @@ void loop()
 	{
 		// Do something with the received string
 
-		// Send the string back
+		// Send the string back to test communication
 		SendString(userInput);
 	}
 }

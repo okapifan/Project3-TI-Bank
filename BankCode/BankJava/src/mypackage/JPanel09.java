@@ -5,20 +5,18 @@
  */
 package mypackage;
 
-import mainpackage.ContentHandler;
+import mainpackage.App;
 
 /**
  *
  * @author danie
  */
 public class JPanel09 extends javax.swing.JPanel {
-	private ContentHandler contentHandler;
 
     /**
      * Creates new form JPanel09
      */
-    public JPanel09(ContentHandler contentHandler) {
-		this.contentHandler = contentHandler;
+    public JPanel09() {
         initComponents();
     }
 
@@ -177,7 +175,7 @@ public class JPanel09 extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
@@ -487,53 +485,75 @@ public class JPanel09 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(0);
+        App.contentHandler.switchTo10ReceiptPanel(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(1);
+        App.contentHandler.switchTo10ReceiptPanel(1);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(2);
+        App.contentHandler.switchTo10ReceiptPanel(2);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        contentHandler.switchTo10ReceiptPanel(3);
+        App.contentHandler.switchTo10ReceiptPanel(3);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        contentHandler.switchTo04MenuPanel();
+        App.contentHandler.switchTo04MenuPanel();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 
     public void updateLabelOfButtons(int[][] options, int amount){
         jLabel2.setText("$"+amount+" te ontvangen");
-        if(amount >= 50) {
-            jButton6.setText("  "+options[0][0]+" x $50 +"+options[0][1]+" x $20 +"+options[0][2]+" x $10 +"+options[0][3]+" x $5");
-            jButton7.setText("  "+options[1][0]+" x $50 +"+options[1][2]+" x $10 +"+options[1][3]+" x $5");
-            jPanel4.setVisible(true);
+
+        if(amount >= 50) {  
+            String newText = "  "+((options[0][0] != 0) ? (options[0][0] +" x $50 +") : "")
+                                 +((options[0][1] != 0) ? (options[0][1] +" x $20 +") : "")
+                                 +((options[0][2] != 0) ? (options[0][2] +" x $10 +") : "")
+                                 +((options[0][3] != 0) ? (options[0][3] +" x $5"   ) : "");
+            newText = (newText.endsWith("+") ? newText.substring(0, newText.length() - 1) : newText);                  
+            jButton6.setText(newText);
+
+            String newText2 = "  "+((options[1][0] != 0) ? (options[1][0] +" x $50 +") : "")
+                                  +((options[1][2] != 0) ? (options[1][2] +" x $10 +") : "")
+                                  +((options[1][3] != 0) ? (options[1][3] +" x $5"   ) : "");
+            newText2 = (newText2.endsWith("+") ? newText2.substring(0, newText2.length() - 1) : newText2);
+            jButton7.setText(newText2);
+
+            if(newText.equals(newText2)){
+                jPanel4.setVisible(false);
+            }
             jPanel6.setVisible(true);
         } else {
             jPanel4.setVisible(false);
             jPanel6.setVisible(false);
         }
         if(amount >= 20){
-            jButton8.setText("  "+options[2][1]+" x $20 +"+options[2][2]+" x $10 +"+options[2][3]+" x $5");
+            String newText3 = "  "+((options[2][1] != 0) ? (options[2][1] +" x $20 +") : "")
+                                  +((options[2][2] != 0) ? (options[2][2] +" x $10 +") : "")
+                                  +((options[2][3] != 0) ? (options[2][3] +" x $5"   ) : "");
+            newText3 = (newText3.endsWith("+") ? newText3.substring(0, newText3.length() - 1) : newText3);
+            jButton8.setText(newText3);
+            
             jPanel8.setVisible(true);
         } else {
             jPanel8.setVisible(false);
         }
-        jButton9.setText("  "+options[3][2]+" x $10 +"+options[3][3]+" x $5");
+        String newText4 = "  "+((options[3][2] != 0) ? (options[3][2] +" x $10 +") : "")
+                              +((options[3][3] != 0) ? (options[3][3] +" x $5"   ) : "");
+        newText4 = (newText4.endsWith("+") ? newText4.substring(0, newText4.length() - 1) : newText4);
+        jButton9.setText(newText4);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
