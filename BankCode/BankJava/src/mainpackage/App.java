@@ -41,6 +41,7 @@ public class App {
 
 	public static void main(String[] args) {
 		SerialPort comPort = SerialPort.getCommPorts()[1];
+		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		
 		cl = new CardLayout(5, 5);
@@ -77,7 +78,8 @@ public class App {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.out.println("Exit");
-				comPort.closePort(); // Unnecessary?
+				comPort.closePort();
+				contentHandler.database.CloseSocket(); // Close socket
 				System.exit(0);
 			}
 		});

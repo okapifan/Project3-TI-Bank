@@ -1,6 +1,3 @@
-// Old Code
-// Use as example
-
 package mainpackage;
 
 import java.io.File;
@@ -20,7 +17,7 @@ public class DatabaseHandler {
 	// Connection con; // Database connection
 
 	private JSONObject databaseConfig;
-	private String databaseUrl = "";
+	private String databaseUrl = "jdbc:mysql://localhost:3306/bank";
 	private String databaseUser = ""; // Change user to an user with less permissions
 	private String databasePassword = "";
 

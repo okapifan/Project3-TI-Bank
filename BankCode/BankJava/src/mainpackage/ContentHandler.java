@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import mypackage.*;
 
 public class ContentHandler {
-	private DatabaseHandler database;
+	public DatabaseHandler database;
 	
 	private int currentScreen = 5;
 	private CardLayout cl;
@@ -21,7 +21,8 @@ public class ContentHandler {
 	private int timeoutGreet = 3000; //In miliseconds
 
 	//user information
-	private float balance = 0;
+	private double balance = 0;
+	private int attempts = 0;
 	
 	private String bankName = "";
 	private String accountnNr = "";
@@ -277,6 +278,7 @@ public class ContentHandler {
 	
 	public void switchTo02TypePinPanel() {
 		this.startTimer(timeoutTime);
+		resetPanel2();
 		this.cl.show(panelContainer, "02TypePin");
 		this.currentScreen = 2;
 	}
@@ -289,14 +291,30 @@ public class ContentHandler {
 	
 	public void switchTo04MenuPanel() {
 		this.startTimer(timeoutTime);
-		this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo validate & if blocked, send to panel 3
-		this.cl.show(panelContainer, "04Menu");
-		this.currentScreen = 4;
+
+		//Todo validate & if blocked, send to panel 3
+		int statusCode = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
+		if(statusCode == 200){
+			this.cl.show(panelContainer, "04Menu");
+			this.currentScreen = 4;
+		}
+		else if(statusCode == 401){
+			App.panel02TypePin.changeErrorLabel("Error: Foute pincode. Nog " + (3-attempts) + " pogingen!");
+			switchTo02TypePinPanel();
+		}
+		else if(statusCode == 403){
+			switchTo03CardBlockedPanel();
+		}
+		else if(statusCode == 404){
+			//switchTo03CardBlockedPanel();
+		}
+
+		///////////////////////////
 	}
 	
 	public void switchTo05BalancePanel() {
 		this.startTimer(timeoutTime);
-		App.panel05Balance.changeBalanceLabel(this.balance);
+		App.panel05Balance.changeBalanceLabel((float)this.balance);
 		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
@@ -379,6 +397,7 @@ public class ContentHandler {
 
 	public void resetInformation() {
 		this.balance = 0;
+		this.attempts = 0;
 		this.country = "";
 		this.bankName = "";
 		this.accountnNr = "";
@@ -429,6 +448,13 @@ public class ContentHandler {
 			}
 		};
 		timer.schedule(task, miliseconds);
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public void setAttempts(int attempts) {
+		this.attempts = attempts;
 	}
 
 	public void stopTimer(){
