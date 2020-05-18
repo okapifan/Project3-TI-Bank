@@ -6,6 +6,7 @@
 // RFID
 #define SS_PIN 10
 #define RST_PIN A0
+#define switch_card 22
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 // Data location
@@ -36,15 +37,19 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 unsigned long previousMillis = 0;
 const long interval = 4000;
 
+boolean ChangeCardState; 
+
 // Functions
 void SendString(String data);
 char *ReceiveString();
+
 
 void setup()
 {
 	Serial.begin(9600);
 	SPI.begin();
 	mfrc522.PCD_Init();
+	pinMode (switch_card, INPUT_PULLUP);
 
 	// RFID read key
 	keyRFID.keyByte[0] = 0xFF;
@@ -117,7 +122,24 @@ void loop()
 		// Send the string back to test communication
 		SendString(userInput);
 	}
+
+
+	if (digitalRead (switch_card) != ChangeCardState){
+		
+		ChangeCardState = digitalRead (switch_card);
+
+		if(!ChangeCardState){	
+			SendString("Cin");
+		}
+		else{
+			SendString("Cout");
+		}
+		
+	}
 }
+	
+
+
 
 void SendString(String data)
 {

@@ -53,7 +53,7 @@ public class ContentHandler {
 	
 // Receive:
 // R: RFID card (US-TIMO-01234567)
-// K: Keaypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
+// K: Keypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
 // C: Card in or out (in,out) in can be replaced with R
 // D: Dispence money Done ()
 
@@ -261,6 +261,7 @@ public class ContentHandler {
 				if (data.substring(0,1).equals("D")) { // Dispence money Done
 					this.switchTo13GreetPanel();
 				}
+
 
 			default:
 				System.out.println("CurrentScreen does not exist");
