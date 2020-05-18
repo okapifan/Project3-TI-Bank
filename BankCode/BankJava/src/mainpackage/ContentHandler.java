@@ -51,11 +51,15 @@ public class ContentHandler {
 		// balancePanel2.changeBalanceLabel(this.balance);
 	}
 	
-// R: RFID card (RUS-TIMO-01234567)
+// Receive:
+// R: RFID card (US-TIMO-01234567)
 // K: Keaypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
 // C: Card in or out (in,out) in can be replaced with R
 // D: Dispence money Done ()
 
+// Send:
+// P: Print bon (Info etc)
+// D: Dispence money (amount $5 bills, amount $10 bills, amount $20 bills, amount $50 bills)(1-0-2-0)
 
 
 	void parseData(String data, int dataSize) {
