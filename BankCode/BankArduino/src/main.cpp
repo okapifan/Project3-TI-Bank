@@ -2,12 +2,15 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <Keypad.h>
+#include <Stepper.h>
 
 // RFID
+#define STEPS 32
 #define SS_PIN 10
 #define RST_PIN A0
 #define switch_card 22
 MFRC522 mfrc522(SS_PIN, RST_PIN);
+Stepper stepper(STEPS, 8, 10, 9, 11);
 
 // Data location
 const byte block = 1;
@@ -42,7 +45,8 @@ boolean ChangeCardState;
 // Functions
 void SendString(String data);
 char *ReceiveString();
-
+void DispensMoney(String geld);
+void PrintReceipt(String data);
 
 void setup()
 {
@@ -51,6 +55,8 @@ void setup()
 	mfrc522.PCD_Init();
 	pinMode (switch_card, INPUT_PULLUP);
 
+	stepper.setSpeed(200);
+
 	// RFID read key
 	keyRFID.keyByte[0] = 0xFF;
 	keyRFID.keyByte[1] = 0xFF;
@@ -58,6 +64,8 @@ void setup()
 	keyRFID.keyByte[3] = 0xFF;
 	keyRFID.keyByte[4] = 0xFF;
 	keyRFID.keyByte[5] = 0xFF;
+
+	
 }
 
 void loop()
@@ -117,6 +125,16 @@ void loop()
 	char *userInput = ReceiveString();
 	if (userInput != NULL)
 	{
+		
+		String receivedString = userInput;
+		if (receivedString.substring(0,1) == "D") {
+    		DispensMoney(receivedString.substring(2));
+		}
+		else if (receivedString.substring(0,1) == "P") {
+    		PrintReceipt(receivedString.substring(2));
+		}
+		
+		
 		// Do something with the received string
 
 		// Send the string back to test communication
@@ -139,6 +157,49 @@ void loop()
 }
 	
 
+void DispensMoney(String geld){
+
+	char array[50]; 
+	geld.toCharArray(array,50);
+	
+	char *strings[10];
+	char *ptr = NULL;
+	byte index = 0;
+
+		ptr = strtok(array, "-");  // takes a list of delimiters
+		while(ptr != NULL)
+		{
+			strings[index] = ptr;
+			index++;
+			ptr = strtok(NULL, "-");  // takes a list of delimiters
+		}
+	Serial.println(strings[0]);
+	Serial.println(strings[1]);
+	Serial.println(strings[2]);
+	//voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
+	//(int)strings[0]
+}
+
+
+void PrintReceipt(String data){
+
+	char array[50]; 
+	data.toCharArray(array,50);
+	char *strings[10];
+	char *ptr = NULL;
+	byte index = 0;
+
+		ptr = strtok(array, "-");  // takes a list of delimiters
+		while(ptr != NULL)
+		{
+			strings[index] = ptr;
+			index++;
+			ptr = strtok(NULL, "-");  // takes a list of delimiters
+		}
+	
+	//voeg bonnetjes printer toe en print deze informatie
+	//(int)strings[0]
+}
 
 
 void SendString(String data)

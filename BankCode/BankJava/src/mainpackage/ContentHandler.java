@@ -120,6 +120,11 @@ public class ContentHandler {
 					if (pinCode.length() == 4) {
 						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
 					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
+					}
 				}
 				break;
 		
@@ -136,6 +141,11 @@ public class ContentHandler {
 						this.switchTo11TakeCardPanel(false);
 						//Todo Fix later the order (skip 12)
 					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
+					}
 				}
 				break;
 
@@ -146,6 +156,11 @@ public class ContentHandler {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
+					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
 					}
 				}
 				break;
@@ -172,7 +187,12 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				} 
+				} else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
+					}
+				}
 				break;
 			
 			case 7:
@@ -195,6 +215,11 @@ public class ContentHandler {
 						this.switchTo11TakeCardPanel(false);
 					}
 					App.panel07TypeAmount.updateTextfield(pinValue);
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
+					}
 				}
 				break;
 			
@@ -205,6 +230,11 @@ public class ContentHandler {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
+					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
 					}
 				}
 				break;
@@ -225,6 +255,11 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
+					}
 				}
 				break;
 
@@ -239,6 +274,11 @@ public class ContentHandler {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
+					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+					String key = data.substring(1,2);
+					if (key.equals("out")) {
+						this.switchTo12PatiencePanel();
 					}
 				}
 				break;
