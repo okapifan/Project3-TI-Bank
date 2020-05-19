@@ -38,6 +38,7 @@ public class ContentHandler {
 	private int[][] pinValueChoices = new int[4][4];
 	private int pinValueChoice = 4;
 	private Boolean wantsReceipt = false;
+	private int withdrawValue = 0;
 	
 	public ContentHandler(CardLayout cl, JPanel panelContainer) {
 		this.cl = cl;
@@ -306,10 +307,13 @@ public class ContentHandler {
 			switchTo03CardBlockedPanel();
 		}
 		else if(statusCode == 404){
-			//switchTo03CardBlockedPanel();
+			App.panel02TypePin.changeErrorLabel("Error: Onbekende bron van pas!");
+			switchTo02TypePinPanel();
 		}
-
-		///////////////////////////
+		else {
+			App.panel02TypePin.changeErrorLabel("Error: Er ging iets mis!");
+			switchTo02TypePinPanel();
+		}
 	}
 	
 	public void switchTo05BalancePanel() {
@@ -351,6 +355,7 @@ public class ContentHandler {
 			return;
 		}
 		if (amount % 5 == 0){
+			this.withdrawValue = amount;
 			//Amount is deelbaar door 5
 			//deel door 50 daarna 20 daarna 10 daarna 5
 			fillPinOptions(0, amount, true, true, true, true);
@@ -405,6 +410,7 @@ public class ContentHandler {
 		this.pinValueChoices = new int[4][4];
 		this.pinValueChoice = 4;
 		this.pinValue = "";
+		this.withdrawValue = 0;
 		this.wantsReceipt = false;
 	}
 
@@ -464,9 +470,17 @@ public class ContentHandler {
 	}
 
 	public void processMoney(){
-		//use wantsReceipt to print bon
-		//use pinchoice to print the money from choice x
+		int statusCode = database.withdraw(this.country, this.bankName, this.pinCode, this.accountnNr, this.withdrawValue);
+		if(statusCode == 200){
+			//Todo 	print money
+			//		print bon if wanted
 
-		
+			this.switchTo13GreetPanel();
+		}
+		else {
+			//Todo show in GUI
+
+			System.out.print("Error: Er ging iets mis!");
+		}
 	}
 }

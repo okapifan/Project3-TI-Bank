@@ -63,11 +63,11 @@ public class DatabaseHandler {
 			String statusMessage = obj.getJSONObject("body").getString("message");
 			System.out.println("" + statusCode + ": " + statusMessage);
 			
-			if (statusCode == 200){
+			if (statusCode == 200) {
 				double balance = obj.getJSONObject("body").getDouble("balance");
 				App.contentHandler.setBalance(balance);
 			}
-			else if (statusCode == 401){
+			else if (statusCode == 401) {
 				int attempts = obj.getJSONObject("body").getInt("attempts");
 				App.contentHandler.setAttempts(attempts);
 			}
@@ -84,8 +84,35 @@ public class DatabaseHandler {
 		return 0;
 	}
 
-	public boolean withdraw(String countryName, String bankName, String pin, String account, Float amount) {
+	public int withdraw(String countryName, String bankName, String pin, String account, int amount) {
+		try {
+			// Send
+			String str = "{\"header\":{\"originCountry\":\""+localCountryCode+"\",\"originBank\":\""+localBankCode+"\",\"receiveCountry\":\""+countryName+"\",\"receiveBank\":\""+bankName+"\"},\"body\":{\"pin\":\""+pin+"\",\"account\":\""+account+"\",\"amount\":"+amount+"}}";
+			dout.writeUTF(str);
+			dout.flush();
 
-		return false;
+			// Receive
+			while(din.available() > 0) { }
+			String str2 = din.readUTF();
+
+			JSONObject obj = new JSONObject(str2);
+			int statusCode = obj.getJSONObject("body").getInt("code");
+			String statusMessage = obj.getJSONObject("body").getString("message");
+			System.out.println("" + statusCode + ": " + statusMessage);
+			
+			// if (statusCode == 200){
+			// 	//	
+			// }
+
+			return statusCode;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		//Example json
+		//String withdrawBody = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\"},\"body\":{\"pin\":\"1234\",\"account\":\"123456\",\"amount\":123.45}}";
+		//String receivedString = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"code\":200,\"message\":\"Success\"}}";
+
+		return 0;
 	}
 }
