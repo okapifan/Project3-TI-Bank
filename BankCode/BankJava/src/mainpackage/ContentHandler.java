@@ -1,6 +1,7 @@
 package mainpackage;
 
 import java.awt.CardLayout;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -488,5 +489,9 @@ public class ContentHandler {
 		// Send String example
 		//String data = "Test";
 		//comPort.writeBytes(data.getBytes(), data.length());
+		Date d1 = new Date();
+		String strings= "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
+
+
 	}
 }

@@ -228,15 +228,12 @@ void PrintReceipt(String data){
 	printer.println(F("TimoBank"));
 	printer.setSize('S'); //size small
 	printer.justify('R'); //print at the right
-	printer.println("datum: " + (String) strings[0]);
-	printer.println("tijd: " + (String) strings[1]);	
-	printer.println("locatie: " + (String) strings[2]);
-	printer.println("kaartid: " + (String) strings[3]);
-	printer.println("transactienummer: " + (String) strings[4]);
-	printer.println("transactie soort: " + (String) strings[5]);
-	printer.println("hoeveelheid: " + (String) strings[6]);
-	printer.println("account van " + (String) strings[7]);
-	printer.println("beschikbare balance: " + (String) strings[8]);
+	printer.println("datum: " + (String) strings[0]);	
+	printer.println("locatie: US");
+	printer.println("transactie soort: geld opnemen");
+	printer.println("hoeveelheid: " + (String) strings[1]);
+	printer.println("account nummer: " + (String) strings[2]);
+	printer.println("beschikbare balance: " + (String) strings[3]);
 	printer.justify('C'); //print in center
 	printer.println(F("Thanks for using our ATM"));
 
