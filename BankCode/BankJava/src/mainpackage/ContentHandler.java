@@ -475,7 +475,7 @@ public class ContentHandler {
 			//Todo 	print money
 			//		print bon if wanted
 
-			this.switchTo13GreetPanel();
+			//Switch to done panal, in arduino keypad code
 		}
 		else {
 			//Todo show in GUI

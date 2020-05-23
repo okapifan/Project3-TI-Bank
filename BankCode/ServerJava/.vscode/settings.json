@@ -2,6 +2,7 @@
 	"java.project.referencedLibraries": [
 		"lib/**/*.jar",
 		"Packages/json-simple-1.1.1.jar",
-		"Packages/mysql-connector-java-5.1.48.jar"
+		"Packages/mysql-connector-java-5.1.48.jar",
+		"Packages/json-20190722.jar"
 	]
 }
