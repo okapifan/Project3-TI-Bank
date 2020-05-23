@@ -82,43 +82,55 @@ public class App {
 			
 						// Check pin
 						Statement stmt1 = con.createStatement();
-						ResultSet rs1 = stmt1.executeQuery("SELECT pincode FROM accounts WHERE accountId = " + account); // SQL injection posible
+						ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
 						rs1.next();
 						String pinCode = rs1.getString(1);
-						if (pin.equals(pinCode)) {
-							// Update attempts to 0
-							Statement stmt3 = con.createStatement();
-							stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+0+"WHERE accountId="+account);
-
-							// Get balance
-							Statement stmt2 = con.createStatement();
-							ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
-							rs2.next();
-							double balance = rs2.getDouble(1);
-			
-							System.out.println("GetBalance successfull");
-							con.close();
-						} else {
-							Statement stmt4 = con.createStatement();
-							ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
-							rs4.next();
-							int failedAttempts = rs4.getInt(1);	
-							
-							// Update attempts
-							Statement stmt3 = con.createStatement();
-							if((failedAttempts+1) < 3){
-								stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+"WHERE accountId="+account);
+						Boolean isBlocked = rs1.getBoolean(2);
+						int statuscode = 0;
+						if(!isBlocked){
+							if (pin.equals(pinCode)) {
+								// Update attempts to 0
+								Statement stmt3 = con.createStatement();
+								stmt3.executeQuery("UPDATE accounts SET failedAttempts = 0 WHERE accountId = "+account);
+	
+								// Get balance
+								Statement stmt2 = con.createStatement();
+								ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
+								rs2.next();
+								double balance = rs2.getDouble(1);
+								
+								statuscode = 200;
+								System.out.println("GetBalance successfull");
+								con.close();
 							} else {
-								stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId="+account);
+								Statement stmt4 = con.createStatement();
+								ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
+								rs4.next();
+								int failedAttempts = rs4.getInt(1);	
+								
+								// Update attempts
+								Statement stmt3 = con.createStatement();
+								if((failedAttempts+1) < 3){
+									stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
+								} else {
+									stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
+								}
+								
+								statuscode = 401;
+								System.out.println("Pin incorrect");
+								con.close();
 							}
+						} else {
 
-							System.out.println("Pin incorrect");
+							statuscode = 403;
+							System.out.println("Pin blocked");
 							con.close();
 						}
 					} catch (Exception e) {
 						System.out.println(e);
 					}
-					//Todo return statuscode && Todo check if pass is blocked
+					//Todo check for 0 results
+					//Todo generate response
 				} else {
 					//dump at landnode
 				}
