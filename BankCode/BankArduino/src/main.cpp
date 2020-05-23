@@ -10,7 +10,17 @@
 #define RST_PIN A0
 #define switch_card 22
 MFRC522 mfrc522(SS_PIN, RST_PIN);
-Stepper stepper(STEPS, 8, 10, 9, 11);
+
+
+// Printer
+#define TXD 49
+#define RXD 47
+
+//Servo
+#define Pulse 37
+ 
+// Steppemotor
+Stepper stepper(STEPS, 39, 41, 43, 45);
 
 // Data location
 const byte block = 1;
