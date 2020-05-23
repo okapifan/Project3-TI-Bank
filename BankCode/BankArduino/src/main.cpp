@@ -5,10 +5,9 @@
 #include <Stepper.h>
 
 // RFID
-#define STEPS 32
-#define SS_PIN 10
-#define RST_PIN A0
-#define switch_card 22
+#define SS_PIN 53
+#define RST_PIN 49
+#define switch_card 48
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 
@@ -20,6 +19,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 #define Pulse 37
  
 // Steppemotor
+#define STEPS 32
 Stepper stepper(STEPS, 39, 41, 43, 45);
 
 // Data location
@@ -90,44 +90,54 @@ void loop()
 	}
 
 
-	// Look for new RFID cards
-	bool newCard = mfrc522.PICC_IsNewCardPresent();
-	bool readCard = mfrc522.PICC_ReadCardSerial();
-	if (newCard && readCard)
-	{
-		//Serial.print("-1-");
+	
 
-		byte buffer[18];
-		MFRC522::StatusCode status;
-		byte len = 18;
+	if (digitalRead (switch_card) != ChangeCardState){
 		
-		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &keyRFID, &(mfrc522.uid));
-		if (status != MFRC522::STATUS_OK)
-		{
-			//Serial.print(F("Authentication failed: "));
-			//Serial.println(mfrc522.GetStatusCodeName(status));
-			return;
-		}
+		ChangeCardState = digitalRead (switch_card);
 
-		status = mfrc522.MIFARE_Read(block, buffer, &len);
-		if (status != MFRC522::STATUS_OK)
-		{
-			//Serial.print(F("Reading failed: "));
-			//Serial.println(mfrc522.GetStatusCodeName(status));
-			return;
-		}
+		if(!ChangeCardState){	
+			SendString("Cin");
 
-		String cardData = "";
-		for (uint8_t i = 0; i < 16; i++)
-		{
-			cardData += (char)buffer[i];
+			// Look for new RFID cards
+			bool newCard = mfrc522.PICC_IsNewCardPresent();
+			bool readCard = mfrc522.PICC_ReadCardSerial();
+			if (newCard && readCard){
+				byte buffer[18];
+				MFRC522::StatusCode status;
+				byte len = 18;
+				
+				status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &keyRFID, &(mfrc522.uid));
+				if (status != MFRC522::STATUS_OK)
+				{
+					Serial.print(F("Authentication failed: "));
+					Serial.println(mfrc522.GetStatusCodeName(status));
+					return;
+				}
+
+				status = mfrc522.MIFARE_Read(block, buffer, &len);
+				if (status != MFRC522::STATUS_OK)
+				{
+					Serial.print(F("Reading failed: "));
+					Serial.println(mfrc522.GetStatusCodeName(status));
+					return;
+				}
+
+				String cardData = "";
+				for (uint8_t i = 0; i < 16; i++)
+				{
+					cardData += (char)buffer[i];
+				}
+				SendString("R" + cardData); //SendString("RUS-TIMO-00001234");
+
+				mfrc522.PICC_HaltA();
+				mfrc522.PCD_StopCrypto1();
+			}
 		}
-		SendString("R" + cardData); //SendString("RUS-TIMO-00001234");
+		else{
+			SendString("Cout");
+		}
 		
-		//Serial.print("-2-");
-
-		mfrc522.PICC_HaltA();
-		mfrc522.PCD_StopCrypto1();
 	}
 
 
@@ -145,24 +155,8 @@ void loop()
 		}
 		
 		
-		// Do something with the received string
-
-		// Send the string back to test communication
-		SendString(userInput);
-	}
-
-
-	if (digitalRead (switch_card) != ChangeCardState){
-		
-		ChangeCardState = digitalRead (switch_card);
-
-		if(!ChangeCardState){	
-			SendString("Cin");
-		}
-		else{
-			SendString("Cout");
-		}
-		
+		// Send string example
+		//SendString(userInput);
 	}
 }
 	
