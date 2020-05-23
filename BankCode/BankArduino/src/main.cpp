@@ -4,6 +4,10 @@
 #include <Keypad.h>
 #include <Stepper.h>
 
+//Printer
+#include "Adafruit_Thermal.h"
+#include "SoftwareSerial.h"
+
 // RFID
 #define SS_PIN 53
 #define RST_PIN 49
@@ -12,8 +16,10 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 
 // Printer
-#define TXD 47
-#define RXD 45
+#define TX_PIN 47
+#define RX_PIN 45
+SoftwareSerial mySerial(RX_PIN, TX_PIN); // Declare SoftwareSerial obj first
+Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
 
 // Servo
 #define Pulse 35
@@ -65,19 +71,19 @@ void setup()
 	mfrc522.PCD_Init();
 	// RFID
 	pinMode (switch_card, INPUT_PULLUP);
-	pinMode (SS_PIN, OUTPUT)
-	pinMode (RST_PIN, OUTPUT)
+	pinMode (SS_PIN, OUTPUT);
+	pinMode (RST_PIN, OUTPUT);
 	//Steppemotor
-	pinMode (STEPS, OUTPUT)
-	pinMode (37, OUTPUT)
-	pinMode (39, OUTPUT) 
-	pinMode (41, OUTPUT)
-	pinMode (43, OUTPUT)
+	pinMode (STEPS, OUTPUT);
+	pinMode (37, OUTPUT);
+	pinMode (39, OUTPUT);
+	pinMode (41, OUTPUT);
+	pinMode (43, OUTPUT);
 	// Printer
-	pinMode (TXD, OUTPUT)
-	pinMode (RXD, OUTPUT)
+  mySerial.begin(9600);  // Initialize SoftwareSerial
+  printer.begin();       // Init printer (same regardless of serial type)
 	// Servo
-	pinMode (Pulse, OUTPUT)
+	pinMode (Pulse, OUTPUT);
 
 	stepper.setSpeed(200);
 
@@ -217,6 +223,23 @@ void PrintReceipt(String data){
 	
 	// Voeg bonnetjes printer toe en print deze informatie
 	// (int)strings[0]
+	printer.setSize('L'); //size large
+	printer.justify('C'); //print in center
+	printer.println(F("TimoBank"));
+	printer.setSize('S'); //size small
+	printer.justify('R'); //print at the right
+	printer.println("datum: " + (String) strings[0]);
+	printer.println("tijd: " + (String) strings[1]);	
+	printer.println("locatie: " + (String) strings[2]);
+	printer.println("kaartid: " + (String) strings[3]);
+	printer.println("transactienummer: " + (String) strings[4]);
+	printer.println("transactie soort: " + (String) strings[5]);
+	printer.println("hoeveelheid: " + (String) strings[6]);
+	printer.println("account van " + (String) strings[7]);
+	printer.println("beschikbare balance: " + (String) strings[8]);
+	printer.justify('C'); //print in center
+	printer.println(F("Thanks for using our ATM"));
+
 }
 
 
