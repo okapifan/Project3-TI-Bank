@@ -18,8 +18,8 @@ public class ContentHandler {
 
 	private TimerTask task;
 	private Timer timer = new Timer();
-	private int timeoutTime = 45000; //In miliseconds
-	private int timeoutGreet = 3000; //In miliseconds
+	private int timeoutTime = 45000; //In milliseconds
+	private int timeoutGreet = 3000; //In milliseconds
 
 	//user information
 	private float balance = 0;
@@ -59,8 +59,8 @@ public class ContentHandler {
 // D: Dispence money Done ()
 
 // Send:
-// P: Print bon (Info etc)
-// D: Dispence money (amount $5 bills, amount $10 bills, amount $20 bills, amount $50 bills)(1-0-2-0)
+// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+// D: Dispence money (amount $50 bills - amount $20 bills - amount $10 bills - amount $5 bills)(1-0-2-0)
 
 
 	void parseData(String data, int dataSize) {
@@ -480,18 +480,21 @@ public class ContentHandler {
 	}
 
 	public void processMoney(){
-		//use wantsReceipt to print bon
-		//use pinchoice to print the money from choice x
-
-		// P: Print bon (Info etc)
-		// D: Dispence money (amount $5 bills, amount $10 bills, amount $20 bills, amount $50 bills)(1-0-2-0)
 
 		// Send String example
 		//String data = "Test";
 		//comPort.writeBytes(data.getBytes(), data.length());
-		Date d1 = new Date();
-		String strings= "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
 
+		if(wantsReceipt){
+			// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+			Date d1 = new Date();
+			String receiptString = "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
+		}
+
+		// Check if delay is needed
+
+		// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
+		String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
 
 	}
 }

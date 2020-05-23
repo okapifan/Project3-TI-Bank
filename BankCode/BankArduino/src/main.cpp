@@ -182,6 +182,7 @@ void loop()
 	
 
 void DispensMoney(String geld){
+	// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 
 	char array[50]; 
 	geld.toCharArray(array,50);
@@ -190,22 +191,23 @@ void DispensMoney(String geld){
 	char *ptr = NULL;
 	byte index = 0;
 
-		ptr = strtok(array, "-");  // Takes a list of delimiters
-		while(ptr != NULL)
-		{
-			strings[index] = ptr;
-			index++;
-			ptr = strtok(NULL, "-");  // Takes a list of delimiters
-		}
-	Serial.println(strings[0]);
-	Serial.println(strings[1]);
-	Serial.println(strings[2]);
+	ptr = strtok(array, "-");  // Takes a list of delimiters
+	while(ptr != NULL)
+	{
+		strings[index] = ptr;
+		index++;
+		ptr = strtok(NULL, "-");  // Takes a list of delimiters
+	}
+	//Serial.println(strings[0]);
+	//Serial.println(strings[1]);
+	//Serial.println(strings[2]);
 	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
 	// (int)strings[0]
 }
 
 
 void PrintReceipt(String data){
+	// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
 
 	char array[50]; 
 	data.toCharArray(array,50);
@@ -213,16 +215,15 @@ void PrintReceipt(String data){
 	char *ptr = NULL;
 	byte index = 0;
 
-		ptr = strtok(array, "-");  // Takes a list of delimiters
-		while(ptr != NULL)
-		{
-			strings[index] = ptr;
-			index++;
-			ptr = strtok(NULL, "-");  // Takes a list of delimiters
-		}
+	ptr = strtok(array, "-");  // Takes a list of delimiters
+	while(ptr != NULL)
+	{
+		strings[index] = ptr;
+		index++;
+		ptr = strtok(NULL, "-");  // Takes a list of delimiters
+	}
 	
-	// Voeg bonnetjes printer toe en print deze informatie
-	// (int)strings[0]
+	// Print information on receipt printer
 	printer.setSize('L'); //size large
 	printer.justify('C'); //print in center
 	printer.println(F("TimoBank"));
