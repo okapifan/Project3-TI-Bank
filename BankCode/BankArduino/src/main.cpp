@@ -12,15 +12,15 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 
 // Printer
-#define TXD 49
-#define RXD 47
+#define TXD 47
+#define RXD 45
 
-//Servo
-#define Pulse 37
+// Servo
+#define Pulse 35
  
 // Steppemotor
 #define STEPS 32
-Stepper stepper(STEPS, 39, 41, 43, 45);
+Stepper stepper(STEPS, 37, 39, 41, 43);
 
 // Data location
 const byte block = 1;
@@ -43,7 +43,7 @@ byte rowPins[ROWS] = {2, 3, 4, 5}; //Rows 0 to 3
 
 byte colPins[COLS] = {6, 7, 8, 9}; //Columns 0 to 3
 
-//initializes an instance of the Keypad class
+// Initializes an instance of the Keypad class
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // Wait without delay
@@ -63,7 +63,21 @@ void setup()
 	Serial.begin(9600);
 	SPI.begin();
 	mfrc522.PCD_Init();
+	// RFID
 	pinMode (switch_card, INPUT_PULLUP);
+	pinMode (SS_PIN, OUTPUT)
+	pinMode (RST_PIN, OUTPUT)
+	//Steppemotor
+	pinMode (STEPS, OUTPUT)
+	pinMode (37, OUTPUT)
+	pinMode (39, OUTPUT) 
+	pinMode (41, OUTPUT)
+	pinMode (43, OUTPUT)
+	// Printer
+	pinMode (TXD, OUTPUT)
+	pinMode (RXD, OUTPUT)
+	// Servo
+	pinMode (Pulse, OUTPUT)
 
 	stepper.setSpeed(200);
 
@@ -80,7 +94,7 @@ void setup()
 
 void loop()
 {
-	//Serial.print("_");
+	// Serial.print("_");
 
 	char key = keypad.getKey();
 
@@ -110,16 +124,16 @@ void loop()
 				status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &keyRFID, &(mfrc522.uid));
 				if (status != MFRC522::STATUS_OK)
 				{
-					Serial.print(F("Authentication failed: "));
-					Serial.println(mfrc522.GetStatusCodeName(status));
+					// Serial.print(F("Authentication failed: "));
+					// Serial.println(mfrc522.GetStatusCodeName(status));
 					return;
 				}
 
 				status = mfrc522.MIFARE_Read(block, buffer, &len);
 				if (status != MFRC522::STATUS_OK)
 				{
-					Serial.print(F("Reading failed: "));
-					Serial.println(mfrc522.GetStatusCodeName(status));
+					// Serial.print(F("Reading failed: "));
+					// Serial.println(mfrc522.GetStatusCodeName(status));
 					return;
 				}
 
@@ -128,7 +142,7 @@ void loop()
 				{
 					cardData += (char)buffer[i];
 				}
-				SendString("R" + cardData); //SendString("RUS-TIMO-00001234");
+				SendString("R" + cardData); // SendString("RUS-TIMO-00001234");
 
 				mfrc522.PICC_HaltA();
 				mfrc522.PCD_StopCrypto1();
@@ -156,7 +170,7 @@ void loop()
 		
 		
 		// Send string example
-		//SendString(userInput);
+		// SendString(userInput);
 	}
 }
 	
@@ -170,18 +184,18 @@ void DispensMoney(String geld){
 	char *ptr = NULL;
 	byte index = 0;
 
-		ptr = strtok(array, "-");  // takes a list of delimiters
+		ptr = strtok(array, "-");  // Takes a list of delimiters
 		while(ptr != NULL)
 		{
 			strings[index] = ptr;
 			index++;
-			ptr = strtok(NULL, "-");  // takes a list of delimiters
+			ptr = strtok(NULL, "-");  // Takes a list of delimiters
 		}
 	Serial.println(strings[0]);
 	Serial.println(strings[1]);
 	Serial.println(strings[2]);
-	//voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
-	//(int)strings[0]
+	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
+	// (int)strings[0]
 }
 
 
@@ -193,16 +207,16 @@ void PrintReceipt(String data){
 	char *ptr = NULL;
 	byte index = 0;
 
-		ptr = strtok(array, "-");  // takes a list of delimiters
+		ptr = strtok(array, "-");  // Takes a list of delimiters
 		while(ptr != NULL)
 		{
 			strings[index] = ptr;
 			index++;
-			ptr = strtok(NULL, "-");  // takes a list of delimiters
+			ptr = strtok(NULL, "-");  // Takes a list of delimiters
 		}
 	
-	//voeg bonnetjes printer toe en print deze informatie
-	//(int)strings[0]
+	// Voeg bonnetjes printer toe en print deze informatie
+	// (int)strings[0]
 }
 
 
@@ -216,8 +230,8 @@ char *ReceiveString()
 	static char data[21]; // For strings of max length=20
 	if (!Serial.available())
 		return NULL;
-	delay(64);					   // wait for all characters to arrive
-	memset(data, 0, sizeof(data)); // clear data
+	delay(64);					   // Wait for all characters to arrive
+	memset(data, 0, sizeof(data)); // Clear data
 	byte count = 0;
 	while (Serial.available())
 	{
@@ -228,6 +242,6 @@ char *ReceiveString()
 			count++;
 		}
 	}
-	data[count] = '\0'; // make it a zero terminated string
+	data[count] = '\0'; // Make it a zero terminated string
 	return data;
 }
