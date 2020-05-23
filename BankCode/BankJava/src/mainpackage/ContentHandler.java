@@ -482,6 +482,11 @@ public class ContentHandler {
 		//use wantsReceipt to print bon
 		//use pinchoice to print the money from choice x
 
-		
+		// P: Print bon (Info etc)
+		// D: Dispence money (amount $5 bills, amount $10 bills, amount $20 bills, amount $50 bills)(1-0-2-0)
+
+		// Send String example
+		//String data = "Test";
+		//comPort.writeBytes(data.getBytes(), data.length());
 	}
 }
