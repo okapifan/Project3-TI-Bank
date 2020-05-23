@@ -120,10 +120,10 @@ public class ContentHandler {
 					if (pinCode.length() == 4) {
 						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
 					}
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -141,10 +141,10 @@ public class ContentHandler {
 						this.switchTo11TakeCardPanel(false);
 						//Todo Fix later the order (skip 12)
 					}
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -157,10 +157,10 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -187,10 +187,10 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				} else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -215,10 +215,10 @@ public class ContentHandler {
 						this.switchTo11TakeCardPanel(false);
 					}
 					App.panel07TypeAmount.updateTextfield(pinValue);
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -231,10 +231,10 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				}else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -255,10 +255,10 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -275,21 +275,16 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				}else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
-						this.switchTo12PatiencePanel();
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
 			
 			case 11:
-				if (data.substring(0,1).equals("K")) { // Keypad input
-					String key = data.substring(1,2);
-					if (key.equals("D")) { // Temporary: Has to be changed to a check if the RFID pass is removed
-						this.switchTo12PatiencePanel();
-					}
-				} else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
+				if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1,2);
 					if (key.equals("out")) {
 						this.switchTo12PatiencePanel();
@@ -301,6 +296,7 @@ public class ContentHandler {
 				if (data.substring(0,1).equals("D")) { // Dispence money Done
 					this.switchTo13GreetPanel();
 				}
+				break;
 
 
 			default:
@@ -403,7 +399,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
-		startTimer(2000); //Todo Remove this later
+		// startTimer(2000); //Todo Remove this later
 		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
