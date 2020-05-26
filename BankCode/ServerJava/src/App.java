@@ -93,9 +93,9 @@ public class App {
 		String receiveCountry = jsonMessage.getJSONObject("header").getString("receiveCountry");
 		String receiveBank = jsonMessage.getJSONObject("header").getString("receiveBank");
 
-		double balance = 0;
 		int statuscode = 0;
 		String message = "";
+		String addedJson = "";
 		if(receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -123,10 +123,11 @@ public class App {
 						Statement stmt2 = con.createStatement();
 						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
 						rs2.next();
-						balance = rs2.getDouble(1);
+						double balance = rs2.getDouble(1);
 						
 						statuscode = 200;
 						message = "Success";
+						addedJson = ",\"balance\":"+balance+"";
 						System.out.println("GetBalance successfull");
 						con.close();
 					} else {
@@ -145,6 +146,7 @@ public class App {
 						
 						statuscode = 401;
 						message = "Pin incorrect";
+						addedJson = ",\"attempts\":"+(failedAttempts+1)+"";
 						System.out.println("Pin incorrect");
 						con.close();
 					}
@@ -158,8 +160,7 @@ public class App {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"Success\",\"balance\":"+balance+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"balance\"}}";
-			//Todo generate response
+			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"balance\"}}";
 		} else {
 			//dump at landnode
 		}
