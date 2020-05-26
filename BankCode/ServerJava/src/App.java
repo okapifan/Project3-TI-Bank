@@ -10,7 +10,6 @@
 // Database
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileReader;
 
 // Socket
@@ -38,9 +37,7 @@ public class App {
 	static String landNodeIP = "";
 
 	public static void main(String[] args) {
-		JSONParser parser = new JSONParser();
 		try {
-			File file = new File("src/database.json");
 			Object obj = new JSONParser().parse(new FileReader("src/database.json"));
 			databaseConfig = new JSONObject(obj.toString());
 			System.out.println(databaseConfig.toString());
@@ -62,7 +59,7 @@ public class App {
 			DataInputStream din = new DataInputStream(s.getInputStream());
 			DataOutputStream dout = new DataOutputStream(s.getOutputStream());
 			
-			String str = "", str2 = "";
+			String str = "";
 			while (!str.equals("stop")) {
 				// Receive
 				str = din.readUTF();
@@ -105,7 +102,7 @@ public class App {
 				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
 				rs1.next();
 				String pinCode = rs1.getString(1);
-				Boolean isBlocked = rs1.getBoolean(2);
+				boolean isBlocked = rs1.getBoolean(2);
 				if(pinCode.equals(null)){
 
 					statuscode = 404;
@@ -116,7 +113,7 @@ public class App {
 					if (pin.equals(pinCode)) {
 						// Update attempts to 0
 						Statement stmt3 = con.createStatement();
-						stmt3.executeQuery("UPDATE accounts SET failedAttempts = 0 WHERE accountId = "+account);
+						stmt3.executeUpdate("UPDATE accounts SET failedAttempts = 0 WHERE accountId = "+account);
 
 						// Get balance
 						Statement stmt2 = con.createStatement();
@@ -138,9 +135,9 @@ public class App {
 						// Update attempts
 						Statement stmt3 = con.createStatement();
 						if((failedAttempts+1) < 3){
-							stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
 						} else {
-							stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
 						}
 						
 						statuscode = 401;
