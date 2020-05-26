@@ -3,3 +3,6 @@ build/
 dist/
 nbproject/private/
 src/database.json
+.settings/
+.project/
+out/

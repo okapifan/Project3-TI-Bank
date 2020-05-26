@@ -9,12 +9,12 @@ public class MyClient{
 
         String str="",str2="";
         while(!str.equals("stop")){
-            // Receive
+            // Send
             str=br.readLine();
             dout.writeUTF(str);
             dout.flush();
 
-            //Send
+            // Receive
             str2=din.readUTF();
             System.out.println("Server says: "+str2);
         }

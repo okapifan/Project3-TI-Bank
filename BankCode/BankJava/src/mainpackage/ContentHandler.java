@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import mypackage.*;
 
 public class ContentHandler {
-	private DatabaseHandler database;
+	public DatabaseHandler database;
 	
 	private int currentScreen = 5;
 	private CardLayout cl;
@@ -22,7 +22,8 @@ public class ContentHandler {
 	private int timeoutGreet = 3000; //In milliseconds
 
 	//user information
-	private float balance = 0;
+	private double balance = 0;
+	private int attempts = 0;
 	
 	private String bankName = "";
 	private String accountnNr = "";
@@ -38,6 +39,7 @@ public class ContentHandler {
 	private int[][] pinValueChoices = new int[4][4];
 	private int pinValueChoice = 4;
 	private Boolean wantsReceipt = false;
+	private int withdrawValue = 0;
 	
 	public ContentHandler(CardLayout cl, JPanel panelContainer) {
 		this.cl = cl;
@@ -319,6 +321,7 @@ public class ContentHandler {
 	
 	public void switchTo02TypePinPanel() {
 		this.startTimer(timeoutTime);
+		resetPanel2();
 		this.cl.show(panelContainer, "02TypePin");
 		this.currentScreen = 2;
 	}
@@ -331,14 +334,33 @@ public class ContentHandler {
 	
 	public void switchTo04MenuPanel() {
 		this.startTimer(timeoutTime);
-		this.balance = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr); //Todo validate & if blocked, send to panel 3
-		this.cl.show(panelContainer, "04Menu");
-		this.currentScreen = 4;
+
+		//Todo validate & if blocked, send to panel 3
+		int statusCode = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
+		if(statusCode == 200){
+			this.cl.show(panelContainer, "04Menu");
+			this.currentScreen = 4;
+		}
+		else if(statusCode == 401){
+			App.panel02TypePin.changeErrorLabel("Error: Foute pincode. Nog " + (3-attempts) + " pogingen!");
+			switchTo02TypePinPanel();
+		}
+		else if(statusCode == 403){
+			switchTo03CardBlockedPanel();
+		}
+		else if(statusCode == 404){
+			App.panel02TypePin.changeErrorLabel("Error: Onbekende bron van pas!");
+			switchTo02TypePinPanel();
+		}
+		else {
+			App.panel02TypePin.changeErrorLabel("Error: Er ging iets mis!");
+			switchTo02TypePinPanel();
+		}
 	}
 	
 	public void switchTo05BalancePanel() {
 		this.startTimer(timeoutTime);
-		App.panel05Balance.changeBalanceLabel(this.balance);
+		App.panel05Balance.changeBalanceLabel((float)this.balance);
 		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
@@ -375,6 +397,7 @@ public class ContentHandler {
 			return;
 		}
 		if (amount % 5 == 0){
+			this.withdrawValue = amount;
 			//Amount is deelbaar door 5
 			//deel door 50 daarna 20 daarna 10 daarna 5
 			fillPinOptions(0, amount, true, true, true, true);
@@ -421,6 +444,7 @@ public class ContentHandler {
 
 	public void resetInformation() {
 		this.balance = 0;
+		this.attempts = 0;
 		this.country = "";
 		this.bankName = "";
 		this.accountnNr = "";
@@ -428,6 +452,7 @@ public class ContentHandler {
 		this.pinValueChoices = new int[4][4];
 		this.pinValueChoice = 4;
 		this.pinValue = "";
+		this.withdrawValue = 0;
 		this.wantsReceipt = false;
 	}
 
@@ -473,6 +498,13 @@ public class ContentHandler {
 		timer.schedule(task, miliseconds);
 	}
 
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public void setAttempts(int attempts) {
+		this.attempts = attempts;
+	}
+
 	public void stopTimer(){
 		if(task != null){
 			task.cancel();
@@ -480,10 +512,11 @@ public class ContentHandler {
 	}
 
 	public void processMoney(){
-
-		// Send String example
-		//String data = "Test";
-		//comPort.writeBytes(data.getBytes(), data.length());
+		int statusCode = database.withdraw(this.country, this.bankName, this.pinCode, this.accountnNr, this.withdrawValue);
+		if(statusCode == 200){
+		  // Send String example
+		  //String data = "Test";
+		  //comPort.writeBytes(data.getBytes(), data.length());
 
 		if(wantsReceipt){
 			// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
@@ -496,5 +529,13 @@ public class ContentHandler {
 		// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 		String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
 
+
+			//Switch to done panal, in arduino keypad code
+		}
+		else {
+			//Todo show in GUI
+
+			System.out.print("Error: Er ging iets mis!");
+		}
 	}
 }

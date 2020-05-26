@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="packages/jSerialComm-2.6.0.jar"/>
 	<classpathentry kind="lib" path="packages/mysql-connector-java-5.1.48.jar"/>
-	<classpathentry kind="lib" path="packages/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="packages/json-20190722.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
