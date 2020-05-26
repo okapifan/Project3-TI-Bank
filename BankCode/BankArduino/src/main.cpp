@@ -198,11 +198,36 @@ void DispensMoney(String geld){
 		index++;
 		ptr = strtok(NULL, "-");  // Takes a list of delimiters
 	}
-	//Serial.println(strings[0]);
-	//Serial.println(strings[1]);
-	//Serial.println(strings[2]);
+	//Serial.println(strings[0]); //50 Dollar
+	//Serial.println(strings[1]); //20 Dollar
+	//Serial.println(strings[2]); //10 Dollar
+	//Serial.println(strings[3]); //5 Dollar
+
 	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
-	// (int)strings[0]
+	
+	//for (int i = 0; i < (int)strings[0]; i++)
+	//{
+		//stepper.step(val 50 Dollar); 
+		//stepper.step(val Slide);
+	//}
+	
+	//for (int i = 0; i < (int)strings[1]; i++)
+	//{
+		//stepper.step(val 20 Dollar); 
+		//stepper.step(val Slide);
+	//}
+
+	//for (int i = 0; i < (int)strings[2]; i++)
+	//{
+		//stepper.step(val 10 Dollar); 
+		//stepper.step(val Slide);
+	//}
+
+	//for (int i = 0; i < (int)strings[3]; i++)
+	//{
+		//stepper.step(val 5 Dollar); 
+		//stepper.step(val Slide);
+	//}
 
 	// delay van 2 seconden
 	delay(2000); // Moet vervangen worden is alleen een test
