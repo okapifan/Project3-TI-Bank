@@ -117,7 +117,7 @@ void loop()
 		ChangeCardState = digitalRead (switch_card);
 
 		if(!ChangeCardState){	
-			SendString("Cin");
+			//SendString("Cin");
 
 			// Look for new RFID cards
 			bool newCard = mfrc522.PICC_IsNewCardPresent();
@@ -203,6 +203,11 @@ void DispensMoney(String geld){
 	//Serial.println(strings[2]);
 	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
 	// (int)strings[0]
+
+	// delay van 2 seconden
+	delay(2000); // Moet vervangen worden is alleen een test
+	// send D
+	SendString("D");
 }
 
 
