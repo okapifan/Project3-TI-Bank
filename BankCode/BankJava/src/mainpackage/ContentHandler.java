@@ -1,6 +1,7 @@
 package mainpackage;
 
 import java.awt.CardLayout;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,8 +18,8 @@ public class ContentHandler {
 
 	private TimerTask task;
 	private Timer timer = new Timer();
-	private int timeoutTime = 45000; //In miliseconds
-	private int timeoutGreet = 3000; //In miliseconds
+	private int timeoutTime = 45000; //In milliseconds
+	private int timeoutGreet = 3000; //In milliseconds
 
 	//user information
 	private float balance = 0;
@@ -51,11 +52,15 @@ public class ContentHandler {
 		// balancePanel2.changeBalanceLabel(this.balance);
 	}
 	
-// R: RFID card (RUS-TIMO-01234567)
-// K: Keaypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
+// Receive:
+// R: RFID card (US-TIMO-01234567)
+// K: Keypad key (1,2,3,4,5,6,7,8,9,0,*,#,A,B,C,D)
 // C: Card in or out (in,out) in can be replaced with R
 // D: Dispence money Done ()
 
+// Send:
+// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+// D: Dispence money (amount $50 bills - amount $20 bills - amount $10 bills - amount $5 bills)(1-0-2-0)
 
 
 	void parseData(String data, int dataSize) {
@@ -116,6 +121,11 @@ public class ContentHandler {
 					if (pinCode.length() == 4) {
 						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
 					}
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
 				}
 				break;
 		
@@ -132,6 +142,11 @@ public class ContentHandler {
 						this.switchTo11TakeCardPanel(false);
 						//Todo Fix later the order (skip 12)
 					}
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
 				}
 				break;
 
@@ -142,6 +157,11 @@ public class ContentHandler {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
+					}
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -168,7 +188,12 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-				} 
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
+				}
 				break;
 			
 			case 7:
@@ -191,6 +216,11 @@ public class ContentHandler {
 						this.switchTo11TakeCardPanel(false);
 					}
 					App.panel07TypeAmount.updateTextfield(pinValue);
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
 				}
 				break;
 			
@@ -201,6 +231,11 @@ public class ContentHandler {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
+					}
+				}else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
 					}
 				}
 				break;
@@ -221,6 +256,11 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
 				}
 				break;
 
@@ -236,17 +276,17 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
+				} else if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
 				}
 				break;
 			
 			case 11:
-				if (data.substring(0,1).equals("K")) { // Keypad input
-					String key = data.substring(1,2);
-					if (key.equals("D")) { // Temporary: Has to be changed to a check if the RFID pass is removed
-						this.switchTo12PatiencePanel();
-					}
-				} else if (data.substring(0,1).equals("C")) { // Card in or out (Later: in every screen)
-					String key = data.substring(1,2);
+				if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
 					if (key.equals("out")) {
 						this.switchTo12PatiencePanel();
 					}
@@ -257,6 +297,8 @@ public class ContentHandler {
 				if (data.substring(0,1).equals("D")) { // Dispence money Done
 					this.switchTo13GreetPanel();
 				}
+				break;
+
 
 			default:
 				System.out.println("CurrentScreen does not exist");
@@ -358,7 +400,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
-		startTimer(2000); //Todo Remove this later
+		// startTimer(2000); //Todo Remove this later
 		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
@@ -438,9 +480,21 @@ public class ContentHandler {
 	}
 
 	public void processMoney(){
-		//use wantsReceipt to print bon
-		//use pinchoice to print the money from choice x
 
-		
+		// Send String example
+		//String data = "Test";
+		//comPort.writeBytes(data.getBytes(), data.length());
+
+		if(wantsReceipt){
+			// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+			Date d1 = new Date();
+			String receiptString = "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
+		}
+
+		// Check if delay is needed
+
+		// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
+		String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
+
 	}
 }

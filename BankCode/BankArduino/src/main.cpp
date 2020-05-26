@@ -2,11 +2,31 @@
 #include <SPI.h>
 #include <MFRC522.h>
 #include <Keypad.h>
+#include <Stepper.h>
+
+//Printer
+#include "Adafruit_Thermal.h"
+#include "SoftwareSerial.h"
 
 // RFID
-#define SS_PIN 10
-#define RST_PIN A0
+#define SS_PIN 53
+#define RST_PIN 49
+#define switch_card 48
 MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+
+// Printer
+#define TX_PIN 47
+#define RX_PIN 45
+SoftwareSerial mySerial(RX_PIN, TX_PIN); // Declare SoftwareSerial obj first
+Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
+
+// Servo
+#define Pulse 35
+ 
+// Steppemotor
+#define STEPS 32
+Stepper stepper(STEPS, 37, 39, 41, 43);
 
 // Data location
 const byte block = 1;
@@ -29,22 +49,43 @@ byte rowPins[ROWS] = {2, 3, 4, 5}; //Rows 0 to 3
 
 byte colPins[COLS] = {6, 7, 8, 9}; //Columns 0 to 3
 
-//initializes an instance of the Keypad class
+// Initializes an instance of the Keypad class
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // Wait without delay
 unsigned long previousMillis = 0;
 const long interval = 4000;
 
+boolean ChangeCardState; 
+
 // Functions
 void SendString(String data);
 char *ReceiveString();
+void DispensMoney(String geld);
+void PrintReceipt(String data);
 
 void setup()
 {
 	Serial.begin(9600);
 	SPI.begin();
 	mfrc522.PCD_Init();
+	// RFID
+	pinMode (switch_card, INPUT_PULLUP);
+	pinMode (SS_PIN, OUTPUT);
+	pinMode (RST_PIN, OUTPUT);
+	//Steppemotor
+	pinMode (STEPS, OUTPUT);
+	pinMode (37, OUTPUT);
+	pinMode (39, OUTPUT);
+	pinMode (41, OUTPUT);
+	pinMode (43, OUTPUT);
+	// Printer
+  mySerial.begin(9600);  // Initialize SoftwareSerial
+  printer.begin();       // Init printer (same regardless of serial type)
+	// Servo
+	pinMode (Pulse, OUTPUT);
+
+	stepper.setSpeed(200);
 
 	// RFID read key
 	keyRFID.keyByte[0] = 0xFF;
@@ -53,11 +94,13 @@ void setup()
 	keyRFID.keyByte[3] = 0xFF;
 	keyRFID.keyByte[4] = 0xFF;
 	keyRFID.keyByte[5] = 0xFF;
+
+	
 }
 
 void loop()
 {
-	//Serial.print("_");
+	// Serial.print("_");
 
 	char key = keypad.getKey();
 
@@ -67,44 +110,54 @@ void loop()
 	}
 
 
-	// Look for new RFID cards
-	bool newCard = mfrc522.PICC_IsNewCardPresent();
-	bool readCard = mfrc522.PICC_ReadCardSerial();
-	if (newCard && readCard)
-	{
-		//Serial.print("-1-");
+	
 
-		byte buffer[18];
-		MFRC522::StatusCode status;
-		byte len = 18;
+	if (digitalRead (switch_card) != ChangeCardState){
 		
-		status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &keyRFID, &(mfrc522.uid));
-		if (status != MFRC522::STATUS_OK)
-		{
-			//Serial.print(F("Authentication failed: "));
-			//Serial.println(mfrc522.GetStatusCodeName(status));
-			return;
-		}
+		ChangeCardState = digitalRead (switch_card);
 
-		status = mfrc522.MIFARE_Read(block, buffer, &len);
-		if (status != MFRC522::STATUS_OK)
-		{
-			//Serial.print(F("Reading failed: "));
-			//Serial.println(mfrc522.GetStatusCodeName(status));
-			return;
-		}
+		if(!ChangeCardState){	
+			//SendString("Cin");
 
-		String cardData = "";
-		for (uint8_t i = 0; i < 16; i++)
-		{
-			cardData += (char)buffer[i];
+			// Look for new RFID cards
+			bool newCard = mfrc522.PICC_IsNewCardPresent();
+			bool readCard = mfrc522.PICC_ReadCardSerial();
+			if (newCard && readCard){
+				byte buffer[18];
+				MFRC522::StatusCode status;
+				byte len = 18;
+				
+				status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &keyRFID, &(mfrc522.uid));
+				if (status != MFRC522::STATUS_OK)
+				{
+					// Serial.print(F("Authentication failed: "));
+					// Serial.println(mfrc522.GetStatusCodeName(status));
+					return;
+				}
+
+				status = mfrc522.MIFARE_Read(block, buffer, &len);
+				if (status != MFRC522::STATUS_OK)
+				{
+					// Serial.print(F("Reading failed: "));
+					// Serial.println(mfrc522.GetStatusCodeName(status));
+					return;
+				}
+
+				String cardData = "";
+				for (uint8_t i = 0; i < 16; i++)
+				{
+					cardData += (char)buffer[i];
+				}
+				SendString("R" + cardData); // SendString("RUS-TIMO-00001234");
+
+				mfrc522.PICC_HaltA();
+				mfrc522.PCD_StopCrypto1();
+			}
 		}
-		SendString("R" + cardData); //SendString("RUS-TIMO-00001234");
+		else{
+			SendString("Cout");
+		}
 		
-		//Serial.print("-2-");
-
-		mfrc522.PICC_HaltA();
-		mfrc522.PCD_StopCrypto1();
 	}
 
 
@@ -112,12 +165,111 @@ void loop()
 	char *userInput = ReceiveString();
 	if (userInput != NULL)
 	{
-		// Do something with the received string
-
-		// Send the string back to test communication
-		SendString(userInput);
+		
+		String receivedString = userInput;
+		if (receivedString.substring(0,1) == "D") {
+    		DispensMoney(receivedString.substring(2));
+		}
+		else if (receivedString.substring(0,1) == "P") {
+    		PrintReceipt(receivedString.substring(2));
+		}
+		
+		
+		// Send string example
+		// SendString(userInput);
 	}
 }
+	
+
+void DispensMoney(String geld){
+	// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
+
+	char array[50]; 
+	geld.toCharArray(array,50);
+	
+	char *strings[10];
+	char *ptr = NULL;
+	byte index = 0;
+
+	ptr = strtok(array, "-");  // Takes a list of delimiters
+	while(ptr != NULL)
+	{
+		strings[index] = ptr;
+		index++;
+		ptr = strtok(NULL, "-");  // Takes a list of delimiters
+	}
+	//Serial.println(strings[0]); //50 Dollar
+	//Serial.println(strings[1]); //20 Dollar
+	//Serial.println(strings[2]); //10 Dollar
+	//Serial.println(strings[3]); //5 Dollar
+
+	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
+	
+	//for (int i = 0; i < (int)strings[0]; i++)
+	//{
+		//stepper.step(val 50 Dollar); 
+		//stepper.step(val Slide);
+	//}
+	
+	//for (int i = 0; i < (int)strings[1]; i++)
+	//{
+		//stepper.step(val 20 Dollar); 
+		//stepper.step(val Slide);
+	//}
+
+	//for (int i = 0; i < (int)strings[2]; i++)
+	//{
+		//stepper.step(val 10 Dollar); 
+		//stepper.step(val Slide);
+	//}
+
+	//for (int i = 0; i < (int)strings[3]; i++)
+	//{
+		//stepper.step(val 5 Dollar); 
+		//stepper.step(val Slide);
+	//}
+
+	// delay van 2 seconden
+	delay(2000); // Moet vervangen worden is alleen een test
+	// send D
+	SendString("D");
+}
+
+
+void PrintReceipt(String data){
+	// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+
+	char array[50]; 
+	data.toCharArray(array,50);
+	char *strings[10];
+	char *ptr = NULL;
+	byte index = 0;
+
+	ptr = strtok(array, "-");  // Takes a list of delimiters
+	while(ptr != NULL)
+	{
+		strings[index] = ptr;
+		index++;
+		ptr = strtok(NULL, "-");  // Takes a list of delimiters
+	}
+	
+	// Print information on receipt printer
+	printer.setSize('L'); //size large
+	printer.justify('C'); //print in center
+	printer.println(F("TimoBank"));
+	printer.setSize('S'); //size small
+	printer.justify('R'); //print at the right
+	printer.println("datum: " + (String) strings[0]);	
+	printer.println("locatie: US");
+	printer.println("transactie soort: geld opnemen");
+	printer.println("hoeveelheid: " + (String) strings[1]);
+	printer.println("account nummer: " + (String) strings[2]);
+	printer.println("beschikbare balance: " + (String) strings[3]);
+	printer.justify('C'); //print in center
+	printer.println(F("Thanks for using our ATM"));
+
+}
+
 
 void SendString(String data)
 {
@@ -129,8 +281,8 @@ char *ReceiveString()
 	static char data[21]; // For strings of max length=20
 	if (!Serial.available())
 		return NULL;
-	delay(64);					   // wait for all characters to arrive
-	memset(data, 0, sizeof(data)); // clear data
+	delay(64);					   // Wait for all characters to arrive
+	memset(data, 0, sizeof(data)); // Clear data
 	byte count = 0;
 	while (Serial.available())
 	{
@@ -141,6 +293,6 @@ char *ReceiveString()
 			count++;
 		}
 	}
-	data[count] = '\0'; // make it a zero terminated string
+	data[count] = '\0'; // Make it a zero terminated string
 	return data;
 }
