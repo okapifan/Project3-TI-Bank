@@ -8,12 +8,10 @@
  */
 
 // Database
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 
 // Socket
 import java.net.ServerSocket;
@@ -67,8 +65,8 @@ public class App {
 			String str = "", str2 = "";
 			while (!str.equals("stop")) {
 				// Receive
-				//str = din.readUTF();
-				str = "{\"body\":{\"pin\":\"1234\",\"account\":\"00001234\"},\"header\":{\"originCountry\":\"US\",\"originBank\":\"TIMO\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\"}}";
+				str = din.readUTF();
+				//str = "{\"body\":{\"pin\":\"1234\",\"account\":\"00001234\"},\"header\":{\"originCountry\":\"US\",\"originBank\":\"TIMO\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\"}}";
 				
 				String jsonResponse = GetBalance(str);
 
