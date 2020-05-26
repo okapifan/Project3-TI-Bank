@@ -40,7 +40,7 @@ public class App {
 		try {
 			Object obj = new JSONParser().parse(new FileReader("src/database.json"));
 			databaseConfig = new JSONObject(obj.toString());
-			System.out.println(databaseConfig.toString());
+			//System.out.println(databaseConfig.toString());
 			databaseUrl = "jdbc:mysql://" + databaseConfig.get("ip") + ":" + databaseConfig.get("port") + "/"
 					+ databaseConfig.get("database");
 			databaseUser = (String) databaseConfig.get("user");
