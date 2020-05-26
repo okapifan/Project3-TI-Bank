@@ -10,7 +10,6 @@
 // Database
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileReader;
 
 // Socket
@@ -38,12 +37,10 @@ public class App {
 	static String landNodeIP = "";
 
 	public static void main(String[] args) {
-		JSONParser parser = new JSONParser();
 		try {
-			File file = new File("src/database.json");
 			Object obj = new JSONParser().parse(new FileReader("src/database.json"));
 			databaseConfig = new JSONObject(obj.toString());
-			System.out.println(databaseConfig.toString());
+			//System.out.println(databaseConfig.toString());
 			databaseUrl = "jdbc:mysql://" + databaseConfig.get("ip") + ":" + databaseConfig.get("port") + "/"
 					+ databaseConfig.get("database");
 			databaseUser = (String) databaseConfig.get("user");
@@ -62,7 +59,7 @@ public class App {
 			DataInputStream din = new DataInputStream(s.getInputStream());
 			DataOutputStream dout = new DataOutputStream(s.getOutputStream());
 			
-			String str = "", str2 = "";
+			String str = "";
 			while (!str.equals("stop")) {
 				// Receive
 				str = din.readUTF();
