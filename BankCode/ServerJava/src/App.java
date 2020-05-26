@@ -28,14 +28,15 @@ public class App {
 	static String localBankCode = "TIMO";
 	// Connection con; // Database connection
 
-	//static JSONParser parser; 
+	//static JSONParser parser;
 	static JSONObject databaseConfig;
 	static String databaseUrl = "";
 	static String databaseUser = ""; // Change user to an user with less permissions
 	static String databasePassword = "";
 
-	static int landNodePort = 666;
 	static int timobankPort = 8000;
+	static int landNodePort = 666;
+	static String landNodeIP = "";
 
 	public static void main(String[] args) {
 		try {
@@ -58,22 +59,17 @@ public class App {
 			Socket s = ss.accept();
 			DataInputStream din = new DataInputStream(s.getInputStream());
 			DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+			
 			String str = "", str2 = "";
 			while (!str.equals("stop")) {
 				// Receive
 				//str = din.readUTF();
 				str = "{\"body\":{\"pin\":\"1234\",\"account\":\"00001234\"},\"header\":{\"originCountry\":\"US\",\"originBank\":\"TIMO\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\"}}";
-				JSONObject jsonMessage = new JSONObject(str);
-				GetBalance(jsonMessage);
-
 				
-				//System.out.println("client says: " + account);
+				String jsonResponse = GetBalance(str);
 
 				// Send
-				str2 = br.readLine();
-				dout.writeUTF(str2);
+				dout.writeUTF(jsonResponse);
 				dout.flush();
 			}
 			din.close();
@@ -85,7 +81,8 @@ public class App {
 		}
 	}
 
-	public static void GetBalance(JSONObject jsonMessage){
+	public static String GetBalance(String jsonMessageString){
+		JSONObject jsonMessage = new JSONObject(jsonMessageString);
 		String account = jsonMessage.getJSONObject("body").getString("account");
 		String pin = jsonMessage.getJSONObject("body").getString("pin");
 		String originCountry = jsonMessage.getJSONObject("header").getString("originCountry");
@@ -161,10 +158,46 @@ public class App {
 				System.out.println(e);
 			}
 			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"balance\"}}";
+			return jsonResponse;
 		} else {
 			//dump at landnode
-		}
+
+			try {
+				Socket s2;
+				DataInputStream din2;
+				DataOutputStream dout2;
+				s2 = new Socket(landNodeIP, landNodePort);
+				din2 = new DataInputStream(s2.getInputStream());
+				dout2 = new DataOutputStream(s2.getOutputStream());
 	
+	
+	
+				// Send
+				dout2.writeUTF(jsonMessageString);
+				dout2.flush();
+	
+				// Receive
+				while(din2.available() > 0){ // Wait
+					
+				}
+				String str2 = din2.readUTF();
+				//String str2_example = "{\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":999.99},\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\",\"action\":\"balance\"}}";
+				//{"body":{"code":200,"message":"Success","balance":999.99},"header":{"originCountry":"NL","originBank":"INGB","receiveCountry":"US","receiveBank":"TIMO","action":"balance"}}
+	
+				
+				// Close connection
+				dout2.writeUTF("stop");
+				dout2.flush();
+				dout2.close();
+				s2.close();
+
+				return str2;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return "";
+		}
 	}
 	//Ontvang jsonbericht
 	//Verwerk jsonbericht 
