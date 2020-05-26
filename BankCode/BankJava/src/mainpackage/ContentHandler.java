@@ -94,27 +94,30 @@ public class ContentHandler {
 			case 2:
 				if (data.substring(0,1).equals("K")) { // Keypad input
 					String key = data.substring(1,2);
-					if (key.equals("1")) {
-						pinCode += "1";
-					} else if (key.equals("2")) {
-						pinCode += "2";
-					} else if (key.equals("3")) {
-						pinCode += "3";
-					} else if (key.equals("4")) {
-						pinCode += "4";
-					} else if (key.equals("5")) {
-						pinCode += "5";
-					} else if (key.equals("6")) {
-						pinCode += "6";
-					} else if (key.equals("7")) {
-						pinCode += "7";
-					} else if (key.equals("8")) {
-						pinCode += "8";
-					} else if (key.equals("9")) {
-						pinCode += "9";
-					} else if (key.equals("0")) {
-						pinCode += "0";
-					} else if (key.equals("#")) {
+					if (pinCode.length() < 4) {
+						if (key.equals("1")) {
+							pinCode += "1";
+						} else if (key.equals("2")) {
+							pinCode += "2";
+						} else if (key.equals("3")) {
+							pinCode += "3";
+						} else if (key.equals("4")) {
+							pinCode += "4";
+						} else if (key.equals("5")) {
+							pinCode += "5";
+						} else if (key.equals("6")) {
+							pinCode += "6";
+						} else if (key.equals("7")) {
+							pinCode += "7";
+						} else if (key.equals("8")) {
+							pinCode += "8";
+						} else if (key.equals("9")) {
+							pinCode += "9";
+						} else if (key.equals("0")) {
+							pinCode += "0";
+						}
+					}
+					if (key.equals("#")) {
 						pinCode = "";
 						// pinCode clearen;
 						// Laatse character eraf
@@ -343,7 +346,9 @@ public class ContentHandler {
 		}
 		else if(statusCode == 401){
 			App.panel02TypePin.changeErrorLabel("Error: Foute pincode. Nog " + (3-attempts) + " pogingen!");
-			switchTo02TypePinPanel();
+			this.pinCode = ""; // Reset pincode
+			//switchTo02TypePinPanel();
+			return;
 		}
 		else if(statusCode == 403){
 			switchTo03CardBlockedPanel();
