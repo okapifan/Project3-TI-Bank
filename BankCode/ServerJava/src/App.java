@@ -22,6 +22,7 @@ import java.sql.*;
 
 // Json
 import org.json.*;
+import org.json.simple.parser.JSONParser;
 
 public class App {
 	static String localCountryCode = "US";
@@ -39,9 +40,12 @@ public class App {
 	static String landNodeIP = "";
 
 	public static void main(String[] args) {
+		JSONParser parser = new JSONParser();
 		try {
 			File file = new File("src/database.json");
-			databaseConfig = new JSONObject(new FileReader(file));
+			Object obj = new JSONParser().parse(new FileReader("src/database.json"));
+			databaseConfig = new JSONObject(obj.toString());
+			System.out.println(databaseConfig.toString());
 			databaseUrl = "jdbc:mysql://" + databaseConfig.get("ip") + ":" + databaseConfig.get("port") + "/"
 					+ databaseConfig.get("database");
 			databaseUser = (String) databaseConfig.get("user");
