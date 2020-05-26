@@ -66,75 +66,10 @@ public class App {
 				//str = din.readUTF();
 				str = "{\"body\":{\"pin\":\"1234\",\"account\":\"00001234\"},\"header\":{\"originCountry\":\"US\",\"originBank\":\"TIMO\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\"}}";
 				JSONObject jsonMessage = new JSONObject(str);
+				GetBalance(jsonMessage);
 
-				String account = jsonMessage.getJSONObject("body").getString("account");
-				String pin = jsonMessage.getJSONObject("body").getString("pin");
-				String originCountry = jsonMessage.getJSONObject("header").getString("originCountry");
-				String originBank = jsonMessage.getJSONObject("header").getString("originBank");
-				String receiveCountry = jsonMessage.getJSONObject("header").getString("receiveCountry");
-				String receiveBank = jsonMessage.getJSONObject("header").getString("receiveBank");
-
-				String jsonSendMessage = "";
-				if(receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
-					try {
-						Class.forName("com.mysql.jdbc.Driver");
-						Connection con = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
-			
-						// Check pin
-						Statement stmt1 = con.createStatement();
-						ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
-						rs1.next();
-						String pinCode = rs1.getString(1);
-						Boolean isBlocked = rs1.getBoolean(2);
-						int statuscode = 0;
-						if(!isBlocked){
-							if (pin.equals(pinCode)) {
-								// Update attempts to 0
-								Statement stmt3 = con.createStatement();
-								stmt3.executeQuery("UPDATE accounts SET failedAttempts = 0 WHERE accountId = "+account);
-	
-								// Get balance
-								Statement stmt2 = con.createStatement();
-								ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
-								rs2.next();
-								double balance = rs2.getDouble(1);
-								
-								statuscode = 200;
-								System.out.println("GetBalance successfull");
-								con.close();
-							} else {
-								Statement stmt4 = con.createStatement();
-								ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
-								rs4.next();
-								int failedAttempts = rs4.getInt(1);	
-								
-								// Update attempts
-								Statement stmt3 = con.createStatement();
-								if((failedAttempts+1) < 3){
-									stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
-								} else {
-									stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
-								}
-								
-								statuscode = 401;
-								System.out.println("Pin incorrect");
-								con.close();
-							}
-						} else {
-
-							statuscode = 403;
-							System.out.println("Pin blocked");
-							con.close();
-						}
-					} catch (Exception e) {
-						System.out.println(e);
-					}
-					//Todo check for 0 results
-					//Todo generate response
-				} else {
-					//dump at landnode
-				}
-				System.out.println("client says: " + account);
+				
+				//System.out.println("client says: " + account);
 
 				// Send
 				str2 = br.readLine();
@@ -150,7 +85,86 @@ public class App {
 		}
 	}
 
+	public static void GetBalance(JSONObject jsonMessage){
+		String account = jsonMessage.getJSONObject("body").getString("account");
+		String pin = jsonMessage.getJSONObject("body").getString("pin");
+		String originCountry = jsonMessage.getJSONObject("header").getString("originCountry");
+		String originBank = jsonMessage.getJSONObject("header").getString("originBank");
+		String receiveCountry = jsonMessage.getJSONObject("header").getString("receiveCountry");
+		String receiveBank = jsonMessage.getJSONObject("header").getString("receiveBank");
 
+		double balance = 0;
+		int statuscode = 0;
+		String message = "";
+		if(receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
+	
+				// Check pin
+				Statement stmt1 = con.createStatement();
+				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
+				rs1.next();
+				String pinCode = rs1.getString(1);
+				Boolean isBlocked = rs1.getBoolean(2);
+				if(pinCode.equals(null)){
+
+					statuscode = 404;
+					message = "Pinpas not found";
+					System.out.println("Pinpas not found");
+					con.close();
+				} else if(!isBlocked){
+					if (pin.equals(pinCode)) {
+						// Update attempts to 0
+						Statement stmt3 = con.createStatement();
+						stmt3.executeQuery("UPDATE accounts SET failedAttempts = 0 WHERE accountId = "+account);
+
+						// Get balance
+						Statement stmt2 = con.createStatement();
+						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
+						rs2.next();
+						balance = rs2.getDouble(1);
+						
+						statuscode = 200;
+						message = "Success";
+						System.out.println("GetBalance successfull");
+						con.close();
+					} else {
+						Statement stmt4 = con.createStatement();
+						ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
+						rs4.next();
+						int failedAttempts = rs4.getInt(1);	
+						
+						// Update attempts
+						Statement stmt3 = con.createStatement();
+						if((failedAttempts+1) < 3){
+							stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
+						} else {
+							stmt3.executeQuery("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
+						}
+						
+						statuscode = 401;
+						message = "Pin incorrect";
+						System.out.println("Pin incorrect");
+						con.close();
+					}
+				} else {
+
+					statuscode = 403;
+					message = "Pinpas blocked";
+					System.out.println("Pin blocked");
+					con.close();
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"Success\",\"balance\":"+balance+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"balance\"}}";
+			//Todo generate response
+		} else {
+			//dump at landnode
+		}
+	
+	}
 	//Ontvang jsonbericht
 	//Verwerk jsonbericht 
 	//Stuur jsonresponse terug
