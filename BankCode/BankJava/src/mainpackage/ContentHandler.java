@@ -126,6 +126,8 @@ public class ContentHandler {
 					if (pinCode.length() == 4) {
 						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
 					}
+					
+					App.panel02TypePin.updateTextfield(pinCode);
 				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1);
 					if (key.equals("out")) {
@@ -478,6 +480,8 @@ public class ContentHandler {
 
 	public void resetPanel2(){
 		App.panel02TypePin.changeErrorLabel("");
+		App.panel02TypePin.updateTextfield("");
+		this.pinCode = "";
 	}
 
 	public void fillPinOptions(int index, int amount, Boolean use50, Boolean use20, Boolean use10, Boolean use5){
