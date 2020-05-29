@@ -123,11 +123,10 @@ public class ContentHandler {
 						// Laatse character eraf
 					}
 
+					App.panel02TypePin.updateTextfield(pinCode);
 					if (pinCode.length() == 4) {
 						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
 					}
-					
-					App.panel02TypePin.updateTextfield(pinCode);
 				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1);
 					if (key.equals("out")) {
@@ -281,6 +280,7 @@ public class ContentHandler {
 
 			case 10:
 				if (data.substring(0,1).equals("K")) { // Keypad input
+					//TODO bug: no input??
 					String key = data.substring(1,2);
 					if(data.equals("1")) {
 						this.switchTo11TakeCardPanel(true);
@@ -312,6 +312,9 @@ public class ContentHandler {
 				if (data.substring(0,1).equals("D")) { // Dispence money Done
 					this.switchTo13GreetPanel();
 				}
+				break;
+
+			case 13:
 				break;
 
 
