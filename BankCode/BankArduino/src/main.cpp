@@ -69,22 +69,23 @@ void setup()
 	Serial.begin(9600);
 	SPI.begin();
 	mfrc522.PCD_Init();
+
 	// RFID
 	pinMode (switch_card, INPUT_PULLUP);
-	pinMode (SS_PIN, OUTPUT);
-	pinMode (RST_PIN, OUTPUT);
+	
 	//Steppemotor
 	pinMode (STEPS, OUTPUT);
 	pinMode (37, OUTPUT);
 	pinMode (39, OUTPUT);
 	pinMode (41, OUTPUT);
 	pinMode (43, OUTPUT);
+
 	// Printer
-  mySerial.begin(9600);  // Initialize SoftwareSerial
-  printer.begin();       // Init printer (same regardless of serial type)
+  	mySerial.begin(9600);  // Initialize SoftwareSerial
+  	printer.begin();       // Init printer (same regardless of serial type)
+
 	// Servo
 	pinMode (Pulse, OUTPUT);
-
 	stepper.setSpeed(200);
 
 	// RFID read key
@@ -94,8 +95,6 @@ void setup()
 	keyRFID.keyByte[3] = 0xFF;
 	keyRFID.keyByte[4] = 0xFF;
 	keyRFID.keyByte[5] = 0xFF;
-
-	
 }
 
 void loop()
