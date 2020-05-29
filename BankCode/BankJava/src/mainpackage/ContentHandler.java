@@ -133,6 +133,15 @@ public class ContentHandler {
 					}
 				}
 				break;
+
+			case 3:
+				if (data.substring(0,1).equals("C")) { // Card in or out
+					String key = data.substring(1);
+					if (key.equals("out")) {
+						this.switchTo13GreetPanel();
+					}
+				}
+				break;
 		
 			case 4:
 				if (data.substring(0,1).equals("K")) { // Keypad input
