@@ -156,7 +156,6 @@ public class ContentHandler {
 						this.switchTo09ChooseHowPanel(70);
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
-						//Todo Fix later the order (skip 12)
 					}
 				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1);

@@ -355,7 +355,7 @@ public class JPanel04 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        App.contentHandler.switchTo01StartPanel();
+        App.contentHandler.switchTo11TakeCardPanel(false);
 		// (A) Afsluiten
     }//GEN-LAST:event_jButton1ActionPerformed
 
