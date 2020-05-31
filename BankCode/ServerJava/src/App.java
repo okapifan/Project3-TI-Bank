@@ -299,7 +299,7 @@ public class App {
 			} catch(Exception e){
 				e.printStackTrace();
 			}
-			String jsonResponse = "{}"; //Todo create json string
+			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"withdraw\"}}";
 			return jsonResponse;
 		} else {
 			//landnode
