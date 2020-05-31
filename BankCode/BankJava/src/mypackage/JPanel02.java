@@ -108,6 +108,10 @@ public class JPanel02 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void updateTextfield(String newText){
+        jPasswordField1.setText(newText);
+    }
+
     public void changeErrorLabel(String errorMessage){
         jLabel3.setText(errorMessage);
     }
