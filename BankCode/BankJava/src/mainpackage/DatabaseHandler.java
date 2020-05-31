@@ -46,17 +46,14 @@ public class DatabaseHandler {
 	public int getBalance(String countryCode, String bankCode, String pin, String account) {
 		try {
 			// Send
-			String str = "{\"body\":{\"pin\":\"" + pin + "\",\"account\":\"" + account + "\"},\"header\":{\"originCountry\":\"" + localCountryCode + "\",\"originBank\":\"" + localBankCode + "\",\"receiveCountry\":\"" + countryCode + "\",\"receiveBank\":\"" + bankCode + "\"}}";
+			String str = "{\"header\":{\"originCountry\":\"" + localCountryCode + "\",\"originBank\":\"" + localBankCode + "\",\"receiveCountry\":\"" + countryCode + "\",\"receiveBank\":\"" + bankCode + "\",\"action\":\"balance\"},\"body\":{\"pin\":\"" + pin + "\",\"account\":\"" + account + "\"}}";
 			dout.writeUTF(str);
 			dout.flush();
 
 			// Receive
-			while(din.available() > 0){
-				
-			}
+			while(din.available() > 0){}
 			String str2 = din.readUTF();
-			//String str2_example = "{\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":999.99},\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\",\"action\":\"balance\"}}";
-			//{"body":{"code":200,"message":"Success","balance":999.99},"header":{"originCountry":"NL","originBank":"INGB","receiveCountry":"US","receiveBank":"TIMO","action":"balance"}}
+			//String str2_example = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\",\"action\":\"balance\"},\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":999.99}}";
 
 			JSONObject obj = new JSONObject(str2);
 			int statusCode = obj.getJSONObject("body").getInt("code");
@@ -78,8 +75,8 @@ public class DatabaseHandler {
 		}
 		
 		//Example json
-		//String getBalanceBody = "{\"body\":{\"pin\":\"1234\",\"account\":\"123456\"},\"header\":{\"originCountry\":\"DE\",\"originBank\":\"DEBA\",\"receiveCountry\":\"NL\",\"receiveBank\":\"INGB\"}}";
-		//String receivedString = "{\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":9999.99},\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"balance\"}}";
+		//String getBalanceBody = "{\"header\":{\"originCountry\":\"DE\",\"originBank\":\"DEBA\",\"receiveCountry\":\"NL\",\"receiveBank\":\"INGB\",\"action\":\"balance\"},\"body\":{\"pin\":\"1234\",\"account\":\"123456\"}}";
+		//String receivedString = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"balance\"},\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":9999.99}}";
 		 
 		return 0;
 	}
@@ -87,13 +84,14 @@ public class DatabaseHandler {
 	public int withdraw(String countryName, String bankName, String pin, String account, int amount) {
 		try {
 			// Send
-			String str = "{\"header\":{\"originCountry\":\""+localCountryCode+"\",\"originBank\":\""+localBankCode+"\",\"receiveCountry\":\""+countryName+"\",\"receiveBank\":\""+bankName+"\"},\"body\":{\"pin\":\""+pin+"\",\"account\":\""+account+"\",\"amount\":"+amount+"}}";
+			String str = "{\"header\":{\"originCountry\":\"" + localCountryCode + "\",\"originBank\":\"" + localBankCode + "\",\"receiveCountry\":\"" + countryName + "\",\"receiveBank\":\"" + bankName + "\",\"action\":\"withdraw\"},\"body\":{\"pin\":\"" + pin + "\",\"account\":\"" + account + "\",\"amount\":" + amount + "}}";
 			dout.writeUTF(str);
 			dout.flush();
 
 			// Receive
-			while(din.available() > 0) { }
+			while(din.available() > 0) {}
 			String str2 = din.readUTF();
+			//String str2_example = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"code\":200,\"message\":\"Success\"}}";
 
 			JSONObject obj = new JSONObject(str2);
 			int statusCode = obj.getJSONObject("body").getInt("code");
@@ -110,7 +108,7 @@ public class DatabaseHandler {
 		}
 
 		//Example json
-		//String withdrawBody = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\"},\"body\":{\"pin\":\"1234\",\"account\":\"123456\",\"amount\":123.45}}";
+		//String withdrawBody = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"pin\":\"1234\",\"account\":\"123456\",\"amount\":123.45}}";
 		//String receivedString = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"code\":200,\"message\":\"Success\"}}";
 
 		return 0;
