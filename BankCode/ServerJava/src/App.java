@@ -216,4 +216,95 @@ public class App {
 			return "";
 		}
 	}
+
+	public static String witdraw(JSONObject jsonMessage){
+		String account = jsonMessage.getJSONObject("body").getString("account");
+		String pin = jsonMessage.getJSONObject("body").getString("pin");
+		double amount = jsonMessage.getJSONObject("body").getDouble("amount");
+		String originCountry = jsonMessage.getJSONObject("header").getString("originCountry");
+		String originBank = jsonMessage.getJSONObject("header").getString("originBank");
+		String receiveCountry = jsonMessage.getJSONObject("header").getString("receiveCountry");
+		String receiveBank = jsonMessage.getJSONObject("header").getString("receiveBank");
+
+		int statuscode = 0;
+		String message = "";
+		String addedJson = "";
+
+		if(receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
+	
+				// Check pin
+				Statement stmt1 = con.createStatement();
+				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
+				rs1.next();
+				String pinCode = rs1.getString(1);
+				boolean isBlocked = rs1.getBoolean(2);
+				if(pinCode.equals(null)){
+
+					statuscode = 404;
+					message = "Pinpas not found";
+					System.out.println("Pinpas not found");
+					con.close();
+				} else if(!isBlocked){
+					if (pin.equals(pinCode)) {
+					
+						// Get balance
+						Statement stmt2 = con.createStatement();
+						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
+						rs2.next();
+						double balance = rs2.getDouble(1);
+						if((balance - amount) >= 0){
+							Statement stmt3 = con.createStatement();
+							stmt3.executeUpdate("UPDATE accounts SET balance = "+(balance - amount)+" WHERE accountId = " + account);
+						
+							statuscode = 200;
+							message = "Success";
+							System.out.println("witdraw successfull");
+							con.close();
+						} else {
+							statuscode = 402;
+							message = "Not enough money";
+							System.out.println("Not enough money");
+							con.close();
+						}
+					} else {
+						Statement stmt4 = con.createStatement();
+						ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
+						rs4.next();
+						int failedAttempts = rs4.getInt(1);	
+					
+						// Update attempts
+						Statement stmt3 = con.createStatement();
+						if((failedAttempts+1) < 3){
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
+						} else {
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
+						}
+					
+						statuscode = 401;
+						addedJson = ",\"attempts\":"+(failedAttempts+1)+"";
+						message = "Pin incorrect";
+						System.out.println("Pin incorrect");
+						con.close();
+					}
+				}else {
+					
+					statuscode = 403;
+					message = "Pinpas blocked";
+					System.out.println("Pin blocked");
+					con.close();
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+			String jsonResponse = "{}"; //Todo create json string
+			return jsonResponse;
+		} else {
+			//landnode
+		}
+		
+		return "";
+	}
 }
