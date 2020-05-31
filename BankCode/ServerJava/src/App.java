@@ -63,11 +63,28 @@ public class App {
 			while (!str.equals("stop")) {
 				// Receive
 				str = din.readUTF();
+				System.out.println("Incoming message: " + str);
 				//str = "{\"body\":{\"pin\":\"1234\",\"account\":\"00001234\"},\"header\":{\"originCountry\":\"US\",\"originBank\":\"TIMO\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\"}}";
 				
-				String jsonResponse = GetBalance(str);
+				String jsonResponse;
+				try {
+					JSONObject jsonMessage = new JSONObject(str);
+					String action = jsonMessage.getJSONObject("header").getString("action");
+					if(action.equals("balance")){
+						jsonResponse = getBalance(jsonMessage);
+					}
+					else if(action.equals("withdraw")){
+						jsonResponse = "withdraw";//withdraw(jsonMessage);
+					}
+					else {
+						jsonResponse = "";
+					}
+				} catch (Exception e) {
+					jsonResponse = "";
+				}
 
 				// Send
+				System.out.println("Outgoing message: " + jsonResponse);
 				dout.writeUTF(jsonResponse);
 				dout.flush();
 			}
@@ -78,10 +95,11 @@ public class App {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		makeSoccetConnection();
 	}
 
-	public static String GetBalance(String jsonMessageString){
-		JSONObject jsonMessage = new JSONObject(jsonMessageString);
+	public static String getBalance(JSONObject jsonMessage){
 		String account = jsonMessage.getJSONObject("body").getString("account");
 		String pin = jsonMessage.getJSONObject("body").getString("pin");
 		String originCountry = jsonMessage.getJSONObject("header").getString("originCountry");
@@ -172,7 +190,7 @@ public class App {
 	
 	
 				// Send
-				dout2.writeUTF(jsonMessageString);
+				dout2.writeUTF(jsonMessage.toString());
 				dout2.flush();
 	
 				// Receive
@@ -198,7 +216,4 @@ public class App {
 			return "";
 		}
 	}
-	//Ontvang jsonbericht
-	//Verwerk jsonbericht 
-	//Stuur jsonresponse terug
 }
