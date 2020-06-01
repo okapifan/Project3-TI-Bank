@@ -454,8 +454,7 @@ public class ContentHandler {
 			this.processMoney();
 		}
 		else{
-			this.cl.show(panelContainer, "13Greet");
-			this.currentScreen = 13;
+			switchTo13GreetPanel();
 		}
 	}
 	
