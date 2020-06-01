@@ -542,20 +542,20 @@ public class ContentHandler {
 
 		int statusCode = database.withdraw(this.country, this.bankName, this.pinCode, this.accountnNr, this.withdrawValue);
 		if(statusCode == 200){
-		  // Send String example
-		  //String data = "Test";
-		  //comPort.writeBytes(data.getBytes(), data.length());
+			// Send String example
+			//String data = "Test";
+			//comPort.writeBytes(data.getBytes(), data.length());
 
-		if(wantsReceipt){
-			// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
-			Date d1 = new Date();
-			String receiptString = "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
-		}
+			if(wantsReceipt){
+				// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+				Date d1 = new Date();
+				String receiptString = "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
+			}
 
-		// Check if delay is needed
+			// Check if delay is needed
 
-		// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
-		String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
+			// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
+			String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
 
 
 			//Switch to done panal, in arduino keypad code
