@@ -12,7 +12,7 @@ import mypackage.*;
 public class ContentHandler {
 	public DatabaseHandler database;
 	
-	private int currentScreen = 5;
+	private int currentScreen = 1;
 	private CardLayout cl;
 	private JPanel panelContainer;
 
@@ -31,7 +31,7 @@ public class ContentHandler {
 	private String pinCode = "";
 
 	// private String bankName = "TIMO";
-	// private String accountnNr = "1234";
+	// private String accountnNr = "00001234";
 	// private String country = "US";
 	// private String pinCode = "1234";
 	
@@ -448,9 +448,15 @@ public class ContentHandler {
 	}
 	
 	public void switchTo12PatiencePanel() {
-		this.cl.show(panelContainer, "12Patience");
-		this.currentScreen = 12;
-		this.processMoney(); //Todo get this method working
+		if(!pinValue.equals("")){ // Skip to 13 if not pinning money
+			this.cl.show(panelContainer, "12Patience");
+			this.currentScreen = 12;
+			this.processMoney();
+		}
+		else{
+			this.cl.show(panelContainer, "13Greet");
+			this.currentScreen = 13;
+		}
 	}
 	
 	public void switchTo13GreetPanel() {
@@ -532,6 +538,8 @@ public class ContentHandler {
 	}
 
 	public void processMoney(){
+		//TODO: get this method working
+
 		int statusCode = database.withdraw(this.country, this.bankName, this.pinCode, this.accountnNr, this.withdrawValue);
 		if(statusCode == 200){
 		  // Send String example
