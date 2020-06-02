@@ -29,12 +29,12 @@ public class KeypadActionListoner implements ActionListener {
 			}
 
 			
-			// Send String example
-			//String data = "Test";
-			//comPort.writeBytes(data.getBytes(), data.length());
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	
 }

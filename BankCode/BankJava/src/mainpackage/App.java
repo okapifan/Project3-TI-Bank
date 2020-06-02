@@ -23,6 +23,7 @@ import com.fazecast.jSerialComm.SerialPort;
 public class App {
 	static CardLayout cl;
 	static JPanel panelContainer;
+	static SerialPort comPort;
 	public static ContentHandler contentHandler;
 	public static JPanel00 panel00NotInUse = new JPanel00();
 	public static JPanel01 panel01Start = new JPanel01();
@@ -40,7 +41,7 @@ public class App {
 	public static JPanel13 panel13Greet = new JPanel13();
 
 	public static void main(String[] args) {
-		SerialPort comPort = SerialPort.getCommPorts()[1];
+		comPort = SerialPort.getCommPorts()[1];
 		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		
@@ -89,5 +90,11 @@ public class App {
 		int delay = 50; // Milliseconds
 		ActionListener taskPerformer = new KeypadActionListoner(comPort);
 		new Timer(delay, taskPerformer).start();
+	}
+
+	public static void sendArduino(String data){
+		// Send String example
+		//String data = "Test";
+		comPort.writeBytes(data.getBytes(), data.length());
 	}
 }
