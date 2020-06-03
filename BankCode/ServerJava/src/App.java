@@ -22,6 +22,7 @@ import org.json.*;
 import org.json.simple.parser.JSONParser;
 
 public class App {
+
 	static String localCountryCode = "US";
 	static String localBankCode = "TIMO";
 	// Connection con; // Database connection

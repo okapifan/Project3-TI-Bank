@@ -229,7 +229,7 @@ public class ContentHandler {
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false);
 					}
-					App.panel07TypeAmount.updateTextfield(pinValue);
+					App.panel02TypePin.updateTextfield(pinValue);
 				} else if (data.substring(0,1).equals("C")) { // Card in or out
 					String key = data.substring(1);
 					if (key.equals("out")) {
@@ -282,9 +282,9 @@ public class ContentHandler {
 				if (data.substring(0,1).equals("K")) { // Keypad input
 					//TODO bug: no input??
 					String key = data.substring(1,2);
-					if(data.equals("1")) {
+					if(key.equals("1")) {
 						this.switchTo11TakeCardPanel(true);
-					} else if(data.equals("2")) {
+					} else if(key.equals("2")) {
 						this.switchTo11TakeCardPanel(false);
 					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
@@ -336,20 +336,20 @@ public class ContentHandler {
 	}
 	
 	public void switchTo02TypePinPanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		resetPanel2();
 		this.cl.show(panelContainer, "02TypePin");
 		this.currentScreen = 2;
 	}
 	
 	public void switchTo03CardBlockedPanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		this.cl.show(panelContainer, "03CardBlocked");
 		this.currentScreen = 3;
 	}
 	
 	public void switchTo04MenuPanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 
 		//Todo validate & if blocked, send to panel 3
 		int statusCode = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
@@ -360,6 +360,7 @@ public class ContentHandler {
 		else if(statusCode == 401){
 			App.panel02TypePin.changeErrorLabel("Error: Foute pincode. Nog " + (3-attempts) + " pogingen!");
 			this.pinCode = ""; // Reset pincode
+			App.panel02TypePin.updateTextfield(this.pinCode);
 			//switchTo02TypePinPanel();
 			return;
 		}
@@ -377,20 +378,20 @@ public class ContentHandler {
 	}
 	
 	public void switchTo05BalancePanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		App.panel05Balance.changeBalanceLabel((float)this.balance);
 		this.cl.show(panelContainer, "05Balance");
 		this.currentScreen = 5;
 	}
 	
 	public void switchTo06ChooseAmountPanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		this.cl.show(panelContainer, "06ChooseAmount");
 		this.currentScreen = 6;
 	}
 	
 	public void switchTo07TypeAmountPanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		this.resetPanel7();
 		//App.panel07TypeAmount.changeAvailableBillPanels(available5, available10, available20, available50);
 		this.cl.show(panelContainer, "07TypeAmount");
@@ -398,13 +399,13 @@ public class ContentHandler {
 	}
 	
 	public void switchTo08NotEnoughPanel() {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		this.cl.show(panelContainer, "08NotEnough");
 		this.currentScreen = 8;
 	}
 	
 	public void switchTo09ChooseHowPanel(int amount) {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		System.out.println(amount + " > " + (int) this.balance);
 		if(amount > ((int) this.balance)) {
 			switchTo08NotEnoughPanel();
@@ -434,20 +435,20 @@ public class ContentHandler {
 	}
 	
 	public void switchTo10ReceiptPanel(int choiceId) {
-		this.startTimer(timeoutTime);
+		this.startTimer(timeoutTime, false);
 		this.pinValueChoice = choiceId;
 		this.cl.show(panelContainer, "10Receipt");
 		this.currentScreen = 10;
 	}
 	
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
-		// startTimer(2000); //Todo Remove this later
 		this.wantsReceipt = wantsReceipt;
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
 	}
 	
 	public void switchTo12PatiencePanel() {
+		stopTimer();
 		if(this.withdrawValue != 0) { // Skip to 13 if not pinning money
 			this.cl.show(panelContainer, "12Patience");
 			this.currentScreen = 12;
@@ -459,7 +460,7 @@ public class ContentHandler {
 	}
 	
 	public void switchTo13GreetPanel() {
-		this.startTimer(timeoutGreet);	
+		this.startTimer(timeoutGreet, true);	
 		this.resetInformation();
 		this.cl.show(panelContainer, "13Greet");
 		this.currentScreen = 13;
@@ -511,13 +512,18 @@ public class ContentHandler {
 		}
 	}
 
-	public void startTimer(int miliseconds){
+	public void startTimer(int miliseconds, boolean ignoreTakeOut){
 		stopTimer();
 		task = new TimerTask() {
 			public void run(){
-				switchTo01StartPanel();
-				resetInformation();
-				this.cancel();
+				if(ignoreTakeOut){
+					switchTo01StartPanel();
+					resetInformation();
+					this.cancel();
+				} else {
+					switchTo11TakeCardPanel(false);
+					this.cancel();
+				}
 			}
 		};
 		timer.schedule(task, miliseconds);
