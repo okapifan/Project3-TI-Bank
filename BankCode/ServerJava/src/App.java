@@ -92,7 +92,7 @@ public class App {
 						jsonResponse = getBalance(jsonMessage);
 					}
 					else if(action.equals("withdraw")){
-						jsonResponse = "withdraw";//withdraw(jsonMessage);
+						jsonResponse = withdraw(jsonMessage);
 					}
 					else {
 						jsonResponse = "";
@@ -131,7 +131,7 @@ public class App {
 				response = getBalance(json);
 			}
 			else if (type == "withdraw"){
-				response = witdraw(json);
+				response = withdraw(json);
 			}
 			else {
 				// Error
@@ -236,7 +236,7 @@ public class App {
 		}
 	}
 
-	public static String witdraw(JSONObject jsonMessage){
+	public static String withdraw(JSONObject jsonMessage){
 		String account = jsonMessage.getJSONObject("body").getString("account");
 		String pin = jsonMessage.getJSONObject("body").getString("pin");
 		double amount = jsonMessage.getJSONObject("body").getDouble("amount");
