@@ -8,6 +8,7 @@
  */
 
 // Database
+import java.beans.VetoableChangeSupport;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileReader;
@@ -33,9 +34,14 @@ public class App {
 	static String databaseUser = ""; // Change user to an user with less permissions
 	static String databasePassword = "";
 
-	static int timobankPort = 8000;
+	static int localPortATM = 8000;
+	static int localPortLandNode = 665;
 	static int landNodePort = 666;
 	static String landNodeIP = "";
+
+	// LandNode
+	static ServerSocket server = null;
+	static DataInputStream dIn;
 
 	public static void main(String[] args) {
 		try {
@@ -46,16 +52,27 @@ public class App {
 					+ databaseConfig.get("database");
 			databaseUser = (String) databaseConfig.get("user");
 			databasePassword = (String) databaseConfig.get("pass");
+
+			try {
+				server = new ServerSocket(localPortLandNode);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		makeSoccetConnection();
+		while(true){
+			makeSoccetConnectionATM();
+
+			// Listen for request from LandNode
+			listenForLandNodeRequest();
+		}
 	}
 
-	public static void makeSoccetConnection() {
+	public static void makeSoccetConnectionATM() {
 		try {
-			ServerSocket ss = new ServerSocket(timobankPort);
+			ServerSocket ss = new ServerSocket(localPortATM);
 			Socket s = ss.accept();
 			DataInputStream din = new DataInputStream(s.getInputStream());
 			DataOutputStream dout = new DataOutputStream(s.getOutputStream());
@@ -96,8 +113,41 @@ public class App {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
-		makeSoccetConnection();
+	public static void listenForLandNodeRequest(){
+		try {
+			// Receive
+			Socket socket = server.accept();
+			System.out.println("Received packet from LandNode");
+			dIn = new DataInputStream(socket.getInputStream());
+			String type = dIn.readUTF();
+			JSONObject json = new JSONObject(dIn.readUTF());
+			socket.close();
+
+			// Process
+			String response = "";
+			if (type == "balance"){
+				response = getBalance(json);
+			}
+			else if (type == "withdraw"){
+				response = witdraw(json);
+			}
+			else {
+				// Error
+			}
+
+			// Send
+			Socket bankConnection = new Socket(landNodeIP, landNodePort);
+			DataOutputStream dOut = new DataOutputStream(bankConnection.getOutputStream());
+			dOut.writeUTF("response");
+			dOut.writeUTF(response);
+			System.out.println("Sent data back to LandNode");
+			bankConnection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static String getBalance(JSONObject jsonMessage){
@@ -178,43 +228,11 @@ public class App {
 			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"balance\"}}";
 			return jsonResponse;
 		} else {
-			//dump at landnode
+			// Dump at landnode
 
-			try {
-				Socket s2;
-				DataInputStream din2;
-				DataOutputStream dout2;
-				s2 = new Socket(landNodeIP, landNodePort);
-				din2 = new DataInputStream(s2.getInputStream());
-				dout2 = new DataOutputStream(s2.getOutputStream());
-	
-	
-	
-				// Send
-				dout2.writeUTF(jsonMessage.toString());
-				dout2.flush();
-	
-				// Receive
-				while(din2.available() > 0){ // Wait
-					
-				}
-				String str2 = din2.readUTF();
-				//String str2_example = "{\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":999.99},\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\",\"action\":\"balance\"}}";
-				//{"body":{"code":200,"message":"Success","balance":999.99},"header":{"originCountry":"NL","originBank":"INGB","receiveCountry":"US","receiveBank":"TIMO","action":"balance"}}
-	
-				
-				// Close connection
-				dout2.writeUTF("stop");
-				dout2.flush();
-				dout2.close();
-				s2.close();
+			String jsonResponse = askLandNode("balance", jsonMessage);
 
-				return str2;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return "";
+			return jsonResponse;
 		}
 	}
 
@@ -303,9 +321,49 @@ public class App {
 			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"withdraw\"}}";
 			return jsonResponse;
 		} else {
-			//landnode
+			// Dump at landnode
+
+			String jsonResponse = askLandNode("withdraw", jsonMessage);
+
+			return jsonResponse;
 		}
-		
+	}
+
+	public static String askLandNode(String type, JSONObject jsonMessage){
+		try{
+			// Send
+			Socket s1 = new Socket(landNodeIP, landNodePort);
+			DataOutputStream dOut = new DataOutputStream(s1.getOutputStream());
+			dOut.writeUTF(type);
+			dOut.writeUTF(jsonMessage.toString());
+			System.out.println("" + type + ": Sent");
+			s1.close();
+			//dOut.flush();
+			
+			
+
+			// Receive
+			Socket s2 = null;
+			boolean check = false;
+			while(check == false) // Wait
+			{
+				try {
+					s2 = server.accept();
+					check = true;
+				} catch (Exception e) {
+				}
+			}
+			//Socket s2 = server.accept();
+			dIn = new DataInputStream(s2.getInputStream());
+			String type2 = dIn.readUTF(); // Should be "response"
+			JSONObject jsonResponse = new JSONObject(dIn.readUTF());
+			System.out.println("" + type + ": Receive");
+			s2.close();
+
+			return jsonResponse.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "";
 	}
 }
