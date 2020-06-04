@@ -83,6 +83,7 @@ public class DatabaseHandler {
 
 	public int withdraw(String countryName, String bankName, String pin, String account, int amount) {
 		try {
+			
 			// Send
 			String str = "{\"header\":{\"originCountry\":\"" + localCountryCode + "\",\"originBank\":\"" + localBankCode + "\",\"receiveCountry\":\"" + countryName + "\",\"receiveBank\":\"" + bankName + "\",\"action\":\"withdraw\"},\"body\":{\"pin\":\"" + pin + "\",\"account\":\"" + account + "\",\"amount\":" + amount + "}}";
 			dout.writeUTF(str);
