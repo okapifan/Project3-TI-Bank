@@ -76,7 +76,6 @@ public class JPanel06 extends javax.swing.JPanel {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Logo_128.png"))); // NOI18N
 
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel18.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -128,7 +127,6 @@ public class JPanel06 extends javax.swing.JPanel {
         );
 
         jPanel20.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel20.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -185,12 +183,12 @@ public class JPanel06 extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +208,6 @@ public class JPanel06 extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -262,7 +259,6 @@ public class JPanel06 extends javax.swing.JPanel {
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -314,7 +310,6 @@ public class JPanel06 extends javax.swing.JPanel {
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -392,7 +387,6 @@ public class JPanel06 extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
         jButton5.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -444,7 +438,6 @@ public class JPanel06 extends javax.swing.JPanel {
         );
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -496,7 +489,6 @@ public class JPanel06 extends javax.swing.JPanel {
         );
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel14.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -548,7 +540,6 @@ public class JPanel06 extends javax.swing.JPanel {
         );
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel16.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -623,14 +614,14 @@ public class JPanel06 extends javax.swing.JPanel {
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1496, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1283, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
