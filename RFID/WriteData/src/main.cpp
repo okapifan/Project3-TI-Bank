@@ -18,12 +18,20 @@
  * PICC (Proximity Integrated Circuit Card): A card or tag using the ISO 14443A interface, eg Mifare or NTAG203.
  * The reader can be found on eBay for around 5 dollars. Search for "mf-rc522" on ebay.com. 
  */
+
+// Example: RUS-TIMO-00001234
+// 00001234 D
+// 00008467 Z
+// 00004727 T
+// 00007236 R
+
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define RST_PIN A0 //9           // Configurable, see typical pin layout above
-#define SS_PIN 10  // Configurable, see typical pin layout above
+#define RST_PIN 49           // Configurable, see typical pin layout above
+#define SS_PIN 53  // Configurable, see typical pin layout above
 
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
 
@@ -84,6 +92,7 @@ void loop()
 	Serial.setTimeout(20000L); // wait until 20 seconds for input from serial
 	// Ask personal data: Family name
 	Serial.println(F("Type data")); // End with #
+	Serial.println(F("Example: US-TIMO-00001234"));
 	len = Serial.readBytesUntil('#', (char *)buffer, 16);
 	for (byte i = len; i < 30; i++)
 		buffer[i] = ' '; // pad with spaces
