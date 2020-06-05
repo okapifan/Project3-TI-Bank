@@ -679,7 +679,7 @@ public class JPanel06 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        App.contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false, false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton9ActionPerformed
 

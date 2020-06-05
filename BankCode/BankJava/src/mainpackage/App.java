@@ -42,7 +42,7 @@ public class App {
 	public static JPanel14 panel14ReceiptShow = new JPanel14();
 
 	public static void main(String[] args) {
-		comPort = SerialPort.getCommPorts()[1];
+		comPort = SerialPort.getCommPorts()[0];
 		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		
@@ -87,8 +87,8 @@ public class App {
 			}
 		});
 		
-		contentHandler.switchTo01StartPanel();
-		//contentHandler.switchTo07TypeAmountPanel();
+		//contentHandler.switchTo01StartPanel();
+		contentHandler.switchTo07TypeAmountPanel();
 		
 		int delay = 50; // Milliseconds
 		ActionListener taskPerformer = new KeypadActionListoner(comPort);

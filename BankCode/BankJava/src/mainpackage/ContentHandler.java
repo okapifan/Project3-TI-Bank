@@ -29,7 +29,7 @@ public class ContentHandler {
 	private int timeoutGreet = 3000; // In milliseconds
 
 	// user information
-	private double balance = 0;
+	private double balance = 1000000;
 	private int attempts = 0;
 
 	private String bankName = "";
@@ -47,6 +47,7 @@ public class ContentHandler {
 	private int pinValueChoice = 4;
 	private Boolean wantsReceipt = false;
 	private int withdrawValue = 0;
+	private boolean processDone = false;
 
 	public ContentHandler(CardLayout cl, JPanel panelContainer) {
 		this.cl = cl;
@@ -161,7 +162,7 @@ public class ContentHandler {
 					} else if (key.equals("3")) {
 						this.switchTo09ChooseHowPanel(70);
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -177,7 +178,7 @@ public class ContentHandler {
 					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -208,7 +209,7 @@ public class ContentHandler {
 					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -236,7 +237,7 @@ public class ContentHandler {
 					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 					App.panel07TypeAmount.updateTextfield(pinValue);
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
@@ -253,7 +254,7 @@ public class ContentHandler {
 					if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -285,7 +286,7 @@ public class ContentHandler {
 					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -300,13 +301,13 @@ public class ContentHandler {
 					// TODO bug: no input??
 					String key = data.substring(1, 2);
 					if (key.equals("1")) {
-						this.switchTo11TakeCardPanel(true);
+						this.switchTo11TakeCardPanel(true, true);
 					} else if (key.equals("2")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, true);
 					} else if (key.equals("A")) {
 						this.switchTo04MenuPanel();
 					} else if (key.equals("B")) {
-						this.switchTo11TakeCardPanel(false);
+						this.switchTo11TakeCardPanel(false, false);
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -466,15 +467,18 @@ public class ContentHandler {
 		this.currentScreen = 10;
 	}
 
-	public void switchTo11TakeCardPanel(Boolean wantsReceipt) {
-		this.wantsReceipt = wantsReceipt;
+	public void switchTo11TakeCardPanel(Boolean wantsReceipt, boolean endOfProcess) {
+		if(endOfProcess){
+			this.wantsReceipt = wantsReceipt;
+			this.processDone = true;
+		}
 		this.cl.show(panelContainer, "11TakeCard");
 		this.currentScreen = 11;
 	}
 
 	public void switchTo12PatiencePanel() {
 		stopTimer();
-		if (this.withdrawValue != 0) { // Skip to 13 if not pinning money
+		if (this.processDone) { // Skip to 13 if not pinning money
 			this.cl.show(panelContainer, "12Patience");
 			this.currentScreen = 12;
 			this.processMoney();
@@ -502,6 +506,7 @@ public class ContentHandler {
 		this.pinValue = "";
 		this.withdrawValue = 0;
 		this.wantsReceipt = false;
+		this.processDone = false;
 	}
 
 	public void resetPanel7() {
@@ -545,7 +550,7 @@ public class ContentHandler {
 					resetInformation();
 					this.cancel();
 				} else {
-					switchTo11TakeCardPanel(false);
+					switchTo11TakeCardPanel(false, false);
 					this.cancel();
 				}
 			}
