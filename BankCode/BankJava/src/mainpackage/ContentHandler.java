@@ -553,10 +553,11 @@ public class ContentHandler {
 
 			if(wantsReceipt){
 				// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
-				Date d1 = new Date();
-				String receiptString = "P" + d1 + "-" + pinValue + "-" + accountnNr + "-" + balance;
-				System.out.println("Sending: "+receiptString);
-				App.sendArduino(receiptString);
+				Date date = new Date();
+				//String receiptString = "P" + date + "-" + pinValue + "-" + accountnNr + "-" + balance;
+				//App.sendArduino(receiptString);
+				
+				App.panel14ReceiptShow.updateTextfield(date.toString(), pinValue, accountnNr, "" + balance);
 			}
 
 			// Check if delay is needed
@@ -564,7 +565,6 @@ public class ContentHandler {
 			// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 			String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
 			App.sendArduino(moneyString);
-			System.out.println("Sending: "+moneyString);
 
 			//Switch to done panal, in arduino keypad code
 		}
