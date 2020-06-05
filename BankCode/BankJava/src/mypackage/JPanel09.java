@@ -5,6 +5,8 @@
  */
 package mypackage;
 
+import org.json.JSONObject;
+
 import mainpackage.App;
 
 /**
@@ -516,10 +518,8 @@ public class JPanel09 extends javax.swing.JPanel {
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    public void updateLabelOfButtons(int[][] options, int amount){
+    public void updateLabelOfButtons(int[][] options, int amount){    
         jLabel2.setText("$"+amount+" te ontvangen");
-        jPanel4.setVisible(true);
-        jButton6.setEnabled(true);
 
         if(amount >= 50) {  
             String newText = "  "+((options[0][0] != 0) ? (options[0][0] +" x $50 +") : "")
@@ -535,6 +535,8 @@ public class JPanel09 extends javax.swing.JPanel {
             newText2 = (newText2.endsWith("+") ? newText2.substring(0, newText2.length() - 1) : newText2);
             jButton7.setText(newText2);
 
+            jPanel4.setVisible(true);
+            jButton6.setEnabled(true);
             if(newText.equals(newText2)){
                 jPanel4.setVisible(false);
                 jButton6.setEnabled(false);
@@ -564,6 +566,40 @@ public class JPanel09 extends javax.swing.JPanel {
                               +((options[3][3] != 0) ? (options[3][3] +" x $5"   ) : "");
         newText4 = (newText4.endsWith("+") ? newText4.substring(0, newText4.length() - 1) : newText4);
         jButton9.setText(newText4);
+        this.updateAvailability(options);
+    }
+
+    private void updateAvailability(int[][] options){
+        JSONObject json = App.contentHandler.getAvailableMoneyJson();
+        int available5 = json.getInt("5");
+		int available10 = json.getInt("10");
+		int available20 = json.getInt("20");
+        int available50 = json.getInt("50");
+
+        if(!(available50 >= options[0][0] && available20 >= options[0][1] && available10 >= options[0][2] && available5 >= options[0][3])){
+            if(this.checkEnabled(1)){
+                System.out.println("button 1 uit");
+                jButton6.setEnabled(false);
+            }
+        }
+        if(!(available50 >= options[1][0] && available10 >= options[1][2] && available5 >= options[1][3])){
+            if(this.checkEnabled(2)){
+                System.out.println("button 2 uit");
+                jButton7.setEnabled(false);
+            }
+        }
+        if(!(available20 >= options[2][1] && available10 >= options[2][2] && available5 >= options[2][3])){
+            if(this.checkEnabled(3)){
+                System.out.println("button 3 uit");
+                jButton8.setEnabled(false);
+            }
+        }
+        if(!(available10 >= options[3][2] && available5 >= options[3][3])){
+            if(this.checkEnabled(4)){
+                System.out.println("button 4 uit");
+                jButton9.setEnabled(false);
+            }
+        }
     }
 
     public boolean checkEnabled(int buttonId){

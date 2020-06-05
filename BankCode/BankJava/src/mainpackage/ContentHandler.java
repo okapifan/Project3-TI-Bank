@@ -29,7 +29,7 @@ public class ContentHandler {
 	private int timeoutGreet = 3000; // In milliseconds
 
 	// user information
-	private double balance = 1000000;
+	private double balance = 0;
 	private int attempts = 0;
 
 	private String bankName = "";
