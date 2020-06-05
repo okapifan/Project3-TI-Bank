@@ -479,22 +479,30 @@ public class JPanel09 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(0);
+        if(this.checkEnabled(1)){
+            App.contentHandler.switchTo10ReceiptPanel(0);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(1);
+        if(this.checkEnabled(2)){
+            App.contentHandler.switchTo10ReceiptPanel(1);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(2);
+        if(this.checkEnabled(3)){
+            App.contentHandler.switchTo10ReceiptPanel(2);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(3);
+        if(this.checkEnabled(4)){
+            App.contentHandler.switchTo10ReceiptPanel(3);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -510,6 +518,8 @@ public class JPanel09 extends javax.swing.JPanel {
 
     public void updateLabelOfButtons(int[][] options, int amount){
         jLabel2.setText("$"+amount+" te ontvangen");
+        jPanel4.setVisible(true);
+        jButton6.setEnabled(true);
 
         if(amount >= 50) {  
             String newText = "  "+((options[0][0] != 0) ? (options[0][0] +" x $50 +") : "")
@@ -527,11 +537,15 @@ public class JPanel09 extends javax.swing.JPanel {
 
             if(newText.equals(newText2)){
                 jPanel4.setVisible(false);
+                jButton6.setEnabled(false);
             }
             jPanel6.setVisible(true);
+            jButton7.setEnabled(true);
         } else {
             jPanel4.setVisible(false);
             jPanel6.setVisible(false);
+            jButton6.setEnabled(false);
+            jButton7.setEnabled(false);
         }
         if(amount >= 20){
             String newText3 = "  "+((options[2][1] != 0) ? (options[2][1] +" x $20 +") : "")
@@ -540,14 +554,31 @@ public class JPanel09 extends javax.swing.JPanel {
             newText3 = (newText3.endsWith("+") ? newText3.substring(0, newText3.length() - 1) : newText3);
             jButton8.setText(newText3);
             
+            jButton8.setEnabled(true);
             jPanel8.setVisible(true);
         } else {
+            jButton8.setEnabled(false);
             jPanel8.setVisible(false);
         }
         String newText4 = "  "+((options[3][2] != 0) ? (options[3][2] +" x $10 +") : "")
                               +((options[3][3] != 0) ? (options[3][3] +" x $5"   ) : "");
         newText4 = (newText4.endsWith("+") ? newText4.substring(0, newText4.length() - 1) : newText4);
         jButton9.setText(newText4);
+    }
+
+    public boolean checkEnabled(int buttonId){
+        switch(buttonId){
+            case 1:
+                return jButton6.isEnabled(); 
+            case 2:
+                return jButton7.isEnabled(); 
+            case 3:
+                return jButton8.isEnabled(); 
+            case 4:
+                return jButton9.isEnabled(); 
+            default:
+                return false;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
