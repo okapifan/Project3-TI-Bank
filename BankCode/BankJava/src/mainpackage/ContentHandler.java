@@ -335,6 +335,15 @@ public class ContentHandler {
 			case 13:
 				break;
 
+			case 14:
+				if (data.substring(0, 1).equals("K")) { // Keypad input
+					String key = data.substring(1, 2);
+					if (key.equals("B")) {
+						this.switchTo13GreetPanel();
+					}
+				}
+				break;
+
 			default:
 				System.out.println("CurrentScreen does not exist");
 				break;
