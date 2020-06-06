@@ -78,13 +78,13 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jLabel2" alignment="1" max="32767" attributes="0"/>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="328" max="-2" attributes="0"/>
-                  <Component id="jPasswordField1" pref="717" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="330" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jLabel2" alignment="1" pref="1280" max="32767" attributes="0"/>
               <Component id="jLabel3" alignment="1" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="495" max="-2" attributes="0"/>
+                  <Component id="jPasswordField1" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="473" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -96,7 +96,7 @@
                   <Component id="jPasswordField1" min="-2" pref="84" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="241" max="32767" attributes="0"/>
+                  <EmptySpace pref="285" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

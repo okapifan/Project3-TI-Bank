@@ -39,9 +39,10 @@ public class App {
 	public static JPanel11 panel11TakeCard = new JPanel11();
 	public static JPanel12 panel12Patience = new JPanel12();
 	public static JPanel13 panel13Greet = new JPanel13();
+	public static JPanel14 panel14ReceiptShow = new JPanel14();
 
 	public static void main(String[] args) {
-		comPort = SerialPort.getCommPorts()[1];
+		comPort = SerialPort.getCommPorts()[0];
 		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		
@@ -63,6 +64,7 @@ public class App {
 		panelContainer.add(panel11TakeCard, "11TakeCard");
 		panelContainer.add(panel12Patience, "12Patience");
 		panelContainer.add(panel13Greet, "13Greet");
+		panelContainer.add(panel14ReceiptShow, "14ReceiptShow");
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timobank");
@@ -93,8 +95,8 @@ public class App {
 	}
 
 	public static void sendArduino(String data){
-		// Send String example
-		//String data = "Test";
+		// Send String
+		System.out.println("Send data: " + data + " (" + data.length() + " bytes)");
 		comPort.writeBytes(data.getBytes(), data.length());
 	}
 }
