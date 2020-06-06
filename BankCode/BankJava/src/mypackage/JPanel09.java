@@ -5,6 +5,8 @@
  */
 package mypackage;
 
+import org.json.JSONObject;
+
 import mainpackage.App;
 
 /**
@@ -479,22 +481,30 @@ public class JPanel09 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(0);
+        if(this.checkEnabled(1)){
+            App.contentHandler.switchTo10ReceiptPanel(0);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(1);
+        if(this.checkEnabled(2)){
+            App.contentHandler.switchTo10ReceiptPanel(1);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(2);
+        if(this.checkEnabled(3)){
+            App.contentHandler.switchTo10ReceiptPanel(2);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        App.contentHandler.switchTo10ReceiptPanel(3);
+        if(this.checkEnabled(4)){
+            App.contentHandler.switchTo10ReceiptPanel(3);
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -504,11 +514,11 @@ public class JPanel09 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        App.contentHandler.switchTo11TakeCardPanel(false);
+        App.contentHandler.switchTo11TakeCardPanel(false, false);
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    public void updateLabelOfButtons(int[][] options, int amount){
+    public void updateLabelOfButtons(int[][] options, int amount){    
         jLabel2.setText("$"+amount+" te ontvangen");
 
         if(amount >= 50) {  
@@ -525,13 +535,19 @@ public class JPanel09 extends javax.swing.JPanel {
             newText2 = (newText2.endsWith("+") ? newText2.substring(0, newText2.length() - 1) : newText2);
             jButton7.setText(newText2);
 
+            jPanel4.setVisible(true);
+            jButton6.setEnabled(true);
             if(newText.equals(newText2)){
                 jPanel4.setVisible(false);
+                jButton6.setEnabled(false);
             }
             jPanel6.setVisible(true);
+            jButton7.setEnabled(true);
         } else {
             jPanel4.setVisible(false);
             jPanel6.setVisible(false);
+            jButton6.setEnabled(false);
+            jButton7.setEnabled(false);
         }
         if(amount >= 20){
             String newText3 = "  "+((options[2][1] != 0) ? (options[2][1] +" x $20 +") : "")
@@ -540,14 +556,65 @@ public class JPanel09 extends javax.swing.JPanel {
             newText3 = (newText3.endsWith("+") ? newText3.substring(0, newText3.length() - 1) : newText3);
             jButton8.setText(newText3);
             
+            jButton8.setEnabled(true);
             jPanel8.setVisible(true);
         } else {
+            jButton8.setEnabled(false);
             jPanel8.setVisible(false);
         }
         String newText4 = "  "+((options[3][2] != 0) ? (options[3][2] +" x $10 +") : "")
                               +((options[3][3] != 0) ? (options[3][3] +" x $5"   ) : "");
         newText4 = (newText4.endsWith("+") ? newText4.substring(0, newText4.length() - 1) : newText4);
         jButton9.setText(newText4);
+        this.updateAvailability(options);
+    }
+
+    private void updateAvailability(int[][] options){
+        JSONObject json = App.contentHandler.getAvailableMoneyJson();
+        int available5 = json.getInt("5");
+		int available10 = json.getInt("10");
+		int available20 = json.getInt("20");
+        int available50 = json.getInt("50");
+
+        if(!(available50 >= options[0][0] && available20 >= options[0][1] && available10 >= options[0][2] && available5 >= options[0][3])){
+            if(this.checkEnabled(1)){
+                System.out.println("button 1 uit");
+                jButton6.setEnabled(false);
+            }
+        }
+        if(!(available50 >= options[1][0] && available10 >= options[1][2] && available5 >= options[1][3])){
+            if(this.checkEnabled(2)){
+                System.out.println("button 2 uit");
+                jButton7.setEnabled(false);
+            }
+        }
+        if(!(available20 >= options[2][1] && available10 >= options[2][2] && available5 >= options[2][3])){
+            if(this.checkEnabled(3)){
+                System.out.println("button 3 uit");
+                jButton8.setEnabled(false);
+            }
+        }
+        if(!(available10 >= options[3][2] && available5 >= options[3][3])){
+            if(this.checkEnabled(4)){
+                System.out.println("button 4 uit");
+                jButton9.setEnabled(false);
+            }
+        }
+    }
+
+    public boolean checkEnabled(int buttonId){
+        switch(buttonId){
+            case 1:
+                return jButton6.isEnabled(); 
+            case 2:
+                return jButton7.isEnabled(); 
+            case 3:
+                return jButton8.isEnabled(); 
+            case 4:
+                return jButton9.isEnabled(); 
+            default:
+                return false;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
