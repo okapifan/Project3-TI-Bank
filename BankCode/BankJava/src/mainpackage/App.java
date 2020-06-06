@@ -42,7 +42,7 @@ public class App {
 	public static JPanel14 panel14ReceiptShow = new JPanel14();
 
 	public static void main(String[] args) {
-		comPort = SerialPort.getCommPorts()[0];
+		comPort = SerialPort.getCommPorts()[1];
 		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		

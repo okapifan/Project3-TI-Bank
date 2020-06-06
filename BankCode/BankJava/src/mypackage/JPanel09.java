@@ -518,7 +518,13 @@ public class JPanel09 extends javax.swing.JPanel {
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    public void updateLabelOfButtons(int[][] options, int amount){    
+    public void updateLabelOfButtons(int[][] options, int amount){  
+        //Reset buttons
+        jButton6.setEnabled(true);
+        jButton7.setEnabled(true);
+        jButton8.setEnabled(true);
+        jButton9.setEnabled(true);
+        
         jLabel2.setText("$"+amount+" te ontvangen");
 
         if(amount >= 50) {  

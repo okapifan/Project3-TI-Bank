@@ -161,7 +161,7 @@ public class ContentHandler {
 					} else if (key.equals("2")) {
 						this.switchTo06ChooseAmountPanel();
 					} else if (key.equals("3")) {
-						this.switchTo09ChooseHowPanel(70);
+						this.switchTo11TakeCardPanelFor70();
 					} else if (key.equals("B")) {
 						this.switchTo11TakeCardPanel(false, false);
 					}
@@ -477,6 +477,19 @@ public class ContentHandler {
 		this.currentScreen = 10;
 	}
 
+	public void switchTo11TakeCardPanelFor70(){
+		if (70 > ((int) this.balance)) {
+			switchTo08NotEnoughPanel();
+			return;
+		}
+		fillPinOptions(0, 70, true, true, true, true);
+		this.withdrawValue = 70;
+		System.out.println(70 + " > " + (int) this.balance);
+		this.pinValueChoice = 0;
+
+		this.switchTo11TakeCardPanel(true, true);
+	}
+
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt, boolean endOfProcess) {
 		if(endOfProcess){
 			this.wantsReceipt = wantsReceipt;
@@ -502,6 +515,12 @@ public class ContentHandler {
 		this.resetInformation();
 		this.cl.show(panelContainer, "13Greet");
 		this.currentScreen = 13;
+	}
+
+	public void switchTo14ReceiptShow() {
+		this.startTimer(timeoutTime, true);
+		this.cl.show(panelContainer, "14ReceiptShow");
+		this.currentScreen = 14;
 	}
 
 	public void resetInformation() {
@@ -621,6 +640,7 @@ public class ContentHandler {
 				//String receiptString = "P" + pinValue + "-" + accountnNr + "-" + date;
 				//App.sendArduino(receiptString);
 				
+				this.switchTo14ReceiptShow();
 				App.panel14ReceiptShow.updateTextfield(pinValue, accountnNr, date.toString());
 			}
 
@@ -629,7 +649,11 @@ public class ContentHandler {
 			// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 			String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
 			App.sendArduino(moneyString);
-
+			JSONObject json = getAvailableMoneyJson();
+			this.updateAvailableMoneyJson(json.getInt("5") - pinValueChoices[pinValueChoice][3], 
+										  json.getInt("10") - pinValueChoices[pinValueChoice][2], 
+										  json.getInt("20") - pinValueChoices[pinValueChoice][1], 
+										  json.getInt("50") - pinValueChoices[pinValueChoice][0]);
 			//Switch to done panal, in arduino keypad code
 		}
 		else {
