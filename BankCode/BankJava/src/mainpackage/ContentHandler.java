@@ -1,9 +1,16 @@
 package mainpackage;
 
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
+
 import java.awt.CardLayout;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,10 +18,7 @@ import java.util.TimerTask;
 import javax.swing.JPanel;
 
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.json.JSONObject;
-
-import mypackage.*;
 
 public class ContentHandler {
 	public DatabaseHandler database;
@@ -38,11 +42,6 @@ public class ContentHandler {
 	private String country = "";
 	private String pinCode = "";
 
-	// private String bankName = "TIMO";
-	// private String accountnNr = "00001234";
-	// private String country = "US";
-	// private String pinCode = "1234";
-
 	private String pinValue = ""; // Get used for page 07: Type amount
 	private int[][] pinValueChoices = new int[4][4];
 	private int pinValueChoice = 4;
@@ -55,12 +54,6 @@ public class ContentHandler {
 		this.panelContainer = panelContainer;
 
 		this.database = new DatabaseHandler("US", "TIMO");
-
-		// JPanel balancePanel = panelList.get(0);
-		// JPanel05 balancePanel2 = (JPanel05) balancePanel;
-		// balancePanel2.get()
-		// //witdrawMoneyBtn.addActionListener(e -> switchToWitdrawScreen());
-		// balancePanel2.changeBalanceLabel(this.balance);
 	}
 
 	// Receive:
@@ -127,14 +120,12 @@ public class ContentHandler {
 						}
 					}
 					if (key.equals("#")) {
-						pinCode = "";
-						// pinCode clearen;
-						// Laatse character eraf
+						pinCode = ""; // pinCode clearen
 					}
 
 					App.panel02TypePin.updateTextfield(pinCode);
 					if (pinCode.length() == 4) {
-						this.switchTo04MenuPanel(); // Test pin in switchTo04MenuPanel()
+						this.switchTo04MenuPanel();
 					}
 				} else if (data.substring(0, 1).equals("C")) { // Card in or out
 					String key = data.substring(1);
@@ -381,7 +372,6 @@ public class ContentHandler {
 	public void switchTo04MenuPanel() {
 		this.startTimer(timeoutTime, false);
 
-		// Todo validate & if blocked, send to panel 3
 		int statusCode = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
 		if (statusCode == 200) {
 			this.cl.show(panelContainer, "04Menu");
@@ -390,7 +380,6 @@ public class ContentHandler {
 			App.panel02TypePin.changeErrorLabel("Error: Foute pincode. Nog " + (3 - attempts) + " pogingen!");
 			this.pinCode = ""; // Reset pincode
 			App.panel02TypePin.updateTextfield(this.pinCode);
-			// switchTo02TypePinPanel();
 			return;
 		} else if (statusCode == 403) {
 			switchTo03CardBlockedPanel();
@@ -448,24 +437,19 @@ public class ContentHandler {
 		if (amount % 5 == 0) {
 			this.withdrawValue = amount;
 			// Amount is deelbaar door 5
-			// deel door 50 daarna 20 daarna 10 daarna 5
+			// Deel door 50 daarna 20 daarna 10 daarna 5
 			fillPinOptions(0, amount, true, true, true, true);
-			// deel door 50 daarna 10 daarna 5
+			// Deel door 50 daarna 10 daarna 5
 			fillPinOptions(1, amount, true, false, true, true);
-			// deel door 20 daarna 10 daarna 5
+			// Deel door 20 daarna 10 daarna 5
 			fillPinOptions(2, amount, false, true, true, true);
-			// deel door 10 daarna 5
+			// Deel door 10 daarna 5
 			fillPinOptions(3, amount, false, false, true, true);
 			App.panel09ChooseHow.updateLabelOfButtons(this.pinValueChoices, amount);
 			this.cl.show(panelContainer, "09ChooseHow");
 			this.currentScreen = 9;
 		} else {
-			App.panel07TypeAmount.changeErrorLabel("Bedrag moet kunnen bestaan uit de aanwezige biljetten"); // Todo
-																												// geef
-																												// feedback
-																												// wat
-																												// incorrect
-																												// is
+			App.panel07TypeAmount.changeErrorLabel("Bedrag moet kunnen bestaan uit de aanwezige biljetten");
 		}
 	}
 
@@ -628,8 +612,6 @@ public class ContentHandler {
 		int statusCode = database.withdraw(this.country, this.bankName, this.pinCode, this.accountnNr, this.withdrawValue);
 		if(statusCode == 200){
 			// Send String example
-			//String data = "Test";
-			//comPort.writeBytes(data.getBytes(), data.length());
 
 			if(wantsReceipt){
 				// P: Print bon (pinValue-accountnNr-date)(65-00001234-Sat May 23 13:58:45 CEST 2020)
@@ -641,7 +623,7 @@ public class ContentHandler {
 				App.panel14ReceiptShow.updateTextfield("" + withdrawValue, accountnNr, date.toString());
 			}
 
-			// Check if delay is needed
+			// TODO: Check if delay is needed
 
 			// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 			String moneyString = "D" + pinValueChoices[pinValueChoice][0] + "-" + pinValueChoices[pinValueChoice][1] + "-" + pinValueChoices[pinValueChoice][2] + "-" + pinValueChoices[pinValueChoice][3];
@@ -651,10 +633,10 @@ public class ContentHandler {
 										  json.getInt("10") - pinValueChoices[pinValueChoice][2], 
 										  json.getInt("20") - pinValueChoices[pinValueChoice][1], 
 										  json.getInt("50") - pinValueChoices[pinValueChoice][0]);
-			//Switch to done panal, in arduino keypad code
+			// Switch to done panal, in arduino serial message (D)
 		}
 		else {
-			//Todo show in GUI
+			//TODO: show in GUI
 
 			System.out.print("Error: Er ging iets mis!");
 		}

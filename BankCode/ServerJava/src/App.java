@@ -8,7 +8,6 @@
  */
 
 // Database
-import java.beans.VetoableChangeSupport;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileReader;
@@ -24,16 +23,17 @@ import org.json.simple.parser.JSONParser;
 
 public class App {
 
+	// Local bank information
 	static String localCountryCode = "US";
 	static String localBankCode = "TIMO";
-	// Connection con; // Database connection
 
-	//static JSONParser parser;
+	// Database
 	static JSONObject databaseConfig;
 	static String databaseUrl = "";
-	static String databaseUser = ""; // Change user to an user with less permissions
+	static String databaseUser = "";
 	static String databasePassword = "";
 
+	// Connection
 	static int localPortATM = 8000;
 	static int localPortLandNode = 665;
 	static int landNodePort = 666;
@@ -47,9 +47,7 @@ public class App {
 		try {
 			Object obj = new JSONParser().parse(new FileReader("src/database.json"));
 			databaseConfig = new JSONObject(obj.toString());
-			//System.out.println(databaseConfig.toString());
-			databaseUrl = "jdbc:mysql://" + databaseConfig.get("ip") + ":" + databaseConfig.get("port") + "/"
-					+ databaseConfig.get("database");
+			databaseUrl = "jdbc:mysql://" + databaseConfig.get("ip") + ":" + databaseConfig.get("port") + "/" + databaseConfig.get("database");
 			databaseUser = (String) databaseConfig.get("user");
 			databasePassword = (String) databaseConfig.get("pass");
 
@@ -82,8 +80,7 @@ public class App {
 				// Receive
 				str = din.readUTF();
 				System.out.println("Incoming message: " + str);
-				//str = "{\"body\":{\"pin\":\"1234\",\"account\":\"00001234\"},\"header\":{\"originCountry\":\"US\",\"originBank\":\"TIMO\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\"}}";
-				
+
 				String jsonResponse;
 				try {
 					JSONObject jsonMessage = new JSONObject(str);
@@ -91,7 +88,7 @@ public class App {
 					if(action.equals("balance")){
 						jsonResponse = getBalance(jsonMessage);
 					}
-					else if(action.equals("withdraw")){
+					else if (action.equals("withdraw")){
 						jsonResponse = withdraw(jsonMessage);
 					}
 					else {
@@ -134,7 +131,7 @@ public class App {
 				response = withdraw(json);
 			}
 			else {
-				// Error
+				System.out.println("Unexpected message type");
 			}
 
 			// Send
@@ -161,14 +158,14 @@ public class App {
 		int statuscode = 0;
 		String message = "";
 		String addedJson = "";
-		if(receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
+		if (receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
 	
 				// Check pin
 				Statement stmt1 = con.createStatement();
-				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
+				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // TODO: SQL injection posible
 				rs1.next();
 				String pinCode = rs1.getString(1);
 				boolean isBlocked = rs1.getBoolean(2);
@@ -178,15 +175,15 @@ public class App {
 					message = "Pinpas not found";
 					System.out.println("Pinpas not found");
 					con.close();
-				} else if(!isBlocked){
+				} else if (!isBlocked){
 					if (pin.equals(pinCode)) {
 						// Update attempts to 0
 						Statement stmt3 = con.createStatement();
-						stmt3.executeUpdate("UPDATE accounts SET failedAttempts = 0 WHERE accountId = "+account);
+						stmt3.executeUpdate("UPDATE accounts SET failedAttempts = 0 WHERE accountId = " + account); // TODO: SQL injection posible
 
 						// Get balance
 						Statement stmt2 = con.createStatement();
-						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
+						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account); // TODO: SQL injection posible
 						rs2.next();
 						double balance = rs2.getDouble(1);
 						
@@ -197,21 +194,21 @@ public class App {
 						con.close();
 					} else {
 						Statement stmt4 = con.createStatement();
-						ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
+						ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account); // TODO: SQL injection posible
 						rs4.next();
 						int failedAttempts = rs4.getInt(1);	
 						
 						// Update attempts
 						Statement stmt3 = con.createStatement();
-						if((failedAttempts+1) < 3){
-							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
+						if((failedAttempts + 1) < 3){
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = " + (failedAttempts+1) + " WHERE accountId = " + account); // TODO: SQL injection posible
 						} else {
-							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = " + (failedAttempts+1) + ",isBlocked = true WHERE accountId = " + account); // TODO: SQL injection posible
 						}
 						
 						statuscode = 401;
 						message = "Pin incorrect";
-						addedJson = ",\"attempts\":"+(failedAttempts+1)+"";
+						addedJson = ",\"attempts\":" + (failedAttempts + 1) + "";
 						System.out.println("Pin incorrect");
 						con.close();
 					}
@@ -225,7 +222,7 @@ public class App {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"balance\"}}";
+			String jsonResponse = "{\"body\":{\"code\":" + statuscode + ",\"message\":\"" + message + "\"" + addedJson + "},\"header\":{\"originCountry\":\"" + receiveCountry + "\",\"originBank\":\"" + receiveBank + "\",\"receiveCountry\":\"" + originCountry + "\",\"receiveBank\":\"" + originBank + "\",\"action\":\"balance\"}}";
 			return jsonResponse;
 		} else {
 			// Dump at landnode
@@ -249,34 +246,34 @@ public class App {
 		String message = "";
 		String addedJson = "";
 
-		if(receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
+		if (receiveCountry.equals(localCountryCode) && receiveBank.equals(localBankCode)){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
 	
 				// Check pin
 				Statement stmt1 = con.createStatement();
-				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // SQL injection posible
+				ResultSet rs1 = stmt1.executeQuery("SELECT pincode,isBlocked FROM accounts WHERE accountId = " + account); // TODO: SQL injection posible
 				rs1.next();
 				String pinCode = rs1.getString(1);
 				boolean isBlocked = rs1.getBoolean(2);
-				if(pinCode.equals(null)){
+				if (pinCode.equals(null)){
 
 					statuscode = 404;
 					message = "Pinpas not found";
 					System.out.println("Pinpas not found");
 					con.close();
-				} else if(!isBlocked){
+				} else if (!isBlocked){
 					if (pin.equals(pinCode)) {
 					
 						// Get balance
 						Statement stmt2 = con.createStatement();
-						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account);
+						ResultSet rs2 = stmt2.executeQuery("SELECT balance FROM accounts WHERE accountId = " + account); // TODO: SQL injection posible
 						rs2.next();
 						double balance = rs2.getDouble(1);
 						if((balance - amount) >= 0){
 							Statement stmt3 = con.createStatement();
-							stmt3.executeUpdate("UPDATE accounts SET balance = "+(balance - amount)+" WHERE accountId = " + account);
+							stmt3.executeUpdate("UPDATE accounts SET balance = " + (balance - amount) + " WHERE accountId = " + account); // TODO: SQL injection posible
 						
 							statuscode = 200;
 							message = "Success";
@@ -290,25 +287,25 @@ public class App {
 						}
 					} else {
 						Statement stmt4 = con.createStatement();
-						ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account);
+						ResultSet rs4 = stmt4.executeQuery("SELECT failedAttempts FROM accounts WHERE accountId = " + account); // TODO: SQL injection posible
 						rs4.next();
 						int failedAttempts = rs4.getInt(1);	
 					
 						// Update attempts
 						Statement stmt3 = con.createStatement();
-						if((failedAttempts+1) < 3){
-							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+" WHERE accountId = "+account);
+						if((failedAttempts + 1) < 3){
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = " + (failedAttempts + 1) + " WHERE accountId = " + account); // TODO: SQL injection posible
 						} else {
-							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = "+(failedAttempts+1)+",isBlocked = true WHERE accountId = "+account);
+							stmt3.executeUpdate("UPDATE accounts SET failedAttempts = " + (failedAttempts + 1) + ",isBlocked = true WHERE accountId = " + account); // TODO: SQL injection posible
 						}
 					
 						statuscode = 401;
-						addedJson = ",\"attempts\":"+(failedAttempts+1)+"";
+						addedJson = ",\"attempts\":" + (failedAttempts + 1) + "";
 						message = "Pin incorrect";
 						System.out.println("Pin incorrect");
 						con.close();
 					}
-				}else {
+				} else {
 					
 					statuscode = 403;
 					message = "Pinpas blocked";
@@ -318,11 +315,10 @@ public class App {
 			} catch(Exception e){
 				e.printStackTrace();
 			}
-			String jsonResponse = "{\"body\":{\"code\":"+statuscode+",\"message\":\"" + message + "\""+addedJson+"},\"header\":{\"originCountry\":\""+receiveCountry+"\",\"originBank\":\""+receiveBank+"\",\"receiveCountry\":\""+originCountry+"\",\"receiveBank\":\""+originBank+"\",\"action\":\"withdraw\"}}";
+			String jsonResponse = "{\"body\":{\"code\":" + statuscode + ",\"message\":\"" + message + "\"" + addedJson + "},\"header\":{\"originCountry\":\"" + receiveCountry + "\",\"originBank\":\"" + receiveBank + "\",\"receiveCountry\":\"" + originCountry + "\",\"receiveBank\":\"" + originBank + "\",\"action\":\"withdraw\"}}";
 			return jsonResponse;
 		} else {
-			// Dump at landnode
-
+			// Send to landnode
 			String jsonResponse = askLandNode("withdraw", jsonMessage);
 
 			return jsonResponse;
@@ -330,7 +326,7 @@ public class App {
 	}
 
 	public static String askLandNode(String type, JSONObject jsonMessage){
-		try{
+		try {
 			// Send
 			Socket s1 = new Socket(landNodeIP, landNodePort);
 			DataOutputStream dOut = new DataOutputStream(s1.getOutputStream());
@@ -338,10 +334,8 @@ public class App {
 			dOut.writeUTF(jsonMessage.toString());
 			System.out.println("" + type + ": Sent");
 			s1.close();
-			//dOut.flush();
+			dOut.flush();
 			
-			
-
 			// Receive
 			Socket s2 = null;
 			boolean check = false;
@@ -353,9 +347,8 @@ public class App {
 				} catch (Exception e) {
 				}
 			}
-			//Socket s2 = server.accept();
 			dIn = new DataInputStream(s2.getInputStream());
-			String type2 = dIn.readUTF(); // Should be "response"
+			//String type2 = dIn.readUTF(); // Should be "response"
 			JSONObject jsonResponse = new JSONObject(dIn.readUTF());
 			System.out.println("" + type + ": Receive");
 			s2.close();

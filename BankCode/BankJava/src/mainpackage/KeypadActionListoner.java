@@ -1,5 +1,14 @@
 package mainpackage;
 
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.fazecast.jSerialComm.SerialPort;
@@ -13,8 +22,6 @@ public class KeypadActionListoner implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		try {
-			//System.out.print("LoopTest");
-
 			// Receive string
 			if (comPort.bytesAvailable() > 0) {
 				byte[] readBuffer = new byte[comPort.bytesAvailable()];
@@ -26,11 +33,8 @@ public class KeypadActionListoner implements ActionListener {
 				// Use data
 				App.contentHandler.parseData(data, dataSize);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	
 }

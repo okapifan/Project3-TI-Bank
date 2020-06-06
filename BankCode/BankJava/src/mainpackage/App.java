@@ -68,7 +68,6 @@ public class App {
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timobank");
-		// frame.setSize(1920, 1080);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

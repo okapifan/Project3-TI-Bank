@@ -1,3 +1,12 @@
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <MFRC522.h>
@@ -253,19 +262,18 @@ void PrintReceipt(String data){
 	}
 	
 	// Print information on receipt printer
-	printer.setSize('L'); //size large
-	printer.justify('C'); //print in center
+	printer.setSize('L'); // Size large
+	printer.justify('C'); // Print in center
 	printer.println(F("TimoBank"));
-	printer.setSize('S'); //size small
-	printer.justify('R'); //print at the right	
+	printer.setSize('S'); // Size small
+	printer.justify('R'); // Print at the right	
 	printer.println("Locatie: US");
 	printer.println("Transactie soort: geld opnemen");
 	printer.println("Hoeveelheid: " + (String) strings[0]);
 	printer.println("Account nummer: " + (String) strings[1]);
 	printer.println("Datum: " + (String) strings[2]);
-	printer.justify('C'); //print in center
+	printer.justify('C'); // Print in center
 	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));
-
 }
 
 
