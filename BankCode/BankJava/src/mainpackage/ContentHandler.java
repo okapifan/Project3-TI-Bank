@@ -27,6 +27,7 @@ public class ContentHandler {
 	private Timer timer = new Timer();
 	private int timeoutTime = 45000; // In milliseconds
 	private int timeoutGreet = 3000; // In milliseconds
+	private int cardblockedTime = 10000;
 
 	// user information
 	private double balance = 0;
@@ -364,7 +365,7 @@ public class ContentHandler {
 	}
 
 	public void switchTo03CardBlockedPanel() {
-		this.startTimer(timeoutTime, false);
+		this.startTimer(cardblockedTime, false);
 		this.cl.show(panelContainer, "03CardBlocked");
 		this.currentScreen = 3;
 	}
