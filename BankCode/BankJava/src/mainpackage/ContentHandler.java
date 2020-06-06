@@ -299,7 +299,6 @@ public class ContentHandler {
 
 			case 10:
 				if (data.substring(0, 1).equals("K")) { // Keypad input
-					// TODO bug: no input??
 					String key = data.substring(1, 2);
 					if (key.equals("1")) {
 						this.switchTo11TakeCardPanel(true, true);
@@ -626,8 +625,6 @@ public class ContentHandler {
 	}
 
 	public void processMoney(){
-		//TODO: get this method working
-
 		int statusCode = database.withdraw(this.country, this.bankName, this.pinCode, this.accountnNr, this.withdrawValue);
 		if(statusCode == 200){
 			// Send String example
@@ -641,7 +638,7 @@ public class ContentHandler {
 				//App.sendArduino(receiptString);
 				
 				this.switchTo14ReceiptShow();
-				App.panel14ReceiptShow.updateTextfield(pinValue, accountnNr, date.toString());
+				App.panel14ReceiptShow.updateTextfield("" + withdrawValue, accountnNr, date.toString());
 			}
 
 			// Check if delay is needed

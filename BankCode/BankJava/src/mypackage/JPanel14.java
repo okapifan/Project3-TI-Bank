@@ -163,7 +163,6 @@ public class JPanel14 extends javax.swing.JPanel {
     public void updateTextfield(String pinValue, String accountnNr, String date){
         String text = "<html>";
         text += "<b><center>Transactiebon</center></b><br>";
-        text += "<br>";
         text += "Bank: Timobank<br>";
         text += "Locatie: US<br>";
         text += "Transactie soort: geld opnemen<br>";
