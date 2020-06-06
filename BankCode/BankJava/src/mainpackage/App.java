@@ -23,6 +23,7 @@ import com.fazecast.jSerialComm.SerialPort;
 public class App {
 	static CardLayout cl;
 	static JPanel panelContainer;
+	static SerialPort comPort;
 	public static ContentHandler contentHandler;
 	public static JPanel00 panel00NotInUse = new JPanel00();
 	public static JPanel01 panel01Start = new JPanel01();
@@ -38,9 +39,10 @@ public class App {
 	public static JPanel11 panel11TakeCard = new JPanel11();
 	public static JPanel12 panel12Patience = new JPanel12();
 	public static JPanel13 panel13Greet = new JPanel13();
+	public static JPanel14 panel14ReceiptShow = new JPanel14();
 
 	public static void main(String[] args) {
-		SerialPort comPort = SerialPort.getCommPorts()[1];
+		comPort = SerialPort.getCommPorts()[0];
 		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		
@@ -62,6 +64,7 @@ public class App {
 		panelContainer.add(panel11TakeCard, "11TakeCard");
 		panelContainer.add(panel12Patience, "12Patience");
 		panelContainer.add(panel13Greet, "13Greet");
+		panelContainer.add(panel14ReceiptShow, "14ReceiptShow");
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timobank");
@@ -85,10 +88,15 @@ public class App {
 		});
 		
 		contentHandler.switchTo01StartPanel();
-		//contentHandler.switchTo04MenuPanel();
 		
 		int delay = 50; // Milliseconds
 		ActionListener taskPerformer = new KeypadActionListoner(comPort);
 		new Timer(delay, taskPerformer).start();
+	}
+
+	public static void sendArduino(String data){
+		// Send String
+		System.out.println("Send data: " + data + " (" + data.length() + " bytes)");
+		comPort.writeBytes(data.getBytes(), data.length());
 	}
 }

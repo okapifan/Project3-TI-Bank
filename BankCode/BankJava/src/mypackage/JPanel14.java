@@ -9,12 +9,12 @@ package mypackage;
  *
  * @author danie
  */
-public class JPanel13 extends javax.swing.JPanel {
+public class JPanel14 extends javax.swing.JPanel {
 
     /**
      * Creates new form JPanel13
      */
-    public JPanel13() {
+    public JPanel14() {
         initComponents();
     }
 
@@ -58,20 +58,20 @@ public class JPanel13 extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Dank u en totziens");
+        jLabel2.setText("<html><b><center>Transactiebon</center></b><br>Bank: Timobank<br>Locatie: US<br>Transactie soort: geld opnemen<br>Hoeveelheid: X<br>Account nummer: X<br>Beschikbare balance: X<br>Datum: X<br><center>Bedankt voor het gebruiken van onze geldautomaat</center></html>");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addComponent(jLabel2)
-                .addContainerGap(460, Short.MAX_VALUE))
+                .addGap(23, 23, 23)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -90,6 +90,23 @@ public class JPanel13 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void updateTextfield(String date, String pinValue, String accountnNr, String balance){
+        String text = "<html>";
+        text += "<b><center>Transactiebon</center></b><br>";
+        text += "<br>";
+        text += "Bank: Timobank<br>";
+        text += "Locatie: US<br>";
+        text += "Transactie soort: geld opnemen<br>";
+        text += "Hoeveelheid: " + pinValue + "<br>";
+        text += "Account nummer: " + accountnNr + "<br>";
+        text += "Beschikbare balance: " + balance + "<br>";
+        text += "Datum: " + date + "<br>";
+        text += "<center>Bedankt voor het gebruiken van onze geldautomaat</center>";
+        text += "</html>";
+        
+        jLabel2.setText(text);
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

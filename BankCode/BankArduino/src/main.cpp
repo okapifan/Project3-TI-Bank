@@ -69,22 +69,23 @@ void setup()
 	Serial.begin(9600);
 	SPI.begin();
 	mfrc522.PCD_Init();
+
 	// RFID
 	pinMode (switch_card, INPUT_PULLUP);
-	pinMode (SS_PIN, OUTPUT);
-	pinMode (RST_PIN, OUTPUT);
+	
 	//Steppemotor
 	pinMode (STEPS, OUTPUT);
 	pinMode (37, OUTPUT);
 	pinMode (39, OUTPUT);
 	pinMode (41, OUTPUT);
 	pinMode (43, OUTPUT);
+
 	// Printer
-  mySerial.begin(9600);  // Initialize SoftwareSerial
-  printer.begin();       // Init printer (same regardless of serial type)
+  	mySerial.begin(9600);  // Initialize SoftwareSerial
+  	printer.begin();       // Init printer (same regardless of serial type)
+
 	// Servo
 	pinMode (Pulse, OUTPUT);
-
 	stepper.setSpeed(200);
 
 	// RFID read key
@@ -94,8 +95,6 @@ void setup()
 	keyRFID.keyByte[3] = 0xFF;
 	keyRFID.keyByte[4] = 0xFF;
 	keyRFID.keyByte[5] = 0xFF;
-
-	
 }
 
 void loop()
@@ -258,15 +257,15 @@ void PrintReceipt(String data){
 	printer.justify('C'); //print in center
 	printer.println(F("TimoBank"));
 	printer.setSize('S'); //size small
-	printer.justify('R'); //print at the right
-	printer.println("datum: " + (String) strings[0]);	
-	printer.println("locatie: US");
-	printer.println("transactie soort: geld opnemen");
-	printer.println("hoeveelheid: " + (String) strings[1]);
-	printer.println("account nummer: " + (String) strings[2]);
-	printer.println("beschikbare balance: " + (String) strings[3]);
+	printer.justify('R'); //print at the right	
+	printer.println("Locatie: US");
+	printer.println("Transactie soort: geld opnemen");
+	printer.println("Hoeveelheid: " + (String) strings[1]);
+	printer.println("Account nummer: " + (String) strings[2]);
+	printer.println("Beschikbare balance: " + (String) strings[3]);
+	printer.println("Datum: " + (String) strings[0]);
 	printer.justify('C'); //print in center
-	printer.println(F("Thanks for using our ATM"));
+	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));
 
 }
 

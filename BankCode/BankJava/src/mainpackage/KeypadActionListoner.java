@@ -18,23 +18,19 @@ public class KeypadActionListoner implements ActionListener {
 			// Receive string
 			if (comPort.bytesAvailable() > 0) {
 				byte[] readBuffer = new byte[comPort.bytesAvailable()];
-				// comPort.readBytes(readBuffer, readBuffer.length);
 				int dataSize = comPort.readBytes(readBuffer, readBuffer.length);
 				String data = new String(readBuffer);
 
-				// Use data
 				System.out.println("Read data: " + data + " (" + dataSize + " bytes)");
 
+				// Use data
 				App.contentHandler.parseData(data, dataSize);
 			}
 
-			
-			// Send String example
-			//String data = "Test";
-			//comPort.writeBytes(data.getBytes(), data.length());
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	
 }
