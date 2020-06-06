@@ -606,12 +606,12 @@ public class ContentHandler {
 			//comPort.writeBytes(data.getBytes(), data.length());
 
 			if(wantsReceipt){
-				// P: Print bon (Time-pinValue-accountnNr-balance)(Sat May 23 13:58:45 CEST 2020-65-00001234-180)
+				// P: Print bon (pinValue-accountnNr-date)(65-00001234-Sat May 23 13:58:45 CEST 2020)
 				Date date = new Date();
-				//String receiptString = "P" + date + "-" + pinValue + "-" + accountnNr + "-" + balance;
+				//String receiptString = "P" + pinValue + "-" + accountnNr + "-" + date;
 				//App.sendArduino(receiptString);
 				
-				App.panel14ReceiptShow.updateTextfield(date.toString(), pinValue, accountnNr, "" + balance);
+				App.panel14ReceiptShow.updateTextfield(pinValue, accountnNr, date.toString());
 			}
 
 			// Check if delay is needed

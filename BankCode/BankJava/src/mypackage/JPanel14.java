@@ -58,7 +58,7 @@ public class JPanel14 extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("<html><b><center>Transactiebon</center></b><br>Bank: Timobank<br>Locatie: US<br>Transactie soort: geld opnemen<br>Hoeveelheid: X<br>Account nummer: X<br>Beschikbare balance: X<br>Datum: X<br><center>Bedankt voor het gebruiken van onze geldautomaat</center></html>");
+        jLabel2.setText("<html><b><center>Transactiebon</center></b><br>Bank: Timobank<br>Locatie: US<br>Transactie soort: geld opnemen<br>Hoeveelheid: X<br>Account nummer: X<br>Datum: X<br><center>Bedankt voor het gebruiken van onze geldautomaat</center></html>");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -71,7 +71,7 @@ public class JPanel14 extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -90,7 +90,7 @@ public class JPanel14 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void updateTextfield(String date, String pinValue, String accountnNr, String balance){
+    public void updateTextfield(String pinValue, String accountnNr, String date){
         String text = "<html>";
         text += "<b><center>Transactiebon</center></b><br>";
         text += "<br>";
@@ -99,7 +99,6 @@ public class JPanel14 extends javax.swing.JPanel {
         text += "Transactie soort: geld opnemen<br>";
         text += "Hoeveelheid: " + pinValue + "<br>";
         text += "Account nummer: " + accountnNr + "<br>";
-        text += "Beschikbare balance: " + balance + "<br>";
         text += "Datum: " + date + "<br>";
         text += "<center>Bedankt voor het gebruiken van onze geldautomaat</center>";
         text += "</html>";

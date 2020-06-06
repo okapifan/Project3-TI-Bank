@@ -260,10 +260,9 @@ void PrintReceipt(String data){
 	printer.justify('R'); //print at the right	
 	printer.println("Locatie: US");
 	printer.println("Transactie soort: geld opnemen");
-	printer.println("Hoeveelheid: " + (String) strings[1]);
-	printer.println("Account nummer: " + (String) strings[2]);
-	printer.println("Beschikbare balance: " + (String) strings[3]);
-	printer.println("Datum: " + (String) strings[0]);
+	printer.println("Hoeveelheid: " + (String) strings[0]);
+	printer.println("Account nummer: " + (String) strings[1]);
+	printer.println("Datum: " + (String) strings[2]);
 	printer.justify('C'); //print in center
 	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));
 
