@@ -123,7 +123,7 @@ public class JPanel14 extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 48)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("<html><b><center>Transactiebon</center></b><br>Bank: Timobank<br>Locatie: US<br>Transactie soort: geld opnemen<br>Hoeveelheid: X<br>Account nummer: X<br>Datum: X<br><center>Bedankt voor het gebruiken van onze geldautomaat</center></html>");
+        jLabel2.setText("<html><b><center>Transactiebon</center></b><br>Bank: Timobank<br>Locatie: US<br>Transactie soort: geld opnemen<br>Hoeveelheid: $X,-<br>Account nummer: X<br>Datum: X<br><center>Bedankt voor het gebruiken van onze geldautomaat</center></html>");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,7 +166,7 @@ public class JPanel14 extends javax.swing.JPanel {
         text += "Bank: Timobank<br>";
         text += "Locatie: US<br>";
         text += "Transactie soort: geld opnemen<br>";
-        text += "Hoeveelheid: " + pinValue + "<br>";
+        text += "Hoeveelheid: $" + pinValue + ",-<br>";
         text += "Account nummer: " + accountnNr + "<br>";
         text += "Datum: " + date + "<br>";
         text += "<center>Bedankt voor het gebruiken van onze geldautomaat</center>";

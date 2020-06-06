@@ -54,6 +54,7 @@ public class JPanel10 extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 
         jPanel56.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel56.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -107,6 +108,7 @@ public class JPanel10 extends javax.swing.JPanel {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Logo_128.png"))); // NOI18N
 
         jPanel20.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel20.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -194,6 +196,7 @@ public class JPanel10 extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel60.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel60.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -245,6 +248,7 @@ public class JPanel10 extends javax.swing.JPanel {
         );
 
         jPanel58.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel58.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
