@@ -179,11 +179,12 @@ void loop()
 	{
 		
 		String receivedString = userInput;
+		Serial.println("M" + receivedString);
 		if (receivedString.substring(0,1) == "D") {
-    		DispensMoney(receivedString.substring(2));
+    		DispensMoney(receivedString.substring(1));
 		}
 		else if (receivedString.substring(0,1) == "P") {
-    		PrintReceipt(receivedString.substring(2));
+    		PrintReceipt(receivedString.substring(1));
 		}
 		
 		
@@ -193,11 +194,13 @@ void loop()
 }
 	
 
-void DispensMoney(String geld)
+void DispensMoney(String geld) // D1-1-1-1
 {
+	Serial.println("MDispensMoney");
+
 	// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 
-	char array[50];
+	/*char array[50];
 	geld.toCharArray(array, 50);
 
 	char *strings[10];
@@ -210,33 +213,42 @@ void DispensMoney(String geld)
 		strings[index] = ptr;
 		index++;
 		ptr = strtok(NULL, "-"); // Takes a list of delimiters
-	}
-	//Serial.println(strings[0]); //50 Dollar
-	//Serial.println(strings[1]); //20 Dollar
-	//Serial.println(strings[2]); //10 Dollar
-	//Serial.println(strings[3]); //5 Dollar
+	}*/
 
+
+	String bill50a = geld.substring(0,1);
+	int bill50 = bill50a.toInt();
+	String bill20a = geld.substring(2,3);
+	int bill20 = bill20a.toInt();
+	String bill10a = geld.substring(4,5);
+	int bill10 = bill10a.toInt();
+	String bill5a = geld.substring(6,7);
+	int bill5 = bill5a.toInt();
+	
 	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
 
 	/*
-	for (int i = 0; i < (int)strings[0]; i++)
+	for (int i = 0; i < bill50; i++)
 	{
 		GetBill(?);
 	}
 	*/
-
-	for (int i = 0; i < (int)strings[1]; i++)
+	
+	for (int i = 0; i < bill20; i++)
 	{
+		Serial.println("MDispensMoney: GetBill 20");
 		GetBill(4600);
 	}
-
-	for (int i = 0; i < (int)strings[2]; i++)
+	
+	for (int i = 0; i <bill10; i++)
 	{
+		Serial.println("MDispensMoney: GetBill 10");
 		GetBill(2850);
 	}
 
-	for (int i = 0; i < (int)strings[3]; i++)
+	for (int i = 0; i < bill5; i++)
 	{
+		Serial.println("MDispensMoney: GetBill 5");
 		GetBill(1350);
 	}
 
