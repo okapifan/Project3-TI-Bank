@@ -36,10 +36,10 @@ Servo myServo;
 #define servoPin 35
 
 // Fan
-#define fan 6
+#define fan 10
  
 // Steppemotor
-#define STEPS 32
+#define STEPS 100
 Stepper myStepper(STEPS, 37, 39, 41, 43);
 
 // Data location
