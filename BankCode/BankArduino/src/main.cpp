@@ -14,7 +14,7 @@
 #include <Stepper.h>
 
 //Printer
-#include "Adafruit_Thermal.h"
+//#include "Adafruit_Thermal.h"
 #include "SoftwareSerial.h"
 
 // RFID
@@ -25,10 +25,10 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 
 // Printer
-#define TX_PIN 47
+/*#define TX_PIN 47
 #define RX_PIN 45
 SoftwareSerial mySerial(RX_PIN, TX_PIN); // Declare SoftwareSerial obj first
-Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
+Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor*/
 
 // Servo
 #define Pulse 35
@@ -90,8 +90,8 @@ void setup()
 	pinMode (43, OUTPUT);
 
 	// Printer
-  	mySerial.begin(9600);  // Initialize SoftwareSerial
-  	printer.begin();       // Init printer (same regardless of serial type)
+  	//mySerial.begin(9600);  // Initialize SoftwareSerial
+  	//printer.begin();       // Init printer (same regardless of serial type)
 
 	// Servo
 	pinMode (Pulse, OUTPUT);
@@ -262,7 +262,7 @@ void PrintReceipt(String data){
 	}
 	
 	// Print information on receipt printer
-	printer.setSize('L'); // Size large
+	/*printer.setSize('L'); // Size large
 	printer.justify('C'); // Print in center
 	printer.println(F("TimoBank"));
 	printer.setSize('S'); // Size small
@@ -273,7 +273,7 @@ void PrintReceipt(String data){
 	printer.println("Account nummer: " + (String) strings[1]);
 	printer.println("Datum: " + (String) strings[2]);
 	printer.justify('C'); // Print in center
-	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));
+	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));*/
 }
 
 
