@@ -11,6 +11,7 @@ package mainpackage;
 
 import java.awt.CardLayout;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -372,6 +373,7 @@ public class ContentHandler {
 	public void switchTo04MenuPanel() {
 		this.startTimer(timeoutTime, false);
 
+		this.checkAvailability();
 		int statusCode = database.getBalance(this.country, this.bankName, this.pinCode, this.accountnNr);
 		if (statusCode == 200) {
 			this.cl.show(panelContainer, "04Menu");
@@ -466,11 +468,39 @@ public class ContentHandler {
 			return;
 		}
 		fillPinOptions(0, 70, true, true, true, true);
+		fillPinOptions(1, 70, true, false, true, true);
+		fillPinOptions(2, 70, false, true, true, true);
+		fillPinOptions(3, 70, false, false, true, true);
+		
 		this.withdrawValue = 70;
 		System.out.println(70 + " > " + (int) this.balance);
 		this.pinValueChoice = 0;
 
 		this.switchTo11TakeCardPanel(true, true);
+	}
+	
+	public void checkAvailability() {
+		JSONObject json = this.getAvailableMoneyJson();
+        int available5 = json.getInt("5");
+		int available10 = json.getInt("10");
+		int available20 = json.getInt("20");
+        int available50 = json.getInt("50");
+        
+        if(available50 >= 1 && available20 >= 1) {
+            App.panel04Menu.block70Button(false);
+            this.pinValueChoice = 0;
+        } else if (available50 >= 1 && available10 >= 2) {
+        	App.panel04Menu.block70Button(false);
+            this.pinValueChoice = 1;
+        } else if (available20 >= 3 && available10 >= 1) {
+        	App.panel04Menu.block70Button(false);
+            this.pinValueChoice = 2;
+        } else if (available10 >= 7) {
+        	App.panel04Menu.block70Button(false);
+            this.pinValueChoice = 3;
+        } else {
+        	App.panel04Menu.block70Button(true);
+        }
 	}
 
 	public void switchTo11TakeCardPanel(Boolean wantsReceipt, boolean endOfProcess) {
@@ -603,6 +633,9 @@ public class ContentHandler {
 			json.put("10", dollar10);
 			json.put("20", dollar20);
 			json.put("50", dollar50);
+			FileWriter file = new FileWriter("src/money.json");
+	        file.write(json.toString());
+	        file.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
