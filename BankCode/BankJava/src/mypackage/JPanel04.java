@@ -375,6 +375,9 @@ public class JPanel04 extends javax.swing.JPanel {
         App.contentHandler.switchTo09ChooseHowPanel(70);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    public void block70Button(boolean value) {
+    	jButton4.setEnabled(!value);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
