@@ -1,16 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mypackage;
 
-import mainpackage.ContentHandler;
-
-/**
- *
- * @author danie
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
  */
+
 public class JPanel00 extends javax.swing.JPanel {
 
     /**

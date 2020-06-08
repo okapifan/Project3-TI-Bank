@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mypackage;
+
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
 
 import mainpackage.App;
 
-/**
- *
- * @author danie
- */
 public class JPanel05 extends javax.swing.JPanel {
 
     /**
@@ -50,6 +50,7 @@ public class JPanel05 extends javax.swing.JPanel {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Logo_128.png"))); // NOI18N
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -101,6 +102,7 @@ public class JPanel05 extends javax.swing.JPanel {
         );
 
         jPanel20.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel20.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N

@@ -42,7 +42,7 @@ public class App {
 	public static JPanel14 panel14ReceiptShow = new JPanel14();
 
 	public static void main(String[] args) {
-		comPort = SerialPort.getCommPorts()[0];
+		comPort = SerialPort.getCommPorts()[1];
 		System.out.println(comPort.getPortDescription());
 		comPort.openPort();
 		
@@ -68,7 +68,6 @@ public class App {
 
 		JFrame frame = new JFrame();
 		frame.setTitle("Timobank");
-		// frame.setSize(1920, 1080);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

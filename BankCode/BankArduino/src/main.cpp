@@ -1,11 +1,21 @@
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <MFRC522.h>
 #include <Keypad.h>
 #include <Stepper.h>
+#include <Servo.h>
 
 //Printer
-#include "Adafruit_Thermal.h"
+//#include "Adafruit_Thermal.h"
 #include "SoftwareSerial.h"
 
 // RFID
@@ -16,17 +26,21 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 
 // Printer
-#define TX_PIN 47
+/*#define TX_PIN 47
 #define RX_PIN 45
 SoftwareSerial mySerial(RX_PIN, TX_PIN); // Declare SoftwareSerial obj first
-Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor
+Adafruit_Thermal printer(&mySerial);     // Pass addr to printer constructor*/
 
 // Servo
-#define Pulse 35
+Servo myServo;
+#define servoPin 35
+
+// Fan
+#define fan 10
  
 // Steppemotor
-#define STEPS 32
-Stepper stepper(STEPS, 37, 39, 41, 43);
+#define STEPS 100
+Stepper myStepper(STEPS, 37, 39, 41, 43);
 
 // Data location
 const byte block = 1;
@@ -63,6 +77,7 @@ void SendString(String data);
 char *ReceiveString();
 void DispensMoney(String geld);
 void PrintReceipt(String data);
+void GetBill(int distance);
 
 void setup()
 {
@@ -72,21 +87,19 @@ void setup()
 
 	// RFID
 	pinMode (switch_card, INPUT_PULLUP);
-	
-	//Steppemotor
-	pinMode (STEPS, OUTPUT);
-	pinMode (37, OUTPUT);
-	pinMode (39, OUTPUT);
-	pinMode (41, OUTPUT);
-	pinMode (43, OUTPUT);
 
 	// Printer
-  	mySerial.begin(9600);  // Initialize SoftwareSerial
-  	printer.begin();       // Init printer (same regardless of serial type)
+  	//mySerial.begin(9600);  // Initialize SoftwareSerial
+  	//printer.begin();       // Init printer (same regardless of serial type)
 
 	// Servo
-	pinMode (Pulse, OUTPUT);
-	stepper.setSpeed(200);
+	myServo.attach(servoPin);
+	
+	// Fan
+  	pinMode(fan, OUTPUT);
+
+	// Steppermotor
+	myStepper.setSpeed(300);
 
 	// RFID read key
 	keyRFID.keyByte[0] = 0xFF;
@@ -166,11 +179,12 @@ void loop()
 	{
 		
 		String receivedString = userInput;
+		Serial.println("M" + receivedString);
 		if (receivedString.substring(0,1) == "D") {
-    		DispensMoney(receivedString.substring(2));
+    		DispensMoney(receivedString.substring(1));
 		}
 		else if (receivedString.substring(0,1) == "P") {
-    		PrintReceipt(receivedString.substring(2));
+    		PrintReceipt(receivedString.substring(1));
 		}
 		
 		
@@ -180,58 +194,111 @@ void loop()
 }
 	
 
-void DispensMoney(String geld){
+void DispensMoney(String geld) // D1-1-1-1
+{
+	Serial.println("MDispensMoney");
+
 	// D: Dispence money (amount $50 bills, amount $20 bills, amount $10 bills, amount $5 bills)(1-0-2-0)
 
-	char array[50]; 
-	geld.toCharArray(array,50);
-	
+	/*char array[50];
+	geld.toCharArray(array, 50);
+
 	char *strings[10];
 	char *ptr = NULL;
 	byte index = 0;
 
-	ptr = strtok(array, "-");  // Takes a list of delimiters
-	while(ptr != NULL)
+	ptr = strtok(array, "-"); // Takes a list of delimiters
+	while (ptr != NULL)
 	{
 		strings[index] = ptr;
 		index++;
-		ptr = strtok(NULL, "-");  // Takes a list of delimiters
-	}
-	//Serial.println(strings[0]); //50 Dollar
-	//Serial.println(strings[1]); //20 Dollar
-	//Serial.println(strings[2]); //10 Dollar
-	//Serial.println(strings[3]); //5 Dollar
+		ptr = strtok(NULL, "-"); // Takes a list of delimiters
+	}*/
 
+
+	String bill50a = geld.substring(0,1);
+	int bill50 = bill50a.toInt();
+	String bill20a = geld.substring(2,3);
+	int bill20 = bill20a.toInt();
+	String bill10a = geld.substring(4,5);
+	int bill10 = bill10a.toInt();
+	String bill5a = geld.substring(6,7);
+	int bill5 = bill5a.toInt();
+	
 	// Voeg dispenser toe en zorg dat hij verschillende briefjes kan dispensen
+
+	/*
+	for (int i = 0; i < bill50; i++)
+	{
+		GetBill(?);
+	}
+	*/
 	
-	//for (int i = 0; i < (int)strings[0]; i++)
-	//{
-		//stepper.step(val 50 Dollar); 
-		//stepper.step(val Slide);
-	//}
+	for (int i = 0; i < bill20; i++)
+	{
+		Serial.println("MDispensMoney: GetBill 20");
+		GetBill(4600);
+	}
 	
-	//for (int i = 0; i < (int)strings[1]; i++)
-	//{
-		//stepper.step(val 20 Dollar); 
-		//stepper.step(val Slide);
-	//}
+	for (int i = 0; i <bill10; i++)
+	{
+		Serial.println("MDispensMoney: GetBill 10");
+		GetBill(2850);
+	}
 
-	//for (int i = 0; i < (int)strings[2]; i++)
-	//{
-		//stepper.step(val 10 Dollar); 
-		//stepper.step(val Slide);
-	//}
+	for (int i = 0; i < bill5; i++)
+	{
+		Serial.println("MDispensMoney: GetBill 5");
+		GetBill(1350);
+	}
 
-	//for (int i = 0; i < (int)strings[3]; i++)
-	//{
-		//stepper.step(val 5 Dollar); 
-		//stepper.step(val Slide);
-	//}
-
-	// delay van 2 seconden
-	delay(2000); // Moet vervangen worden is alleen een test
 	// send D
 	SendString("D");
+}
+
+void GetBill(int distance)
+{
+	// Move servo up
+	for (int r = 160; r > 75; r--)
+	{
+		myServo.write(r);
+		delay(20);
+	}
+
+	// Move to bill place
+	myStepper.step(distance);
+
+	// Move servo down
+	for (int i = 75; i < 160; i++)
+	{
+		myServo.write(i);
+		delay(20);
+	}
+
+	// Turn fan on
+	digitalWrite(fan, HIGH);
+	delay(3000);
+
+	// Move servo up
+	for (int r = 160; r > 75; r--)
+	{
+		myServo.write(r);
+		delay(20);
+	}
+
+	// Move to bill place
+	myStepper.step(-(distance + 100));
+
+	// Move servo down
+	for (int i = 75; i < 160; i++)
+	{
+		myServo.write(i);
+		delay(20);
+	}
+
+	// Turn fan off
+	digitalWrite(fan, LOW);
+	delay(3000);
 }
 
 
@@ -253,20 +320,18 @@ void PrintReceipt(String data){
 	}
 	
 	// Print information on receipt printer
-	printer.setSize('L'); //size large
-	printer.justify('C'); //print in center
+	/*printer.setSize('L'); // Size large
+	printer.justify('C'); // Print in center
 	printer.println(F("TimoBank"));
-	printer.setSize('S'); //size small
-	printer.justify('R'); //print at the right	
+	printer.setSize('S'); // Size small
+	printer.justify('R'); // Print at the right	
 	printer.println("Locatie: US");
 	printer.println("Transactie soort: geld opnemen");
-	printer.println("Hoeveelheid: " + (String) strings[1]);
-	printer.println("Account nummer: " + (String) strings[2]);
-	printer.println("Beschikbare balance: " + (String) strings[3]);
-	printer.println("Datum: " + (String) strings[0]);
-	printer.justify('C'); //print in center
-	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));
-
+	printer.println("Hoeveelheid: " + (String) strings[0]);
+	printer.println("Account nummer: " + (String) strings[1]);
+	printer.println("Datum: " + (String) strings[2]);
+	printer.justify('C'); // Print in center
+	printer.println(F("Bedankt voor het gebruiken van onze geldautomaat"));*/
 }
 
 

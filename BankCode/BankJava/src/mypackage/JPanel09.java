@@ -1,18 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mypackage;
 
-import org.json.JSONObject;
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
 
 import mainpackage.App;
+import org.json.JSONObject;
 
-/**
- *
- * @author danie
- */
 public class JPanel09 extends javax.swing.JPanel {
 
     /**
@@ -68,6 +67,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Logo_128.png"))); // NOI18N
 
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel18.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -119,6 +119,7 @@ public class JPanel09 extends javax.swing.JPanel {
         );
 
         jPanel20.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel20.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton10.setBackground(new java.awt.Color(255, 255, 255));
         jButton10.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -229,6 +230,7 @@ public class JPanel09 extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -280,6 +282,7 @@ public class JPanel09 extends javax.swing.JPanel {
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -331,6 +334,7 @@ public class JPanel09 extends javax.swing.JPanel {
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton8.setBackground(new java.awt.Color(255, 255, 255));
         jButton8.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -382,6 +386,7 @@ public class JPanel09 extends javax.swing.JPanel {
         );
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
 
         jButton9.setBackground(new java.awt.Color(255, 255, 255));
         jButton9.setFont(new java.awt.Font("Roboto", 0, 36)); // NOI18N
@@ -518,7 +523,13 @@ public class JPanel09 extends javax.swing.JPanel {
         // (B) Afsluiten
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    public void updateLabelOfButtons(int[][] options, int amount){    
+    public void updateLabelOfButtons(int[][] options, int amount){  
+        //Reset buttons
+        jButton6.setEnabled(true);
+        jButton7.setEnabled(true);
+        jButton8.setEnabled(true);
+        jButton9.setEnabled(true);
+        
         jLabel2.setText("$"+amount+" te ontvangen");
 
         if(amount >= 50) {  

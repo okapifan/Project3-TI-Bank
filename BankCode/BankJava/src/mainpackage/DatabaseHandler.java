@@ -1,5 +1,14 @@
 package mainpackage;
 
+/*
+ * Project 3/4
+ * 
+ * Daniël van der Drift
+ * Robbin Koot
+ * Timo van der Meer
+ * Zoë Zegers
+ */
+
 // Socket
 import java.net.*;
 import java.io.*;
@@ -15,6 +24,9 @@ public class DatabaseHandler {
 	DataInputStream din;
 	DataOutputStream dout;
 
+	String bankServerIp = "145.24.222.211";
+	int bankServerPort = 8000;
+
 	public DatabaseHandler(String countryName, String bankName) {
 		localCountryCode = countryName;
 		localBankCode = bankName;
@@ -24,7 +36,7 @@ public class DatabaseHandler {
 
 	private void OpenSocket() {
 		try {
-			s = new Socket("145.24.222.211", 8000);
+			s = new Socket(bankServerIp, bankServerPort);
 			din = new DataInputStream(s.getInputStream());
 			dout = new DataOutputStream(s.getOutputStream());
 		} catch (IOException e) {
@@ -53,8 +65,7 @@ public class DatabaseHandler {
 			// Receive
 			while(din.available() > 0){}
 			String str2 = din.readUTF();
-			//String str2_example = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"US\",\"receiveBank\":\"TIMO\",\"action\":\"balance\"},\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":999.99}}";
-
+			
 			JSONObject obj = new JSONObject(str2);
 			int statusCode = obj.getJSONObject("body").getInt("code");
 			String statusMessage = obj.getJSONObject("body").getString("message");
@@ -74,7 +85,7 @@ public class DatabaseHandler {
 			e.printStackTrace();
 		}
 		
-		//Example json
+		// Example json
 		//String getBalanceBody = "{\"header\":{\"originCountry\":\"DE\",\"originBank\":\"DEBA\",\"receiveCountry\":\"NL\",\"receiveBank\":\"INGB\",\"action\":\"balance\"},\"body\":{\"pin\":\"1234\",\"account\":\"123456\"}}";
 		//String receivedString = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"balance\"},\"body\":{\"code\":200,\"message\":\"Success\",\"balance\":9999.99}}";
 		 
@@ -92,23 +103,18 @@ public class DatabaseHandler {
 			// Receive
 			while(din.available() > 0) {}
 			String str2 = din.readUTF();
-			//String str2_example = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"code\":200,\"message\":\"Success\"}}";
-
+			
 			JSONObject obj = new JSONObject(str2);
 			int statusCode = obj.getJSONObject("body").getInt("code");
 			String statusMessage = obj.getJSONObject("body").getString("message");
 			System.out.println("" + statusCode + ": " + statusMessage);
-			
-			// if (statusCode == 200){
-			// 	//	
-			// }
 
 			return statusCode;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		//Example json
+		// Example json
 		//String withdrawBody = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"pin\":\"1234\",\"account\":\"123456\",\"amount\":123.45}}";
 		//String receivedString = "{\"header\":{\"originCountry\":\"NL\",\"originBank\":\"INGB\",\"receiveCountry\":\"DE\",\"receiveBank\":\"DEBA\",\"action\":\"withdraw\"},\"body\":{\"code\":200,\"message\":\"Success\"}}";
 
